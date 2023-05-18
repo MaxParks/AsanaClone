@@ -5,6 +5,7 @@
 
 
 # API Documentation
+
 ## USER AUTHENTICATION/AUTHORIZATION
 ## All endpoints that require authentication
 
@@ -74,7 +75,7 @@ json
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-* Body:
+* Response Body:
 ```
 json
 
@@ -90,7 +91,7 @@ json
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -107,7 +108,7 @@ json
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -116,7 +117,6 @@ json
   "statusCode": 400,
   "errors": {
     "email": "Invalid email",
-    "username": "Username is required",
     "firstName": "First Name is required",
     "lastName": "Last Name is required"
   }
@@ -147,7 +147,7 @@ json
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -163,7 +163,7 @@ json
   * Status Code: 401
   * Headers:
   * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -181,14 +181,13 @@ Retrieve the user's profile information.
 * Request
   * Method: GET
   * URL: /api/user/profile
-  * Headers:
-    * Authorization: Bearer {access_token}
+
 
 * Successful Response
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -204,7 +203,7 @@ json
   * Status Code: 401
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -224,14 +223,12 @@ Retrieve the projects associated with the user.
 * Request
   * Method: GET
   * URL: /api/user/projects
-  * Headers:
-    * Authorization: Bearer {access_token}
 
 * Successful Response
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 
@@ -263,7 +260,7 @@ json
   * Status Code: 401
   * Headers:
     * Content-Type: application/json
-* Body:
+* Response Body:
 ```
 json
 
@@ -273,17 +270,6 @@ json
 }
 ```
 
-* Error Response: Require proper authorization
-* Status Code: 403
-* Headers:
-    * Content-Type: application/json
-* Body:
-```
-{
-  "message": "Forbidden",
-  "statusCode": 403
-}
-```
 
 # Project Endpoints
 ## Retrieve All Projects
@@ -294,10 +280,10 @@ json
   * Method: GET
   * URL: /api/projects
 
+
 * Successful Response:
   * Status Code: 200
   * Headers:
-    * Authorization: Bearer {access_token}
     * Content-Type: application/json
   * Response Body:
 
@@ -327,7 +313,6 @@ json
   }
 ]
 ```
-* Error Response: None
 
 ## Retrieve Project by ID
 
@@ -337,14 +322,11 @@ Retrieve a specific project by its ID.
 
 * Request
   * Method: GET
-  * URL: /api/projects/{id}
-  * Parameters:
-    * id (integer, required) - The unique identifier of the project.
+  * URL: /api/projects/:id
 
 * Successful Response:
   * Status Code: 200
   * Headers:
-    * Authorization: Bearer {access_token}
     * Content-Type: application/json
 * Response Body:
 
@@ -366,7 +348,6 @@ json
   * Headers:
     * Content-Type: application/json
 * Response Body:
-
 ```
 json
 
@@ -375,6 +356,7 @@ json
   "statusCode": 404
 }
 ```
+
 ## Create New Project
 
 Create a new project.
@@ -386,7 +368,7 @@ Create a new project.
   * URL: /api/projects
   * Headers:
     * Content-Type: application/json
-* Request Body:
+* Body:
 
 ```
 json
@@ -403,7 +385,6 @@ json
 * Successful Response:
   * Status Code: 201
   * Headers:
-    * Authorization: Bearer {access_token}
     * Content-Type: application/json
 * Response Body:
 
@@ -443,13 +424,13 @@ Update a specific project by its ID.
 
 * Request
   * Method: PUT
-  * URL: /api/projects/{id}
+  * URL: /api/projects/:id
   * Parameters:
       * id (integer, required) - The unique identifier of the project.
   * Headers:
       * Authorization: Bearer {access_token}
       * Content-Type: application/json
-* Request Body:
+* Body:
 
 ```
 json
@@ -500,13 +481,14 @@ json
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
-* Body:
+* Response Body:
 ```
 {
   "message": "Forbidden",
   "statusCode": 403
 }
 ```
+
 ## Delete Project
 
 Delete a specific project by its ID.
@@ -517,8 +499,6 @@ Delete a specific project by its ID.
 * Request
   * Method: DELETE
   * URL: /api/projects/{id}
-  * Parameters:
-    * id (integer, required) - The unique identifier of the project.
 
 * Successful Response:
   * Status Code: 204
@@ -541,6 +521,19 @@ json
 }
 ```
 
+* Error Response: Require proper authorization
+  * Status Code: 403
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
+```
+{
+  "message": "Forbidden",
+  "statusCode": 403
+}
+```
+
+
 # Task Endpoints
 ## Retrieve all tasks
 
@@ -556,7 +549,7 @@ Retrieves all tasks.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 ```
 json
 [
@@ -597,7 +590,7 @@ Retrieves a specific task by its ID.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-  * Body:
+  * Response Body:
 
   ```
   json
@@ -613,6 +606,21 @@ Retrieves a specific task by its ID.
     }
   ```
 
+* Error Response: Task not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Response Body:
+
+```
+json
+{
+  "message": "Task not found",
+  "statusCode": 404
+}
+```
+
+
 ## Create a new task
 
 Creates a new task.
@@ -620,13 +628,8 @@ Creates a new task.
 * Require Authentication: Yes
 
 * Request
-  * Method: GET
+  * Method: POST
   * URL: /api/tasks
-
-* Successful Response:
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
   * Body:
   ```
   json
@@ -642,10 +645,10 @@ Creates a new task.
   ```
 
   * Successful Response:
-    * Status Code: 200
+    * Status Code: 201
     * Headers:
       * Content-Type: application/json
-    * Body:
+    * Response Body:
     ```
     json
     {
@@ -660,6 +663,19 @@ Creates a new task.
   }
     ```
 
+  * Error Response: Invalid request body
+    * Status Code: 400
+    * Headers:
+        * Content-Type: application/json
+  * Response Body:
+```
+json
+{
+  "message": "Invalid request body",
+  "statusCode": 400
+}
+```
+
 
 ## Update a specific task by ID
 
@@ -668,17 +684,9 @@ Updates a specific task by its ID.
 * Require Authentication: Yes
 
 * Request
-
   * Method: PUT
   * URL: /api/tasks/:id
-
-* Successful Response:
-
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
   * Body:
-
   ```
   json
     {
@@ -689,14 +697,13 @@ Updates a specific task by its ID.
     "completed": true,
     "project_id": 1
   }
-
   ```
 
   * Successful Response:
     * Status Code: 200
     * Headers:
       * Content-Type: application/json
-    * Body:
+    * Response Body:
     ```
     json
     {
@@ -710,6 +717,35 @@ Updates a specific task by its ID.
       "created_at": "2023-05-18T10:30:00Z"
   }
     ```
+
+  * Error Response: Task not found
+    * Status Code: 404
+    * Headers:
+      * Content-Type: application/json
+  * Response Body:
+
+```
+json
+
+{
+  "message": "Task not found",
+  "statusCode": 404
+}
+```
+
+* Error Response: Require proper authorization
+  * Status Code: 403
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
+
+```
+{
+  "message": "Forbidden",
+  "statusCode": 403
+}
+```
+
 
 ## Delete Task
 
@@ -739,6 +775,238 @@ json
 
 {
   "message": "Task not found",
+  "statusCode": 404
+}
+```
+
+# Team Endpoints
+
+## Retrieve all teams
+
+Retrieves all teams.
+
+* Require Authentication: Yes
+
+* Request
+  * Method: GET
+  * URL: /api/teams
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Response Body:
+
+```
+json
+  [
+    {
+      "id": 1,
+      "name": "Team A",
+      "description": "A cool team",
+      "created_at": "2023-05-17T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Team B",
+      "description": "Another cool team",
+      "created_at": "2023-05-18T10:30:00Z"
+    }
+  ]
+```
+
+## Retrieve a specific team by ID
+
+Retrieves a specific team by it's ID.
+
+* Require Authentication: Yes
+
+* Request
+
+  * Method: GET
+  * URL: /api/teams/:id
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Response Body:
+
+```
+json
+  {
+  "id": 1,
+  "name": "Team A",
+  "description": "A cool team",
+  "created_at": "2023-05-17T12:00:00Z"
+}
+```
+
+* Error Response: Team not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
+
+```
+json
+{
+  "message": "Team not found",
+  "statusCode": 404
+}
+```
+
+
+## Create a Team
+
+Creates a new team.
+
+* Require Authentication: Yes
+
+* Request
+  * Method: POST
+  * URL: /api/teams
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+  ```
+  json
+  {
+    "name": "New Task",
+    "description": "Description of the New Task",
+    "assigned_to": 3,
+    "due_date": "2023-05-25",
+    "completed": false,
+    "project_id": 1
+  }
+
+  ```
+
+  * Successful Response:
+    * Status Code: 200
+    * Headers:
+      * Content-Type: application/json
+    * Response Body:
+    ```
+    json
+    {
+    "id": 3,
+    "name": "New Task",
+    "description": "Description of the New Task",
+    "assigned_to": 3,
+    "due_date": "2023-05-25",
+    "completed": false,
+    "project_id": 1,
+    "created_at": "2023-05-18T14:15:00Z"
+    }
+    ```
+
+* Error Response: Invalid request body
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
+```
+json
+
+{
+  "message": "Invalid request body",
+  "statusCode": 400
+}
+```
+
+## Update a specific team by ID
+
+Updates a specific team by its ID.
+
+* Require Authentication: Yes
+
+* Request
+
+  * Method: PUT
+  * URL: /api/teams/:id
+  * Body:
+
+  ```
+  json
+    {
+    "name": "Updated Team",
+    "description": "Updated team description"
+  }
+  ```
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```
+  json
+  {
+    "id": 1,
+    "name": "Updated Team",
+    "description": "Updated team description",
+    "created_at": "2023-05-17T12:00:00Z"
+  }
+  ```
+
+  * Error Response: Team not found
+    * Status Code: 404
+    * Headers:
+      * Content-Type: application/json
+  * Response Body:
+```
+json
+
+{
+  "message": "Team not found",
+  "statusCode": 404
+}
+```
+
+* Error Response: Require proper authorization
+  * Status Code: 403
+  * Headers:
+    * Content-Type: application/json
+* Body:
+```
+{
+  "message": "Forbidden",
+  "statusCode": 403
+}
+```
+
+## Delete Tean
+
+Delete a specific teamn by its ID.
+
+* Require Authentication: Yes
+* Require proper authorization: Team must belong to the current user
+
+* Request
+
+  * Method: DELETE
+  * URL: /api/tasks/:id
+
+* Successful Response:
+  * Status Code: 204
+
+* No response body is returned.
+
+* Error Response: Team not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
+```
+json
+
+{
+  "message": "Team not found",
   "statusCode": 404
 }
 ```
