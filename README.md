@@ -1,9 +1,8 @@
 # Asana Clone
 
 ## Database Schema Design
+![Screenshot 2023-05-18 at 5 16 05 PM](https://github.com/MaxParks/AsanaClone/assets/107880032/680a49c3-a58e-42a3-9a23-0076bcbd8033)
 
-<!-- put database schema img here --![Screenshot 2023-05-18 at 5 16 05 PM](https://github.com/MaxParks/AsanaClone/assets/107880032/a36dcc11-56df-4572-a122-157080db8cf1)
---> 
 
 ## API Documentation
 # USER AUTHENTICATION/AUTHORIZATION
