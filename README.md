@@ -1,6 +1,6 @@
-#User Endpoints
+# Heading1 User Endpoints
 
-##Sign Up a User
+## Heading2 Sign Up a User
 
 Creates a new user, logs them in as the current user, and returns the current user's information.
 
@@ -96,7 +96,7 @@ json
   }
 }
 ```
-##Log In a User
+## Heading2 Log In a User
 Authenticate and log in a user.
 
 Require Authentication: No
@@ -190,7 +190,7 @@ json
   "statusCode": 401
 }
 ```
-##Retrieve User Projects
+## Heading2 Retrieve User Projects
 Retrieve the projects associated with the user.
 
 Require Authentication: Yes
@@ -246,8 +246,8 @@ json
 }
 ```
 
-#Project Endpoints
-##Retrieve All Projects
+## Heading1 Project Endpoints
+## Heading2 Retrieve All Projects
 
 Endpoint: /api/projects
 Method: GET
@@ -287,7 +287,7 @@ json
 ```
 Error Response: None
 
-##Retrieve Project by ID
+## Heading2 Retrieve Project by ID
 Retrieve a specific project by its ID.
 
 Endpoint: /api/projects/{id}
@@ -389,7 +389,7 @@ json
   "statusCode": 400
 }
 ```
-##Update Project
+## Heading2 Update Project
 Update a specific project by its ID.
 
 Endpoint: /api/projects/{id}
@@ -447,7 +447,7 @@ json
   "statusCode": 404
 }
 ```
-##Delete Project
+## Heading2 Delete Project
 Delete a specific project by its ID.
 
 Endpoint: /api/projects/{id}
