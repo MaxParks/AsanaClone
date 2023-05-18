@@ -15,13 +15,11 @@ All endpoints that require a current user to be logged in.
 
  *  Error Response: Require authentication
     * Status Code: 401
-
-  * Headers:
+    * Headers:
       * Content-Type: application/json
-  * Body:
+    * Body:
 
 ```
-
 {
   "message": "Authentication required",
   "statusCode": 401
@@ -38,10 +36,9 @@ All endpoints that require authentication and the current user does not have the
 
   * Headers:
     * Content-Type: application/json
-* Body:
+  * Body:
 
 ```
-
 {
   "message": "Forbidden",
   "statusCode": 403
@@ -60,7 +57,7 @@ Creates a new user, logs them in as the current user, and returns the current us
   * URL: /api/users
   * Headers:
      * Content-Type: application/json
-* Body:
+  * Body:
 ```
 {
   "firstName": "John",
@@ -73,9 +70,8 @@ Creates a new user, logs them in as the current user, and returns the current us
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
-
 {
   "id": 1,
   "firstName": "John",
@@ -90,7 +86,6 @@ Creates a new user, logs them in as the current user, and returns the current us
     * Content-Type: application/json
   * Response Body:
 ```
-
 {
   "message": "User already exists",
   "statusCode": 403,
@@ -106,7 +101,6 @@ Creates a new user, logs them in as the current user, and returns the current us
     * Content-Type: application/json
   * Response Body:
 ```
-
 {
   "message": "Validation error",
   "statusCode": 400,
@@ -156,7 +150,6 @@ Authenticate and log in a user.
   * Content-Type: application/json
   * Response Body:
 ```
-
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -216,7 +209,6 @@ Retrieve the projects associated with the user.
     * Content-Type: application/json
   * Response Body:
 ```
-
 [
   {
     "id": 1,
@@ -245,7 +237,7 @@ Retrieve the projects associated with the user.
   * Status Code: 401
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
 {
   "message": "Unauthorized",
@@ -271,7 +263,6 @@ Retrieve the projects associated with the user.
   * Response Body:
 
 ```
-
 [
   {
     "id": 1,
@@ -310,10 +301,9 @@ Retrieve a specific project by its ID.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
-
 {
   "id": 1,
   "owner_id": 1,
@@ -329,9 +319,8 @@ Retrieve a specific project by its ID.
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
-
 {
   "message": "Project not found",
   "statusCode": 404
@@ -349,7 +338,7 @@ Create a new project.
   * URL: /api/projects
   * Headers:
     * Content-Type: application/json
-* Body:
+  * Body:
 
 ```
 {
@@ -365,7 +354,7 @@ Create a new project.
   * Status Code: 201
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
 {
@@ -382,7 +371,7 @@ Create a new project.
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
 {
@@ -405,10 +394,9 @@ Update a specific project by its ID.
   * Headers:
       * Authorization: Bearer {access_token}
       * Content-Type: application/json
-* Body:
+  * Body:
 
 ```
-
 {
   "name": "New Project Name",
   "description": "a cool project",
@@ -420,7 +408,7 @@ Update a specific project by its ID.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
 {
@@ -438,10 +426,9 @@ Update a specific project by its ID.
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
-
 {
   "message": "Project not found",
   "statusCode": 404
@@ -452,7 +439,7 @@ Update a specific project by its ID.
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
-* Response Body:
+    * Response Body:
 ```
 {
   "message": "Forbidden",
@@ -482,9 +469,8 @@ Delete a specific project by its ID.
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
-
 {
   "message": "Project not found",
   "statusCode": 404
@@ -495,7 +481,7 @@ Delete a specific project by its ID.
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
 {
   "message": "Forbidden",
@@ -633,7 +619,7 @@ Creates a new task.
     * Status Code: 400
     * Headers:
         * Content-Type: application/json
-  * Response Body:
+    * Response Body:
 ```
 {
   "message": "Invalid request body",
@@ -685,7 +671,7 @@ Updates a specific task by its ID.
     * Status Code: 404
     * Headers:
       * Content-Type: application/json
-  * Response Body:
+    * Response Body:
 
 ```
 {
@@ -698,7 +684,7 @@ Updates a specific task by its ID.
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
 {
@@ -722,14 +708,13 @@ Delete a specific task by its ID.
 
 * Successful Response:
   * Status Code: 204
-
-* No response body is returned.
+  * No response body is returned.
 
 * Error Response: Task not found
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
 {
@@ -803,7 +788,7 @@ Retrieves a specific team by it's ID.
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 
 ```
 {
@@ -838,7 +823,6 @@ Creates a new team.
     "completed": false,
     "project_id": 1
   }
-
   ```
 
   * Successful Response:
@@ -847,7 +831,6 @@ Creates a new team.
       * Content-Type: application/json
     * Response Body:
     ```
-
     {
     "id": 3,
     "name": "New Task",
@@ -864,7 +847,7 @@ Creates a new team.
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
 {
   "message": "Invalid request body",
@@ -909,7 +892,7 @@ Updates a specific team by its ID.
     * Status Code: 404
     * Headers:
       * Content-Type: application/json
-  * Response Body:
+    * Response Body:
 ```
 {
   "message": "Team not found",
@@ -921,7 +904,7 @@ Updates a specific team by its ID.
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
-* Body:
+  * Response Body:
 ```
 {
   "message": "Forbidden",
@@ -937,22 +920,19 @@ Delete a specific team by its ID.
 * Require proper authorization: Team must belong to the current user
 
 * Request
-
   * Method: DELETE
   * URL: /api/tasks/:id
 
 * Successful Response:
   * Status Code: 204
-
-* No response body is returned.
+  * No response body is returned.
 
 * Error Response: Team not found
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
-* Response Body:
+  * Response Body:
 ```
-
 {
   "message": "Team not found",
   "statusCode": 404
