@@ -40,20 +40,18 @@ Body:
 ```
 
 #  User Endpoints
-
 ##  Sign Up a User
 
 Creates a new user, logs them in as the current user, and returns the current user's information.
 
-Require Authentication: No
+* Require Authentication: No
 
-Request
-
-Method: POST
-URL: /api/users
-Headers:
-Content-Type: application/json
-Body:
+* Request
+  * Method: POST
+  * URL: /api/users
+  * Headers:
+     * Content-Type: application/json
+* Body:
 ```
 json
 
@@ -64,12 +62,11 @@ json
   "password": "secret password"
 }
 ```
-Successful Response
-
-Status Code: 200
-Headers:
-Content-Type: application/json
-Body:
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+* Body:
 ```
 json
 
@@ -80,12 +77,12 @@ json
   "email": "john.smith@gmail.com"
 }
 ```
-Error Response: User already exists with the specified email
 
-Status Code: 403
-Headers:
-Content-Type: application/json
-Body:
+* Error Response: User already exists with the specified email
+  * Status Code: 403
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -98,12 +95,11 @@ json
 }
 ```
 
-Error Response: Body validation errors
-
-Status Code: 400
-Headers:
-Content-Type: application/json
-Body:
+* Error Response: Body validation errors
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -118,18 +114,18 @@ json
   }
 }
 ```
+
 ##  Log In a User
+
 Authenticate and log in a user.
 
-Require Authentication: No
-
-Request
-
-Method: POST
-URL: /api/login
-Headers:
-Content-Type: application/json
-Body:
+* Require Authentication: No
+* Request
+  * Method: POST
+  * URL: /api/login
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -138,12 +134,12 @@ json
   "password": "secret password"
 }
 ```
-Successful Response
 
-Status Code: 200
-Headers:
-Content-Type: application/json
-Body:
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -154,12 +150,12 @@ json
   "email": "john.smith@gmail.com"
 }
 ```
-Error Response: Unauthorized
 
-Status Code: 401
-Headers:
-Content-Type: application/json
-Body:
+* Error Response: Unauthorized
+  * Status Code: 401
+  * Headers:
+  * Content-Type: application/json
+  * Body:
 ``` 
 json
 
@@ -168,23 +164,23 @@ json
   "statusCode": 401
 }
 ```
+
 ## Retrieve User Profile
+
 Retrieve the user's profile information.
 
-Require Authentication: Yes
+* Require Authentication: Yes
+* Request
+  * Method: GET
+  * URL: /api/user/profile
+  * Headers:
+    * Authorization: Bearer {access_token}
 
-Request
-
-Method: GET
-URL: /api/user/profile
-Headers:
-Authorization: Bearer {access_token}
-Successful Response
-
-Status Code: 200
-Headers:
-Content-Type: application/json
-Body:
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -195,12 +191,12 @@ json
   "email": "john.smith@gmail.com"
 }
 ```
-Error Response: Unauthorized
 
-Status Code: 401
-Headers:
-Content-Type: application/json
-Body:
+* Error Response: Unauthorized
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -209,24 +205,25 @@ json
   "statusCode": 401
 }
 ```
+
 ## Retrieve User Projects
+
 Retrieve the projects associated with the user.
 
-Require Authentication: Yes
-Require proper authorization: Projects must belong to the current user
+* Require Authentication: Yes
+* Require proper authorization: Projects must belong to the current user
 
-Request
+* Request
+  * Method: GET
+  * URL: /api/user/projects
+  * Headers:
+    * Authorization: Bearer {access_token}
 
-Method: GET
-URL: /api/user/projects
-Headers:
-Authorization: Bearer {access_token}
-Successful Response
-
-Status Code: 200
-Headers:
-Content-Type: application/json
-Body:
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 
@@ -251,12 +248,12 @@ json
   }
 ]
 ```
-Error Response: Unauthorized
 
-Status Code: 401
-Headers:
-Content-Type: application/json
-Body:
+* Error Response: Unauthorized
+  * Status Code: 401
+  * Headers:
+    * Content-Type: application/json
+* Body:
 ```
 json
 
@@ -266,13 +263,11 @@ json
 }
 ```
 
-Error Response: Require proper authorization
-Status Code: 403
-
-Headers:
-
-Content-Type: application/json
-Body:
+* Error Response: Require proper authorization
+* Status Code: 403
+* Headers:
+    * Content-Type: application/json
+* Body:
 ```
 {
   "message": "Forbidden",
@@ -283,17 +278,19 @@ Body:
 # Project Endpoints
 ## Retrieve All Projects
 
-Endpoint: /api/projects
-Method: GET
-Require Authentication: Yes
+* Require Authentication: Yes
 
-Successful Response:
-Status Code: 200
-Headers:
+* Request 
+  * Endpoint: /api/projects 
+  * Method: GET
 
-Authorization: Bearer {access_token}
-Content-Type: application/json
-Response Body:
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Authorization: Bearer {access_token}
+    * Content-Type: application/json
+  * Response Body:
 
 ```
 json
@@ -319,24 +316,27 @@ json
   }
 ]
 ```
-Error Response: None
+* Error Response: None
 
 ## Retrieve Project by ID
+
 Retrieve a specific project by its ID.
+ 
+* Require Authentication: Yes
 
-Endpoint: /api/projects/{id}
-Method: GET
-Require Authentication: Yes
-Parameters:
+* Request 
+  * Endpoint: /api/projects/{id}
+  * Method: GET
 
-id (integer, required) - The unique identifier of the project.
-Successful Response:
-Status Code: 200
-Headers:
-
-Authorization: Bearer {access_token}
-Content-Type: application/json
-Response Body:
+* Parameters:
+  * id (integer, required) - The unique identifier of the project.
+   
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Authorization: Bearer {access_token}
+    * Content-Type: application/json
+* Response Body:
 
 ```
 json
@@ -350,12 +350,11 @@ json
   "created_at": "2023-05-17T12:00:00Z"
 }
 ```
-Error Response: Project not found
-Status Code: 404
-Headers:
-
-Content-Type: application/json
-Response Body:
+* Error Response: Project not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
 
 ```
 json
@@ -366,15 +365,17 @@ json
 }
 ```
 ## Create New Project
+
 Create a new project.
 
-Endpoint: /api/projects
-Method: POST
-Require Authentication: Yes
-Headers:
+* Require Authentication: Yes
 
-Content-Type: application/json
-Request Body:
+* Request
+  * Endpoint: /api/projects
+  * Method: POST
+  * Headers:
+    * Content-Type: application/json
+* Request Body:
 
 ```
 json
@@ -387,13 +388,12 @@ json
   "format": true
 }
 ```
-Successful Response:
-Status Code: 201
-Headers:
-
-Authorization: Bearer {access_token}
-Content-Type: application/json
-Response Body:
+* Successful Response:
+  * Status Code: 201
+  * Headers:
+    * Authorization: Bearer {access_token}
+    * Content-Type: application/json
+* Response Body: 
 
 ```
 json
@@ -527,4 +527,42 @@ json
   "message": "Project not found",
   "statusCode": 404
 }
+```
+
+# Task Endpoints
+## Retrieve all tasks
+
+Endpoint: /api/tasks
+Method: GET
+Require Authentication: Yes
+
+Response:
+Status Code: 200
+Headers:
+Content-Type: application/json
+Body:
+```
+json
+[
+  {
+    "id": 1,
+    "name": "Task 1",
+    "description": "Description of Task 1",
+    "assigned_to": 2,
+    "due_date": "2023-05-20",
+    "completed": false,
+    "project_id": 1,
+    "created_at": "2023-05-18T10:30:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Task 2",
+    "description": "Description of Task 2",
+    "assigned_to": 3,
+    "due_date": "2023-05-22",
+    "completed": false,
+    "project_id": 1,
+    "created_at": "2023-05-18T11:45:00Z"
+  }
+]
 ```
