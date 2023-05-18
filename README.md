@@ -27,7 +27,8 @@ All endpoints that require a current user to be logged in.
 ```
 
 ## All endpoints that require proper authorization
-## All endpoints that require authentication and the current user does not have the correct role(s) or permission(s).
+
+All endpoints that require authentication and the current user does not have the correct role(s) or permission(s).
 
 * Request: Endpoints that require proper authorization
 * Error Response: Require proper authorization
