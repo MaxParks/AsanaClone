@@ -14,6 +14,7 @@ All endpoints that require a current user to be logged in.
 * Request: Endpoints that require authentication
 
  *  Error Response: Require authentication
+
     * Status Code: 401
     * Headers:
       * Content-Type: application/json
@@ -31,9 +32,10 @@ All endpoints that require a current user to be logged in.
 All endpoints that require authentication and the current user does not have the correct role(s) or permission(s).
 
 * Request: Endpoints that require proper authorization
-* Error Response: Require proper authorization
-  * Status Code: 403
 
+* Error Response: Require proper authorization
+
+  * Status Code: 403
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -53,6 +55,7 @@ Creates a new user, logs them in as the current user, and returns the current us
 * Require Authentication: No
 
 * Request
+
   * Method: POST
   * URL: /api/users
   * Headers:
@@ -67,6 +70,7 @@ Creates a new user, logs them in as the current user, and returns the current us
 }
 ```
 * Successful Response
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -81,6 +85,7 @@ Creates a new user, logs them in as the current user, and returns the current us
 ```
 
 * Error Response: User already exists with the specified email
+
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
@@ -96,6 +101,7 @@ Creates a new user, logs them in as the current user, and returns the current us
 ```
 
 * Error Response: Body validation errors
+
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -117,7 +123,9 @@ Creates a new user, logs them in as the current user, and returns the current us
 Authenticate and log in a user.
 
 * Require Authentication: No
+
 * Request
+
   * Method: POST
   * URL: /api/login
   * Headers:
@@ -131,6 +139,7 @@ Authenticate and log in a user.
 ```
 
 * Successful Response
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -181,12 +190,15 @@ Authenticate and log in a user.
 Retrieve the user's profile information.
 
 * Require Authentication: Yes
+
 * Request
+
   * Method: GET
   * URL: /api/user/profile
 
 
 * Successful Response
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -201,6 +213,7 @@ Retrieve the user's profile information.
 ```
 
 * Error Response: Unauthorized
+
   * Status Code: 401
   * Headers:
     * Content-Type: application/json
@@ -220,10 +233,12 @@ Retrieve the projects associated with the user.
 * Require proper authorization: Projects must belong to the current user
 
 * Request
+
   * Method: GET
   * URL: /api/user/projects
 
 * Successful Response
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -252,6 +267,7 @@ Retrieve the projects associated with the user.
 ```
 
 * Error Response: Unauthorized
+
   * Status Code: 401
   * Headers:
     * Content-Type: application/json
@@ -270,11 +286,13 @@ Retrieve the projects associated with the user.
 * Require Authentication: Yes
 
 * Request
+
   * Method: GET
   * URL: /api/projects
 
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -310,10 +328,12 @@ Retrieve a specific project by its ID.
 * Require Authentication: Yes
 
 * Request
+
   * Method: GET
   * URL: /api/projects/:id
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -331,6 +351,7 @@ Retrieve a specific project by its ID.
 }
 ```
 * Error Response: Project not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -349,6 +370,7 @@ Create a new project.
 * Require Authentication: Yes
 
 * Request
+
   * Method: POST
   * URL: /api/projects
   * Headers:
@@ -365,6 +387,7 @@ Create a new project.
 }
 ```
 * Successful Response:
+
   * Status Code: 201
   * Headers:
     * Content-Type: application/json
@@ -382,6 +405,7 @@ Create a new project.
 }
 ```
 * Error Response: Invalid request body
+
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -401,10 +425,9 @@ Update a specific project by its ID.
 * Require proper authorization: Project must belong to the current user
 
 * Request
+
   * Method: PUT
   * URL: /api/projects/:id
-  * Parameters:
-      * id (integer, required) - The unique identifier of the project.
   * Headers:
       * Authorization: Bearer {access_token}
       * Content-Type: application/json
@@ -418,6 +441,7 @@ Update a specific project by its ID.
 }
 ```
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -435,6 +459,7 @@ Update a specific project by its ID.
 }
 ```
 * Error Response: Project not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -448,6 +473,7 @@ Update a specific project by its ID.
 ```
 
 * Error Response: Require proper authorization
+
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
@@ -467,17 +493,19 @@ Delete a specific project by its ID.
 * Require proper authorization: Project must belong to the current user
 
 * Request
+
   * Method: DELETE
   * URL: /api/projects/:id
 
 * Successful Response:
+
   * Status Code: 204
   * Headers:
     * Authorization: Bearer {access_token}
-
-* No response body is returned.
+  * No response body is returned.
 
 * Error Response: Project not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -490,6 +518,7 @@ Delete a specific project by its ID.
 ```
 
 * Error Response: Require proper authorization
+
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
@@ -510,10 +539,12 @@ Retrieves all tasks.
 * Require Authentication: Yes
 
 * Request
+
   * Method: GET
   * URL: /api/tasks
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -550,10 +581,12 @@ Retrieves a specific task by its ID.
 * Require Authentication: Yes
 
 * Request
+
   * Method: GET
   * URL: /api/tasks/:id
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -573,6 +606,7 @@ Retrieves a specific task by its ID.
   ```
 
 * Error Response: Task not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -593,6 +627,7 @@ Creates a new task.
 * Require Authentication: Yes
 
 * Request
+
   * Method: POST
   * URL: /api/tasks
   * Body:
@@ -609,6 +644,7 @@ Creates a new task.
   ```
 
   * Successful Response:
+
     * Status Code: 201
     * Headers:
       * Content-Type: application/json
@@ -628,6 +664,7 @@ Creates a new task.
     ```
 
   * Error Response: Invalid request body
+
     * Status Code: 400
     * Headers:
         * Content-Type: application/json
@@ -647,6 +684,7 @@ Updates a specific task by its ID.
 * Require Authentication: Yes
 
 * Request
+
   * Method: PUT
   * URL: /api/tasks/:id
   * Body:
@@ -662,6 +700,7 @@ Updates a specific task by its ID.
   ```
 
   * Successful Response:
+
     * Status Code: 200
     * Headers:
       * Content-Type: application/json
@@ -680,6 +719,7 @@ Updates a specific task by its ID.
     ```
 
   * Error Response: Task not found
+
     * Status Code: 404
     * Headers:
       * Content-Type: application/json
@@ -693,6 +733,7 @@ Updates a specific task by its ID.
 ```
 
 * Error Response: Require proper authorization
+
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
@@ -714,15 +755,18 @@ Delete a specific task by its ID.
 * Require proper authorization: Task must belong to the current user
 
 * Request
+
   * Method: DELETE
   * URL: /api/tasks/:id
 
 
 * Successful Response:
+
   * Status Code: 204
   * No response body is returned.
 
 * Error Response: Task not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -744,10 +788,12 @@ Retrieves all teams.
 * Require Authentication: Yes
 
 * Request
+
   * Method: GET
   * URL: /api/teams
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -782,6 +828,7 @@ Retrieves a specific team by it's ID.
   * URL: /api/teams/:id
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -797,6 +844,7 @@ Retrieves a specific team by it's ID.
 ```
 
 * Error Response: Team not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -817,10 +865,12 @@ Creates a new team.
 * Require Authentication: Yes
 
 * Request
+
   * Method: POST
   * URL: /api/teams
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -838,6 +888,7 @@ Creates a new team.
   ```
 
   * Successful Response:
+
     * Status Code: 200
     * Headers:
       * Content-Type: application/json
@@ -856,6 +907,7 @@ Creates a new team.
     ```
 
 * Error Response: Invalid request body
+
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -887,6 +939,7 @@ Updates a specific team by its ID.
   ```
 
 * Successful Response:
+
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -901,6 +954,7 @@ Updates a specific team by its ID.
   ```
 
   * Error Response: Team not found
+
     * Status Code: 404
     * Headers:
       * Content-Type: application/json
@@ -913,6 +967,7 @@ Updates a specific team by its ID.
 ```
 
 * Error Response: Require proper authorization
+
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
@@ -932,14 +987,17 @@ Delete a specific team by its ID.
 * Require proper authorization: Team must belong to the current user
 
 * Request
+
   * Method: DELETE
   * URL: /api/tasks/:id
 
 * Successful Response:
+
   * Status Code: 204
   * No response body is returned.
 
 * Error Response: Team not found
+
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
