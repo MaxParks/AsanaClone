@@ -11,7 +11,7 @@ URL: /api/users
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "firstName": "John",
@@ -19,14 +19,14 @@ json
   "email": "john.smith@gmail.com",
   "username": "JohnSmith",
   "password": "secret password"
-}
+}```
 Successful Response
 
 Status Code: 200
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "id": 1,
@@ -35,7 +35,7 @@ json
   "email": "john.smith@gmail.com",
   "username": "JohnSmith",
   "token": ""
-}
+}```
 Error Response: User already exists with the specified email
 
 Status Code: 403
