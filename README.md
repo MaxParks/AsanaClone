@@ -408,9 +408,9 @@ json
   "created_at": "2023-05-17T12:00:00Z"
 }
 ```
-Error Response: Invalid request body
-Status Code: 400
-Headers:
+* Error Response: Invalid request body
+  * Status Code: 400 
+  * Headers: 
 
 Content-Type: application/json
 Response Body:
