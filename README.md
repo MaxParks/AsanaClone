@@ -241,7 +241,8 @@ json
     "owner_id": 1,
     "team_id": 1,
     "name": "Project A",
-    "privacy": true,
+    "description": "a cool project",
+    "due_date": "07/01/2023",
     "format": true,
     "created_at": "2023-05-17T12:00:00Z"
   },
@@ -250,7 +251,8 @@ json
     "owner_id": 2,
     "team_id": 1,
     "name": "Project B",
-    "privacy": false,
+    "description": "a bad project",
+    "due_date": "08/22/2023",
     "format": true,
     "created_at": "2023-05-18T10:30:00Z"
   }
@@ -308,7 +310,8 @@ json
     "owner_id": 1,
     "team_id": 1,
     "name": "Project A",
-    "privacy": true,
+    "description": "a cool project",
+    "due_date": "07/01/2023",
     "format": true,
     "created_at": "2023-05-17T12:00:00Z"
   },
@@ -317,7 +320,8 @@ json
     "owner_id": 2,
     "team_id": 1,
     "name": "Project B",
-    "privacy": false,
+    "description": "a bad project",
+    "due_date": "08/22/2023",
     "format": true,
     "created_at": "2023-05-18T10:30:00Z"
   }
@@ -351,7 +355,8 @@ json
   "owner_id": 1,
   "team_id": 1,
   "name": "Project A",
-  "privacy": true,
+  "description": "a cool project",
+  "due_date": "07/01/2023",
   "format": true,
   "created_at": "2023-05-17T12:00:00Z"
 }
@@ -390,7 +395,8 @@ json
   "owner_id": 1,
   "team_id": 1,
   "name": "Project A",
-  "privacy": true,
+  "description": "a cool project",
+  "due_date": "07/01/2023",
   "format": true
 }
 ```
@@ -450,7 +456,8 @@ json
 
 {
   "name": "New Project Name",
-  "privacy": false,
+  "description": "a cool project",
+  "due_date": "07/01/2023",
   "format": "true"
 }
 ```
@@ -468,7 +475,8 @@ json
   "owner_id": 1,
   "team_id": 1,
   "name": "New Project Name",
-  "privacy": false,
+  "description": "a cool project",
+  "due_date": "07/01/2023",
   "format": true,
   "created_at": "2023-05-17T12:00:00Z"
 }
