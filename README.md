@@ -269,3 +269,213 @@ json
   "statusCode": 401
 }
 
+Project Endpoints
+Retrieve All Projects
+Retrieve all projects.
+
+Endpoint: /api/projects
+Method: GET
+Require Authentication: No
+
+Successful Response:
+Status Code: 200
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+[
+  {
+    "id": 1,
+    "owner_id": 1,
+    "team_id": 1,
+    "name": "Project A",
+    "privacy": true,
+    "format": true,
+    "created_at": "2023-05-17T12:00:00Z"
+  },
+  {
+    "id": 2,
+    "owner_id": 2,
+    "team_id": 1,
+    "name": "Project B",
+    "privacy": false,
+    "format": true,
+    "created_at": "2023-05-18T10:30:00Z"
+  }
+]
+
+Retrieve Project by ID
+Retrieve a specific project by its ID.
+
+Endpoint: /api/projects/{id}
+Method: GET
+Require Authentication: No
+Parameters:
+
+id (integer, required) - The unique identifier of the project.
+Successful Response:
+Status Code: 200
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "id": 1,
+  "owner_id": 1,
+  "team_id": 1,
+  "name": "Project A",
+  "privacy": true,
+  "format": true,
+  "created_at": "2023-05-17T12:00:00Z"
+}
+Error Response: Project not found
+Status Code: 404
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "message": "Project not found",
+  "statusCode": 404
+}
+
+Create New Project
+Create a new project.
+
+Endpoint: /api/projects
+Method: POST
+Require Authentication: No
+Headers:
+
+Content-Type: application/json
+Request Body:
+
+json
+
+{
+  "owner_id": 1,
+  "team_id": 1,
+  "name": "Project A",
+  "privacy": true,
+  "format": true
+}
+Successful Response:
+Status Code: 201
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "id": 1,
+  "owner_id": 1,
+  "team_id": 1,
+  "name": "Project A",
+  "privacy": true,
+  "format": true,
+  "created_at": "2023-05-17T12:00:00Z"
+}
+Error Response: Invalid request body
+Status Code: 400
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "message": "Invalid request body",
+  "statusCode": 400
+}
+
+Update Project
+Update a specific project by its ID.
+
+Endpoint: /api/projects/{id}
+Method: PUT
+Require Authentication: No
+Parameters:
+
+id (integer, required) - The unique identifier of the project.
+Headers:
+
+Content-Type: application/json
+Request Body:
+
+json
+
+{
+  "name": "New Project Name",
+  "privacy": false
+}
+Successful Response:
+Status Code: 200
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "id": 1,
+  "owner_id": 1,
+  "team_id": 1,
+  "name": "New Project Name",
+  "privacy": false,
+  "format": true,
+  "created_at": "2023-05-17T12:00:00Z"
+}
+Error Response: Project not found
+Status Code: 404
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "message": "Project not found",
+  "statusCode": 404
+}
+
+Delete Project
+Delete a specific project by its ID.
+
+Endpoint: /api/projects/{id}
+Method: DELETE
+Require Authentication: No
+Parameters:
+
+id (integer, required) - The unique identifier of the project.
+Successful Response:
+Status Code: 204
+Headers:
+
+No response body is returned.
+Error Response: Project not found
+Status Code: 404
+Headers:
+
+Content-Type: application/json
+Response Body:
+
+json
+
+{
+  "message": "Project not found",
+  "statusCode": 404
+}
