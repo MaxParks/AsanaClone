@@ -11,7 +11,7 @@
 All endpoints that require a current user to be logged in.
 
 * Request: Endpoints that require authentication
- 
+
  *  Error Response: Require authentication
     * Status Code: 401
 
@@ -164,7 +164,7 @@ json
   * Headers:
   * Content-Type: application/json
   * Body:
-``` 
+```
 json
 
 {
@@ -288,9 +288,9 @@ json
 
 * Require Authentication: Yes
 
-* Request 
+* Request
   * Method: GET
-  * URL: /api/projects 
+  * URL: /api/projects
 
 * Successful Response:
   * Status Code: 200
@@ -328,15 +328,15 @@ json
 ## Retrieve Project by ID
 
 Retrieve a specific project by its ID.
- 
+
 * Require Authentication: Yes
 
-* Request 
+* Request
   * Method: GET
-  * URL: /api/projects/{id} 
+  * URL: /api/projects/{id}
   * Parameters:
     * id (integer, required) - The unique identifier of the project.
-   
+
 * Successful Response:
   * Status Code: 200
   * Headers:
@@ -399,7 +399,7 @@ json
   * Headers:
     * Authorization: Bearer {access_token}
     * Content-Type: application/json
-* Response Body: 
+* Response Body:
 
 ```
 json
@@ -415,8 +415,8 @@ json
 }
 ```
 * Error Response: Invalid request body
-  * Status Code: 400 
-  * Headers: 
+  * Status Code: 400
+  * Headers:
     * Content-Type: application/json
 * Response Body:
 
@@ -438,7 +438,7 @@ Update a specific project by its ID.
 * Request
   * Method: PUT
   * URL: /api/projects/{id}
-  * Parameters: 
+  * Parameters:
       * id (integer, required) - The unique identifier of the project.
   * Headers:
       * Authorization: Bearer {access_token}
@@ -501,12 +501,12 @@ json
 ```
 ## Delete Project
 
-* Delete a specific project by its ID.
+Delete a specific project by its ID.
 
 * Require Authentication: Yes
 * Require proper authorization: Project must belong to the current user
 
-* Request 
+* Request
   * Method: DELETE
   * URL: /api/projects/{id}
   * Parameters:
@@ -536,9 +536,11 @@ json
 # Task Endpoints
 ## Retrieve all tasks
 
+Retrieves all tasks.
+
 * Require Authentication: Yes
 
-* Request 
+* Request
   * Method: GET
   * URL: /api/tasks
 
@@ -571,4 +573,164 @@ json
     "created_at": "2023-05-18T11:45:00Z"
   }
 ]
+```
+
+## Retrieve a specific task by ID
+
+Retrieves a specific task by its ID.
+
+* Require Authentication: Yes
+
+* Request
+  * Method: GET
+  * URL: /api/tasks/:id
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+  ```
+  json
+  {
+    "id": 1,
+    "name": "Task 1",
+    "description": "Description of Task 1",
+    "assigned_to": 2,
+    "due_date": "2023-05-20",
+    "completed": false,
+    "project_id": 1,
+    "created_at": "2023-05-18T10:30:00Z"
+    }
+  ```
+
+## Create a new task
+
+Creates a new task.
+
+* Require Authentication: Yes
+
+* Request
+  * Method: GET
+  * URL: /api/tasks
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+  ```
+  json
+  {
+    "name": "New Task",
+    "description": "Description of the New Task",
+    "assigned_to": 3,
+    "due_date": "2023-05-25",
+    "completed": false,
+    "project_id": 1
+  }
+
+  ```
+
+  * Successful Response:
+    * Status Code: 200
+    * Headers:
+      * Content-Type: application/json
+    * Body:
+    ```
+    json
+    {
+    "id": 3,
+    "name": "New Task",
+    "description": "Description of the New Task",
+    "assigned_to": 3,
+    "due_date": "2023-05-25",
+    "completed": false,
+    "project_id": 1,
+    "created_at": "2023-05-18T14:15:00Z"
+  }
+    ```
+
+
+## Update a specific task by ID
+
+Updates a specific task by its ID.
+
+* Require Authentication: Yes
+
+* Request
+
+  * Method: PUT
+  * URL: /api/tasks/:id
+
+* Successful Response:
+
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+  ```
+  json
+    {
+    "name": "Updated Task",
+    "description": "Updated description",
+    "assigned_to": 2,
+    "due_date": "2023-05-23",
+    "completed": true,
+    "project_id": 1
+  }
+
+  ```
+
+  * Successful Response:
+    * Status Code: 200
+    * Headers:
+      * Content-Type: application/json
+    * Body:
+    ```
+    json
+    {
+      "id": 1,
+      "name": "Updated Task",
+      "description": "Updated description",
+      "assigned_to": 2,
+      "due_date": "2023-05-23",
+      "completed": true,
+      "project_id": 1,
+      "created_at": "2023-05-18T10:30:00Z"
+  }
+    ```
+
+## Delete Task
+
+Delete a specific task by its ID.
+
+* Require Authentication: Yes
+* Require proper authorization: Task must belong to the current user
+
+* Request
+  * Method: DELETE
+  * URL: /api/tasks/:id
+
+
+* Successful Response:
+  * Status Code: 204
+
+* No response body is returned.
+
+* Error Response: Task not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
+
+```
+json
+
+{
+  "message": "Task not found",
+  "statusCode": 404
+}
 ```
