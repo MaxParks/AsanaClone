@@ -144,17 +144,37 @@ Authenticate and log in a user.
 }
 ```
 
-* Error Response: Unauthorized
+* Error Response: Invalid credentials
+
   * Status Code: 401
   * Headers:
-  * Content-Type: application/json
+    * Content-Type: application/json
   * Response Body:
-```
-{
-  "message": "Unauthorized",
-  "statusCode": 401
-}
-```
+
+    ```
+    {
+      "message": "Invalid credentials",
+      "statusCode": 401
+    }
+    ```
+
+* Error response: Body validation errors
+
+  * Status Code: 400
+  * Headers:
+    * Content-Type: application/json
+  * Response Body:
+
+    ```
+    {
+      "message": "Validation error",
+      "statusCode": 400,
+      "errors": {
+        "credential": "Email is required",
+        "password": "Password is required"
+      }
+    }
+    ```
 
 ## Retrieve User Profile
 
