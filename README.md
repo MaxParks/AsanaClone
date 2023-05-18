@@ -1,6 +1,12 @@
+# Asana Clone
+
+## Database Schema Design
+
+## API Documentation
 # USER AUTHENTICATION/AUTHORIZATION
 ## All endpoints that require authentication
-## All endpoints that require a current user to be logged in.
+
+All endpoints that require a current user to be logged in.
 
 * Request: Endpoints that require authentication
   *  Error Response: Require authentication
