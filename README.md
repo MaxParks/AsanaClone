@@ -11,7 +11,7 @@ URL: /api/users
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "firstName": "John",
@@ -19,14 +19,14 @@ json
   "email": "john.smith@gmail.com",
   "username": "JohnSmith",
   "password": "secret password"
-}
+}```
 Successful Response
 
 Status Code: 200
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "id": 1,
@@ -35,14 +35,14 @@ json
   "email": "john.smith@gmail.com",
   "username": "JohnSmith",
   "token": ""
-}
+}```
 Error Response: User already exists with the specified email
 
 Status Code: 403
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "message": "User already exists",
@@ -50,14 +50,14 @@ json
   "errors": {
     "email": "User with that email already exists"
   }
-}
+}```
 Error Response: User already exists with the specified username
 
 Status Code: 403
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "message": "User already exists",
@@ -65,14 +65,14 @@ json
   "errors": {
     "username": "User with that username already exists"
   }
-}
+}```
 Error Response: Body validation errors
 
 Status Code: 400
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "message": "Validation error",
@@ -83,7 +83,7 @@ json
     "firstName": "First Name is required",
     "lastName": "Last Name is required"
   }
-}
+}```
 Log In a User
 Authenticate and log in a user.
 
@@ -96,19 +96,19 @@ URL: /api/login
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "email": "john.smith@gmail.com",
   "password": "secret password"
-}
+}```
 Successful Response
 
 Status Code: 200
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "id": 1,
@@ -117,14 +117,14 @@ json
   "email": "john.smith@gmail.com",
   "username": "JohnSmith",
   "token": ""
-}
+}```
 Error Response: Unauthorized
 
 Status Code: 401
 Headers:
 Content-Type: application/json
 Body:
- ```json
+``` json
 
 {
   "message": "Unauthorized",
@@ -147,7 +147,7 @@ Status Code: 200
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "id": 1,
@@ -155,19 +155,19 @@ json
   "lastName": "Smith",
   "email": "john.smith@gmail.com",
   "username": "JohnSmith"
-}
+}```
 Error Response: Unauthorized
 
 Status Code: 401
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "message": "Unauthorized",
   "statusCode": 401
-}
+}```
 Retrieve User Projects
 Retrieve the projects associated with the user.
 
@@ -185,7 +185,7 @@ Status Code: 200
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 [
   {
@@ -206,19 +206,19 @@ json
     "format": true,
     "created_at": "2023-05-18T10:30:00Z"
   }
-]
+]```
 Error Response: Unauthorized
 
 Status Code: 401
 Headers:
 Content-Type: application/json
 Body:
-json
+```json
 
 {
   "message": "Unauthorized",
   "statusCode": 401
-}
+}```
 
 Project Endpoints
 Retrieve All Projects
@@ -236,7 +236,7 @@ Authorization: Bearer {access_token}
 Content-Type: application/json
 Response Body:
 
-json
+```json
 
 [
   {
@@ -257,7 +257,7 @@ json
     "format": true,
     "created_at": "2023-05-18T10:30:00Z"
   }
-]
+]```
 Error Response: None
 
 Retrieve Project by ID
@@ -277,7 +277,7 @@ Authorization: Bearer {access_token}
 Content-Type: application/json
 Response Body:
 
-json
+```json
 Copy code{
   "id": 1,
   "owner_id": 1,
@@ -286,7 +286,7 @@ Copy code{
   "privacy": true,
   "format": true,
   "created_at": "2023-05-17T12:00:00Z"
-}
+}```
 Error Response: Project not found
 Status Code: 404
 Headers:
@@ -294,12 +294,12 @@ Headers:
 Content-Type: application/json
 Response Body:
 
-json
+```json
 
 {
   "message": "Project not found",
   "statusCode": 404
-}
+}```
 Create New Project
 Create a new project.
 
@@ -311,7 +311,7 @@ Headers:
 Content-Type: application/json
 Request Body:
 
-json
+```json
 
 {
   "owner_id": 1,
@@ -319,7 +319,7 @@ json
   "name": "Project A",
   "privacy": true,
   "format": true
-}
+}```
 Successful Response:
 Status Code: 201
 Headers:
@@ -328,7 +328,7 @@ Authorization: Bearer {access_token}
 Content-Type: application/json
 Response Body:
 
-json
+```json
 
 {
   "id": 1,
@@ -338,7 +338,7 @@ json
   "privacy": true,
   "format": true,
   "created_at": "2023-05-17T12:00:00Z"
-}
+}```
 Error Response: Invalid request body
 Status Code: 400
 Headers:
@@ -346,12 +346,12 @@ Headers:
 Content-Type: application/json
 Response Body:
 
-json
+```json
 
 {
   "message": "Invalid request body",
   "statusCode": 400
-}
+}```
 Update Project
 Update a specific project by its ID.
 
@@ -367,12 +367,12 @@ Authorization: Bearer {access_token}
 Content-Type: application/json
 Request Body:
 
-json
+```json
 
 {
   "name": "New Project Name",
   "privacy": false
-}
+}```
 Successful Response:
 Status Code: 200
 Headers:
@@ -380,7 +380,7 @@ Headers:
 Content-Type: application/json
 Response Body:
 
-json
+```json
 
 {
   "id": 1,
@@ -390,7 +390,7 @@ json
   "privacy": false,
   "format": true,
   "created_at": "2023-05-17T12:00:00Z"
-}
+}```
 Error Response: Project not found
 Status Code: 404
 Headers:
@@ -398,12 +398,12 @@ Headers:
 Content-Type: application/json
 Response Body:
 
-json
+```json
 
 {
   "message": "Project not found",
   "statusCode": 404
-}
+}```
 Delete Project
 Delete a specific project by its ID.
 
