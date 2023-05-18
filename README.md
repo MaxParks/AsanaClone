@@ -11,7 +11,8 @@
 All endpoints that require a current user to be logged in.
 
 * Request: Endpoints that require authentication
-  *  Error Response: Require authentication
+ 
+ *  Error Response: Require authentication
     * Status Code: 401
 
   * Headers:
