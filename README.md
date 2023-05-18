@@ -289,9 +289,8 @@ json
 * Require Authentication: Yes
 
 * Request 
-  * Endpoint: /api/projects 
   * Method: GET
-
+  * URL: /api/projects 
 
 * Successful Response:
   * Status Code: 200
@@ -333,11 +332,10 @@ Retrieve a specific project by its ID.
 * Require Authentication: Yes
 
 * Request 
-  * Endpoint: /api/projects/{id}
   * Method: GET
-
-* Parameters:
-  * id (integer, required) - The unique identifier of the project.
+  * URL: /api/projects/{id} 
+  * Parameters:
+    * id (integer, required) - The unique identifier of the project.
    
 * Successful Response:
   * Status Code: 200
@@ -379,8 +377,8 @@ Create a new project.
 * Require Authentication: Yes
 
 * Request
-  * Endpoint: /api/projects
   * Method: POST
+  * URL: /api/projects
   * Headers:
     * Content-Type: application/json
 * Request Body:
@@ -436,11 +434,10 @@ Update a specific project by its ID.
 
 * Require Authentication: Yes
 * Require proper authorization: Project must belong to the current user
-Parameters:
 
 * Request
-  * Endpoint: /api/projects/{id}
   * Method: PUT
+  * URL: /api/projects/{id}
   * Parameters: 
       * id (integer, required) - The unique identifier of the project.
   * Headers:
@@ -510,8 +507,8 @@ json
 * Require proper authorization: Project must belong to the current user
 
 * Request 
-  * Endpoint: /api/projects/{id}
   * Method: DELETE
+  * URL: /api/projects/{id}
   * Parameters:
     * id (integer, required) - The unique identifier of the project.
 
@@ -542,8 +539,8 @@ json
 * Require Authentication: Yes
 
 * Request 
-  * Endpoint: /api/tasks
   * Method: GET
+  * URL: /api/tasks
 
 * Successful Response:
   * Status Code: 200
