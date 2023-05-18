@@ -237,7 +237,6 @@ Retrieve the projects associated with the user.
     "name": "Project A",
     "description": "a cool project",
     "due_date": "07/01/2023",
-    "format": true,
     "created_at": "2023-05-17T12:00:00Z"
   },
   {
@@ -247,7 +246,6 @@ Retrieve the projects associated with the user.
     "name": "Project B",
     "description": "a bad project",
     "due_date": "08/22/2023",
-    "format": true,
     "created_at": "2023-05-18T10:30:00Z"
   }
 ]
@@ -291,7 +289,6 @@ Retrieve the projects associated with the user.
     "name": "Project A",
     "description": "a cool project",
     "due_date": "07/01/2023",
-    "format": true,
     "created_at": "2023-05-17T12:00:00Z"
   },
   {
@@ -301,7 +298,6 @@ Retrieve the projects associated with the user.
     "name": "Project B",
     "description": "a bad project",
     "due_date": "08/22/2023",
-    "format": true,
     "created_at": "2023-05-18T10:30:00Z"
   }
 ]
@@ -331,7 +327,6 @@ Retrieve a specific project by its ID.
   "name": "Project A",
   "description": "a cool project",
   "due_date": "07/01/2023",
-  "format": true,
   "created_at": "2023-05-17T12:00:00Z"
 }
 ```
@@ -367,7 +362,6 @@ Create a new project.
   "name": "Project A",
   "description": "a cool project",
   "due_date": "07/01/2023",
-  "format": true
 }
 ```
 * Successful Response:
@@ -382,8 +376,8 @@ Create a new project.
   "owner_id": 1,
   "team_id": 1,
   "name": "Project A",
-  "privacy": true,
-  "format": true,
+  "description": "a cool project",
+  "due_date": "07/01/2023",
   "created_at": "2023-05-17T12:00:00Z"
 }
 ```
@@ -421,7 +415,6 @@ Update a specific project by its ID.
   "name": "New Project Name",
   "description": "a cool project",
   "due_date": "07/01/2023",
-  "format": "true"
 }
 ```
 * Successful Response:
@@ -438,7 +431,6 @@ Update a specific project by its ID.
   "name": "New Project Name",
   "description": "a cool project",
   "due_date": "07/01/2023",
-  "format": true,
   "created_at": "2023-05-17T12:00:00Z"
 }
 ```
@@ -476,7 +468,7 @@ Delete a specific project by its ID.
 
 * Request
   * Method: DELETE
-  * URL: /api/projects/{id}
+  * URL: /api/projects/:id
 
 * Successful Response:
   * Status Code: 204
