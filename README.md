@@ -1,15 +1,16 @@
 User Endpoints
 Sign Up a User
-Create a new user account.
+Creates a new user, logs them in as the current user, and returns the current user's information.
 
-Endpoint: /api/signup
-Method: POST
 Require Authentication: No
+
+Request
+
+Method: POST
+URL: /api/users
 Headers:
-
 Content-Type: application/json
-Request Body:
-
+Body:
 json
 
 {
@@ -19,13 +20,12 @@ json
   "username": "JohnSmith",
   "password": "secret password"
 }
-Successful Response:
+Successful Response
+
 Status Code: 200
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -37,12 +37,11 @@ json
   "token": ""
 }
 Error Response: User already exists with the specified email
+
 Status Code: 403
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -53,12 +52,11 @@ json
   }
 }
 Error Response: User already exists with the specified username
+
 Status Code: 403
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -69,12 +67,11 @@ json
   }
 }
 Error Response: Body validation errors
+
 Status Code: 400
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -87,31 +84,30 @@ json
     "lastName": "Last Name is required"
   }
 }
-
-Log in a User
+Log In a User
 Authenticate and log in a user.
 
-Endpoint: /api/login
-Method: POST
 Require Authentication: No
+
+Request
+
+Method: POST
+URL: /api/login
 Headers:
-
 Content-Type: application/json
-Request Body:
-
+Body:
 json
 
 {
   "email": "john.smith@gmail.com",
   "password": "secret password"
 }
-Successful Response:
+Successful Response
+
 Status Code: 200
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -120,38 +116,37 @@ json
   "lastName": "Smith",
   "email": "john.smith@gmail.com",
   "username": "JohnSmith",
-  "token": "access_token"
+  "token": ""
 }
-Error Response: Invalid email or password
+Error Response: Unauthorized
+
 Status Code: 401
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
-  "message": "Invalid email or password",
+  "message": "Unauthorized",
   "statusCode": 401
 }
-
 Retrieve User Profile
 Retrieve the user's profile information.
 
-Endpoint: /api/user/profile
-Method: GET
 Require Authentication: Yes
-Headers:
 
+Request
+
+Method: GET
+URL: /api/user/profile
+Headers:
 Authorization: Bearer {access_token}
-Successful Response:
+Successful Response
+
 Status Code: 200
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -162,40 +157,41 @@ json
   "username": "JohnSmith"
 }
 Error Response: Unauthorized
+
 Status Code: 401
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
   "message": "Unauthorized",
   "statusCode": 401
 }
-
 Retrieve User Projects
 Retrieve the projects associated with the user.
 
-Endpoint: /api/user/projects
-Method: GET
 Require Authentication: Yes
-Headers:
 
+Request
+
+Method: GET
+URL: /api/user/projects
+Headers:
 Authorization: Bearer {access_token}
-Successful Response:
+Successful Response
+
 Status Code: 200
 Headers:
-
 Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 [
   {
     "id": 1,
+    "owner_id": 1,
+    "team_id": 1,
     "name": "Project A",
     "privacy": true,
     "format": true,
@@ -203,6 +199,8 @@ json
   },
   {
     "id": 2,
+    "owner_id": 2,
+    "team_id": 1,
     "name": "Project B",
     "privacy": false,
     "format": true,
@@ -210,58 +208,11 @@ json
   }
 ]
 Error Response: Unauthorized
+
 Status Code: 401
 Headers:
-
 Content-Type: application/json
-Response Body:
-
-json
-
-{
-  "message": "Unauthorized",
-  "statusCode": 401
-}
-
-Retrieve User Teams
-Retrieve the teams the user is a part of.
-
-Endpoint: /api/user/teams
-Method: GET
-Require Authentication: Yes
-Headers:
-
-Authorization: Bearer {access_token}
-Successful Response:
-Status Code: 200
-Headers:
-
-Content-Type: application/json
-Response Body:
-
-json
-
-[
-  {
-    "id": 1,
-    "user_id": 1,
-    "role": "Team Member",
-    "joined_at": "2023-05-17T12:00:00Z"
-  },
-  {
-    "id": 2,
-    "user_id": 1,
-    "role": "Team Leader",
-    "joined_at": "2023-05-18T10:30:00Z"
-  }
-]
-Error Response: Unauthorized
-Status Code: 401
-Headers:
-
-Content-Type: application/json
-Response Body:
-
+Body:
 json
 
 {
@@ -271,15 +222,17 @@ json
 
 Project Endpoints
 Retrieve All Projects
+Retrieve all projects.
 
 Endpoint: /api/projects
 Method: GET
-Require Authentication: No
+Require Authentication: Yes
 
 Successful Response:
 Status Code: 200
 Headers:
 
+Authorization: Bearer {access_token}
 Content-Type: application/json
 Response Body:
 
@@ -305,13 +258,14 @@ json
     "created_at": "2023-05-18T10:30:00Z"
   }
 ]
+Error Response: None
 
 Retrieve Project by ID
 Retrieve a specific project by its ID.
 
 Endpoint: /api/projects/{id}
 Method: GET
-Require Authentication: No
+Require Authentication: Yes
 Parameters:
 
 id (integer, required) - The unique identifier of the project.
@@ -319,12 +273,12 @@ Successful Response:
 Status Code: 200
 Headers:
 
+Authorization: Bearer {access_token}
 Content-Type: application/json
 Response Body:
 
 json
-
-{
+Copy code{
   "id": 1,
   "owner_id": 1,
   "team_id": 1,
@@ -346,7 +300,6 @@ json
   "message": "Project not found",
   "statusCode": 404
 }
-
 Create New Project
 Create a new project.
 
@@ -355,7 +308,6 @@ Method: POST
 Require Authentication: Yes
 Headers:
 
-Authorization: Bearer {access_token}
 Content-Type: application/json
 Request Body:
 
@@ -372,6 +324,7 @@ Successful Response:
 Status Code: 201
 Headers:
 
+Authorization: Bearer {access_token}
 Content-Type: application/json
 Response Body:
 
@@ -399,7 +352,6 @@ json
   "message": "Invalid request body",
   "statusCode": 400
 }
-
 Update Project
 Update a specific project by its ID.
 
@@ -452,7 +404,6 @@ json
   "message": "Project not found",
   "statusCode": 404
 }
-
 Delete Project
 Delete a specific project by its ID.
 
@@ -465,6 +416,7 @@ id (integer, required) - The unique identifier of the project.
 Successful Response:
 Status Code: 204
 Headers:
+
 Authorization: Bearer {access_token}
 
 No response body is returned.
