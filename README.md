@@ -2,14 +2,13 @@
 ## All endpoints that require authentication
 ## All endpoints that require a current user to be logged in.
 
-Request: endpoints that require authentication
-Error Response: Require authentication
-Status Code: 401
+* Request: Endpoints that require authentication
+  *  Error Response: Require authentication
+    * Status Code: 401
 
-Headers:
-
-Content-Type: application/json
-Body:
+  * Headers:
+      * Content-Type: application/json
+  * Body:
 
 ```
 
@@ -22,14 +21,13 @@ Body:
 ## All endpoints that require proper authorization
 ## All endpoints that require authentication and the current user does not have the correct role(s) or permission(s).
 
-Request: endpoints that require proper authorization
-Error Response: Require proper authorization
-Status Code: 403
+* Request: Endpoints that require proper authorization
+* Error Response: Require proper authorization
+  * Status Code: 403
 
-Headers:
-
-Content-Type: application/json
-Body:
+  * Headers:
+    * Content-Type: application/json
+* Body:
 
 ```
 
@@ -411,9 +409,8 @@ json
 * Error Response: Invalid request body
   * Status Code: 400 
   * Headers: 
-
-Content-Type: application/json
-Response Body:
+    * Content-Type: application/json
+* Response Body:
 
 ```
 json
@@ -424,20 +421,22 @@ json
 }
 ```
 ## Update Project
+
 Update a specific project by its ID.
 
-Endpoint: /api/projects/{id}
-Method: PUT
-Require Authentication: Yes
-Require proper authorization: Project must belong to the current user
+* Require Authentication: Yes
+* Require proper authorization: Project must belong to the current user
 Parameters:
 
-id (integer, required) - The unique identifier of the project.
-Headers:
-
-Authorization: Bearer {access_token}
-Content-Type: application/json
-Request Body:
+* Request
+  * Endpoint: /api/projects/{id}
+  * Method: PUT
+  * Parameters: 
+      * id (integer, required) - The unique identifier of the project.
+  * Headers:
+      * Authorization: Bearer {access_token}
+      * Content-Type: application/json
+* Request Body:
 
 ```
 json
@@ -448,12 +447,11 @@ json
   "format": "true"
 }
 ```
-Successful Response:
-Status Code: 200
-Headers:
-
-Content-Type: application/json
-Response Body:
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
 
 ```
 json
@@ -468,12 +466,11 @@ json
   "created_at": "2023-05-17T12:00:00Z"
 }
 ```
-Error Response: Project not found
-Status Code: 404
-Headers:
-
-Content-Type: application/json
-Response Body:
+* Error Response: Project not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
 
 ```
 json
@@ -484,13 +481,11 @@ json
 }
 ```
 
-Error Response: Require proper authorization
-Status Code: 403
-
-Headers:
-
-Content-Type: application/json
-Body:
+* Error Response: Require proper authorization
+  * Status Code: 403
+  * Headers:
+    * Content-Type: application/json
+* Body:
 ```
 {
   "message": "Forbidden",
@@ -498,28 +493,30 @@ Body:
 }
 ```
 ## Delete Project
-Delete a specific project by its ID.
 
-Endpoint: /api/projects/{id}
-Method: DELETE
-Require Authentication: Yes
-Require proper authorization: Project must belong to the current user
-Parameters:
+* Delete a specific project by its ID.
 
-id (integer, required) - The unique identifier of the project.
-Successful Response:
-Status Code: 204
-Headers:
+* Require Authentication: Yes
+* Require proper authorization: Project must belong to the current user
 
-Authorization: Bearer {access_token}
+* Request 
+  * Endpoint: /api/projects/{id}
+  * Method: DELETE
+  * Parameters:
+    * id (integer, required) - The unique identifier of the project.
 
-No response body is returned.
-Error Response: Project not found
-Status Code: 404
-Headers:
+* Successful Response:
+  * Status Code: 204
+  * Headers:
+    * Authorization: Bearer {access_token}
 
-Content-Type: application/json
-Response Body:
+* No response body is returned.
+
+* Error Response: Project not found
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+* Response Body:
 ```
 json
 
@@ -532,15 +529,17 @@ json
 # Task Endpoints
 ## Retrieve all tasks
 
-Endpoint: /api/tasks
-Method: GET
-Require Authentication: Yes
+* Require Authentication: Yes
 
-Response:
-Status Code: 200
-Headers:
-Content-Type: application/json
-Body:
+* Request 
+  * Endpoint: /api/tasks
+  * Method: GET
+
+* Successful Response:
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
 ```
 json
 [
