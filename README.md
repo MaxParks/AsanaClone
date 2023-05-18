@@ -1,3 +1,44 @@
+# USER AUTHENTICATION/AUTHORIZATION
+## All endpoints that require authentication
+## All endpoints that require a current user to be logged in.
+
+Request: endpoints that require authentication
+Error Response: Require authentication
+Status Code: 401
+
+Headers:
+
+Content-Type: application/json
+Body:
+
+```
+
+{
+  "message": "Authentication required",
+  "statusCode": 401
+}
+```
+
+## All endpoints that require proper authorization
+## All endpoints that require authentication and the current user does not have the correct role(s) or permission(s).
+
+Request: endpoints that require proper authorization
+Error Response: Require proper authorization
+Status Code: 403
+
+Headers:
+
+Content-Type: application/json
+Body:
+
+```
+
+{
+  "message": "Forbidden",
+  "statusCode": 403
+}
+```
+
 #  User Endpoints
 
 ##  Sign Up a User
@@ -20,7 +61,6 @@ json
   "firstName": "John",
   "lastName": "Smith",
   "email": "john.smith@gmail.com",
-  "username": "JohnSmith",
   "password": "secret password"
 }
 ```
@@ -37,9 +77,7 @@ json
   "id": 1,
   "firstName": "John",
   "lastName": "Smith",
-  "email": "john.smith@gmail.com",
-  "username": "JohnSmith",
-  "token": ""
+  "email": "john.smith@gmail.com"
 }
 ```
 Error Response: User already exists with the specified email
@@ -59,23 +97,7 @@ json
   }
 }
 ```
-Error Response: User already exists with the specified username
 
-Status Code: 403
-Headers:
-Content-Type: application/json
-Body:
-```
-json
-
-{
-  "message": "User already exists",
-  "statusCode": 403,
-  "errors": {
-    "username": "User with that username already exists"
-  }
-}
-```
 Error Response: Body validation errors
 
 Status Code: 400
@@ -129,9 +151,7 @@ json
   "id": 1,
   "firstName": "John",
   "lastName": "Smith",
-  "email": "john.smith@gmail.com",
-  "username": "JohnSmith",
-  "token": ""
+  "email": "john.smith@gmail.com"
 }
 ```
 Error Response: Unauthorized
@@ -172,8 +192,7 @@ json
   "id": 1,
   "firstName": "John",
   "lastName": "Smith",
-  "email": "john.smith@gmail.com",
-  "username": "JohnSmith"
+  "email": "john.smith@gmail.com"
 }
 ```
 Error Response: Unauthorized
@@ -194,6 +213,7 @@ json
 Retrieve the projects associated with the user.
 
 Require Authentication: Yes
+Require proper authorization: Projects must belong to the current user
 
 Request
 
@@ -243,6 +263,20 @@ json
 {
   "message": "Unauthorized",
   "statusCode": 401
+}
+```
+
+Error Response: Require proper authorization
+Status Code: 403
+
+Headers:
+
+Content-Type: application/json
+Body:
+```
+{
+  "message": "Forbidden",
+  "statusCode": 403
 }
 ```
 
@@ -306,7 +340,7 @@ Response Body:
 
 ```
 json
-Copy code{
+{
   "id": 1,
   "owner_id": 1,
   "team_id": 1,
@@ -395,6 +429,7 @@ Update a specific project by its ID.
 Endpoint: /api/projects/{id}
 Method: PUT
 Require Authentication: Yes
+Require proper authorization: Project must belong to the current user
 Parameters:
 
 id (integer, required) - The unique identifier of the project.
@@ -409,7 +444,8 @@ json
 
 {
   "name": "New Project Name",
-  "privacy": false
+  "privacy": false,
+  "format": "true"
 }
 ```
 Successful Response:
@@ -447,12 +483,27 @@ json
   "statusCode": 404
 }
 ```
+
+Error Response: Require proper authorization
+Status Code: 403
+
+Headers:
+
+Content-Type: application/json
+Body:
+```
+{
+  "message": "Forbidden",
+  "statusCode": 403
+}
+```
 ## Delete Project
 Delete a specific project by its ID.
 
 Endpoint: /api/projects/{id}
 Method: DELETE
 Require Authentication: Yes
+Require proper authorization: Project must belong to the current user
 Parameters:
 
 id (integer, required) - The unique identifier of the project.
