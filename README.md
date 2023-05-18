@@ -4,8 +4,8 @@
 ![Screenshot 2023-05-18 at 5 16 05 PM](https://github.com/MaxParks/AsanaClone/assets/107880032/680a49c3-a58e-42a3-9a23-0076bcbd8033)
 
 
-## API Documentation
-# USER AUTHENTICATION/AUTHORIZATION
+# API Documentation
+## USER AUTHENTICATION/AUTHORIZATION
 ## All endpoints that require authentication
 
 All endpoints that require a current user to be logged in.
