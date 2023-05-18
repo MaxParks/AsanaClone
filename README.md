@@ -62,8 +62,6 @@ Creates a new user, logs them in as the current user, and returns the current us
      * Content-Type: application/json
 * Body:
 ```
-json
-
 {
   "firstName": "John",
   "lastName": "Smith",
@@ -77,7 +75,6 @@ json
     * Content-Type: application/json
 * Response Body:
 ```
-json
 
 {
   "id": 1,
@@ -93,7 +90,6 @@ json
     * Content-Type: application/json
   * Response Body:
 ```
-json
 
 {
   "message": "User already exists",
@@ -110,7 +106,6 @@ json
     * Content-Type: application/json
   * Response Body:
 ```
-json
 
 {
   "message": "Validation error",
@@ -135,8 +130,6 @@ Authenticate and log in a user.
     * Content-Type: application/json
   * Body:
 ```
-json
-
 {
   "email": "john.smith@gmail.com",
   "password": "secret password"
@@ -149,8 +142,6 @@ json
     * Content-Type: application/json
   * Response Body:
 ```
-json
-
 {
   "id": 1,
   "firstName": "John",
@@ -165,7 +156,6 @@ json
   * Content-Type: application/json
   * Response Body:
 ```
-json
 
 {
   "message": "Unauthorized",
@@ -189,8 +179,6 @@ Retrieve the user's profile information.
     * Content-Type: application/json
   * Response Body:
 ```
-json
-
 {
   "id": 1,
   "firstName": "John",
@@ -205,8 +193,6 @@ json
     * Content-Type: application/json
   * Response Body:
 ```
-json
-
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -230,7 +216,6 @@ Retrieve the projects associated with the user.
     * Content-Type: application/json
   * Response Body:
 ```
-json
 
 [
   {
@@ -262,8 +247,6 @@ json
     * Content-Type: application/json
 * Response Body:
 ```
-json
-
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -288,7 +271,6 @@ json
   * Response Body:
 
 ```
-json
 
 [
   {
@@ -331,7 +313,7 @@ Retrieve a specific project by its ID.
 * Response Body:
 
 ```
-json
+
 {
   "id": 1,
   "owner_id": 1,
@@ -349,7 +331,6 @@ json
     * Content-Type: application/json
 * Response Body:
 ```
-json
 
 {
   "message": "Project not found",
@@ -371,8 +352,6 @@ Create a new project.
 * Body:
 
 ```
-json
-
 {
   "owner_id": 1,
   "team_id": 1,
@@ -389,8 +368,6 @@ json
 * Response Body:
 
 ```
-json
-
 {
   "id": 1,
   "owner_id": 1,
@@ -408,8 +385,6 @@ json
 * Response Body:
 
 ```
-json
-
 {
   "message": "Invalid request body",
   "statusCode": 400
@@ -433,7 +408,6 @@ Update a specific project by its ID.
 * Body:
 
 ```
-json
 
 {
   "name": "New Project Name",
@@ -449,8 +423,6 @@ json
 * Response Body:
 
 ```
-json
-
 {
   "id": 1,
   "owner_id": 1,
@@ -469,7 +441,6 @@ json
 * Response Body:
 
 ```
-json
 
 {
   "message": "Project not found",
@@ -513,7 +484,6 @@ Delete a specific project by its ID.
     * Content-Type: application/json
 * Response Body:
 ```
-json
 
 {
   "message": "Project not found",
@@ -551,7 +521,6 @@ Retrieves all tasks.
     * Content-Type: application/json
   * Response Body:
 ```
-json
 [
   {
     "id": 1,
@@ -593,7 +562,6 @@ Retrieves a specific task by its ID.
   * Response Body:
 
   ```
-  json
   {
     "id": 1,
     "name": "Task 1",
@@ -613,7 +581,6 @@ Retrieves a specific task by its ID.
   * Response Body:
 
 ```
-json
 {
   "message": "Task not found",
   "statusCode": 404
@@ -632,7 +599,6 @@ Creates a new task.
   * URL: /api/tasks
   * Body:
   ```
-  json
   {
     "name": "New Task",
     "description": "Description of the New Task",
@@ -650,7 +616,7 @@ Creates a new task.
       * Content-Type: application/json
     * Response Body:
     ```
-    json
+
     {
     "id": 3,
     "name": "New Task",
@@ -669,7 +635,6 @@ Creates a new task.
         * Content-Type: application/json
   * Response Body:
 ```
-json
 {
   "message": "Invalid request body",
   "statusCode": 400
@@ -688,7 +653,6 @@ Updates a specific task by its ID.
   * URL: /api/tasks/:id
   * Body:
   ```
-  json
     {
     "name": "Updated Task",
     "description": "Updated description",
@@ -705,7 +669,6 @@ Updates a specific task by its ID.
       * Content-Type: application/json
     * Response Body:
     ```
-    json
     {
       "id": 1,
       "name": "Updated Task",
@@ -725,8 +688,6 @@ Updates a specific task by its ID.
   * Response Body:
 
 ```
-json
-
 {
   "message": "Task not found",
   "statusCode": 404
@@ -771,8 +732,6 @@ Delete a specific task by its ID.
 * Response Body:
 
 ```
-json
-
 {
   "message": "Task not found",
   "statusCode": 404
@@ -798,7 +757,6 @@ Retrieves all teams.
   * Response Body:
 
 ```
-json
   [
     {
       "id": 1,
@@ -833,7 +791,6 @@ Retrieves a specific team by it's ID.
   * Response Body:
 
 ```
-json
   {
   "id": 1,
   "name": "Team A",
@@ -849,7 +806,6 @@ json
 * Response Body:
 
 ```
-json
 {
   "message": "Team not found",
   "statusCode": 404
@@ -874,7 +830,6 @@ Creates a new team.
   * Body:
 
   ```
-  json
   {
     "name": "New Task",
     "description": "Description of the New Task",
@@ -892,7 +847,7 @@ Creates a new team.
       * Content-Type: application/json
     * Response Body:
     ```
-    json
+
     {
     "id": 3,
     "name": "New Task",
@@ -911,8 +866,6 @@ Creates a new team.
     * Content-Type: application/json
 * Response Body:
 ```
-json
-
 {
   "message": "Invalid request body",
   "statusCode": 400
@@ -932,7 +885,6 @@ Updates a specific team by its ID.
   * Body:
 
   ```
-  json
     {
     "name": "Updated Team",
     "description": "Updated team description"
@@ -945,7 +897,6 @@ Updates a specific team by its ID.
     * Content-Type: application/json
   * Body:
   ```
-  json
   {
     "id": 1,
     "name": "Updated Team",
@@ -960,8 +911,6 @@ Updates a specific team by its ID.
       * Content-Type: application/json
   * Response Body:
 ```
-json
-
 {
   "message": "Team not found",
   "statusCode": 404
@@ -980,9 +929,9 @@ json
 }
 ```
 
-## Delete Tean
+## Delete Team
 
-Delete a specific teamn by its ID.
+Delete a specific team by its ID.
 
 * Require Authentication: Yes
 * Require proper authorization: Team must belong to the current user
@@ -1003,7 +952,6 @@ Delete a specific teamn by its ID.
     * Content-Type: application/json
 * Response Body:
 ```
-json
 
 {
   "message": "Team not found",
