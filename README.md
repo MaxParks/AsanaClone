@@ -271,7 +271,6 @@ json
 
 Project Endpoints
 Retrieve All Projects
-Retrieve all projects.
 
 Endpoint: /api/projects
 Method: GET
@@ -353,9 +352,10 @@ Create a new project.
 
 Endpoint: /api/projects
 Method: POST
-Require Authentication: No
+Require Authentication: Yes
 Headers:
 
+Authorization: Bearer {access_token}
 Content-Type: application/json
 Request Body:
 
@@ -405,12 +405,13 @@ Update a specific project by its ID.
 
 Endpoint: /api/projects/{id}
 Method: PUT
-Require Authentication: No
+Require Authentication: Yes
 Parameters:
 
 id (integer, required) - The unique identifier of the project.
 Headers:
 
+Authorization: Bearer {access_token}
 Content-Type: application/json
 Request Body:
 
@@ -457,13 +458,14 @@ Delete a specific project by its ID.
 
 Endpoint: /api/projects/{id}
 Method: DELETE
-Require Authentication: No
+Require Authentication: Yes
 Parameters:
 
 id (integer, required) - The unique identifier of the project.
 Successful Response:
 Status Code: 204
 Headers:
+Authorization: Bearer {access_token}
 
 No response body is returned.
 Error Response: Project not found
