@@ -40,7 +40,7 @@ All endpoints that require authentication and the current user does not have the
     * Content-Type: application/json
   * Body:
 
-```
+```json
 {
   "message": "Forbidden",
   "statusCode": 403
@@ -61,7 +61,7 @@ Creates a new user, logs them in as the current user, and returns the current us
   * Headers:
      * Content-Type: application/json
   * Body:
-```
+```json
 {
   "firstName": "John",
   "lastName": "Smith",
@@ -75,7 +75,7 @@ Creates a new user, logs them in as the current user, and returns the current us
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "id": 1,
   "firstName": "John",
@@ -90,7 +90,7 @@ Creates a new user, logs them in as the current user, and returns the current us
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "User already exists",
   "statusCode": 403,
@@ -106,7 +106,7 @@ Creates a new user, logs them in as the current user, and returns the current us
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Validation error",
   "statusCode": 400,
@@ -131,7 +131,7 @@ Authenticate and log in a user.
   * Headers:
     * Content-Type: application/json
   * Body:
-```
+```json
 {
   "email": "john.smith@gmail.com",
   "password": "secret password"
@@ -144,7 +144,7 @@ Authenticate and log in a user.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "id": 1,
   "firstName": "John",
@@ -160,7 +160,7 @@ Authenticate and log in a user.
     * Content-Type: application/json
   * Response Body:
 
-    ```
+    ```json
     {
       "message": "Invalid credentials",
       "statusCode": 401
@@ -174,7 +174,7 @@ Authenticate and log in a user.
     * Content-Type: application/json
   * Response Body:
 
-    ```
+    ```json
     {
       "message": "Validation error",
       "statusCode": 400,
@@ -203,7 +203,7 @@ Retrieve the user's profile information.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "id": 1,
   "firstName": "John",
@@ -218,7 +218,7 @@ Retrieve the user's profile information.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -243,7 +243,7 @@ Retrieve the projects associated with the user.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 [
   {
     "id": 1,
@@ -272,7 +272,7 @@ Retrieve the projects associated with the user.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Unauthorized",
   "statusCode": 401
@@ -298,7 +298,7 @@ Retrieve the projects associated with the user.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 [
   {
     "id": 1,
@@ -339,7 +339,7 @@ Retrieve a specific project by its ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "id": 1,
   "owner_id": 1,
@@ -356,7 +356,7 @@ Retrieve a specific project by its ID.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Project not found",
   "statusCode": 404
@@ -377,7 +377,7 @@ Create a new project.
     * Content-Type: application/json
   * Body:
 
-```
+```json
 {
   "owner_id": 1,
   "team_id": 1,
@@ -393,7 +393,7 @@ Create a new project.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "id": 1,
   "owner_id": 1,
@@ -411,7 +411,7 @@ Create a new project.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "message": "Invalid request body",
   "statusCode": 400
@@ -433,7 +433,7 @@ Update a specific project by its ID.
       * Content-Type: application/json
   * Body:
 
-```
+```json
 {
   "name": "New Project Name",
   "description": "a cool project",
@@ -447,7 +447,7 @@ Update a specific project by its ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "id": 1,
   "owner_id": 1,
@@ -465,7 +465,7 @@ Update a specific project by its ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "message": "Project not found",
   "statusCode": 404
@@ -478,7 +478,7 @@ Update a specific project by its ID.
   * Headers:
     * Content-Type: application/json
     * Response Body:
-```
+```json
 {
   "message": "Forbidden",
   "statusCode": 403
@@ -510,7 +510,7 @@ Delete a specific project by its ID.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Project not found",
   "statusCode": 404
@@ -523,7 +523,7 @@ Delete a specific project by its ID.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Forbidden",
   "statusCode": 403
@@ -549,7 +549,7 @@ Retrieves all tasks.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 [
   {
     "id": 1,
@@ -592,7 +592,7 @@ Retrieves a specific task by its ID.
     * Content-Type: application/json
   * Response Body:
 
-  ```
+  ```json
   {
     "id": 1,
     "name": "Task 1",
@@ -612,7 +612,7 @@ Retrieves a specific task by its ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "message": "Task not found",
   "statusCode": 404
@@ -631,7 +631,7 @@ Creates a new task.
   * Method: POST
   * URL: /api/tasks
   * Body:
-  ```
+  ```json
   {
     "name": "New Task",
     "description": "Description of the New Task",
@@ -649,8 +649,7 @@ Creates a new task.
     * Headers:
       * Content-Type: application/json
     * Response Body:
-    ```
-
+    ```json
     {
     "id": 3,
     "name": "New Task",
@@ -669,7 +668,7 @@ Creates a new task.
     * Headers:
         * Content-Type: application/json
     * Response Body:
-```
+```json
 {
   "message": "Invalid request body",
   "statusCode": 400
@@ -688,7 +687,7 @@ Updates a specific task by its ID.
   * Method: PUT
   * URL: /api/tasks/:id
   * Body:
-  ```
+  ```json
     {
     "name": "Updated Task",
     "description": "Updated description",
@@ -705,7 +704,7 @@ Updates a specific task by its ID.
     * Headers:
       * Content-Type: application/json
     * Response Body:
-    ```
+    ```json
     {
       "id": 1,
       "name": "Updated Task",
@@ -725,7 +724,7 @@ Updates a specific task by its ID.
       * Content-Type: application/json
     * Response Body:
 
-```
+```json
 {
   "message": "Task not found",
   "statusCode": 404
@@ -739,7 +738,7 @@ Updates a specific task by its ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "message": "Forbidden",
   "statusCode": 403
@@ -772,7 +771,7 @@ Delete a specific task by its ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "message": "Task not found",
   "statusCode": 404
@@ -799,7 +798,7 @@ Retrieves all teams.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
   [
     {
       "id": 1,
@@ -834,7 +833,7 @@ Retrieves a specific team by it's ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
   {
   "id": 1,
   "name": "Team A",
@@ -850,7 +849,7 @@ Retrieves a specific team by it's ID.
     * Content-Type: application/json
   * Response Body:
 
-```
+```json
 {
   "message": "Team not found",
   "statusCode": 404
@@ -876,7 +875,7 @@ Creates a new team.
     * Content-Type: application/json
   * Body:
 
-  ```
+  ```json
   {
     "name": "New Task",
     "description": "Description of the New Task",
@@ -893,7 +892,7 @@ Creates a new team.
     * Headers:
       * Content-Type: application/json
     * Response Body:
-    ```
+    ```json
     {
     "id": 3,
     "name": "New Task",
@@ -912,7 +911,7 @@ Creates a new team.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Invalid request body",
   "statusCode": 400
@@ -931,7 +930,7 @@ Updates a specific team by its ID.
   * URL: /api/teams/:id
   * Body:
 
-  ```
+  ```json
     {
     "name": "Updated Team",
     "description": "Updated team description"
@@ -943,8 +942,8 @@ Updates a specific team by its ID.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-  * Body:
-  ```
+  * Response Body:
+  ```json
   {
     "id": 1,
     "name": "Updated Team",
@@ -959,7 +958,7 @@ Updates a specific team by its ID.
     * Headers:
       * Content-Type: application/json
     * Response Body:
-```
+```json
 {
   "message": "Team not found",
   "statusCode": 404
@@ -972,7 +971,7 @@ Updates a specific team by its ID.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Forbidden",
   "statusCode": 403
@@ -1002,7 +1001,7 @@ Delete a specific team by its ID.
   * Headers:
     * Content-Type: application/json
   * Response Body:
-```
+```json
 {
   "message": "Team not found",
   "statusCode": 404
