@@ -1,31 +1,29 @@
 # ZenFlow
 
-Welcome to our Asana Clone repository! This project is a clone of the popular project management tool Asana. It aims to replicate the core features and functionality of Asana, providing users with a familiar interface for managing tasks, projects, and collaboration.
-
+Welcome to our ZenFlow repository! This project is a clone of the popular project management tool Asana. It aims to replicate the core features and functionality of Asana, providing users with a familiar interface for managing tasks, projects, and collaboration.
 
 # Table of Contents
 
-* Features
-* Getting Started
-* Dependencies
-* Installation
-* Usage
-* Contributing
-
+- Features
+- Getting Started
+- Dependencies
+- Installation
+- Usage
+- Contributing
 
 # Features
 
-* User authentication: Sign up, login, and logout functionalities to manage user accounts securely.
+- User authentication: Sign up, login, and logout functionalities to manage user accounts securely.
 
-* Project management: Create, read, update, and delete projects. Assign tasks and deadlines to projects.
+- Project management: Create, read, update, and delete projects. Assign tasks and deadlines to projects.
 
-* Task management: Create, read, update, and delete tasks. Assign tasks to users and set due dates.
+- Task management: Create, read, update, and delete tasks. Assign tasks to users and set due dates.
 
-* Team management: Create, update, and delete teams. Invite and remove team members.
+- Team management: Create, update, and delete teams. Invite and remove team members.
 
-* Task comments: Create, update, delete comments. Add comments to tasks for better collaboration and communication.
+- Task comments: Create, update, delete comments. Add comments to tasks for better collaboration and communication.
 
-* User-friendly interface: The clone aims to provide an intuitive and user-friendly interface, similar to Asana, making it easy for users to navigate and manage their projects.
+- User-friendly interface: The clone aims to provide an intuitive and user-friendly interface, similar to Asana, making it easy for users to navigate and manage their projects.
 
 # Getting Started
 
@@ -35,9 +33,9 @@ To get started with the Asana Clone locally, please follow the instructions belo
 
 Make sure you have the following dependencies installed:
 
-* Node.js
+- Node.js
 
-* SQLite3
+- SQLite3
 
 # Installation
 
@@ -46,19 +44,25 @@ Make sure you have the following dependencies installed:
 ```
 git clone git@github.com:MaxParks/AsanaClone.git
 ```
+
 2. Navigate to the project directory:
+
 ```
 cd AsanaClone
 ```
+
 3.Install the required npm packages:
+
 ```
 npm install
 ```
+
 4.Set up the SQLite3 database:
 
 Create a new SQLite3 database file.
 
 Configure the database connection details in the .env file.
+
 ```
 DATABASE_URL=sqlite://your-database-file-path
 ```
@@ -66,6 +70,7 @@ DATABASE_URL=sqlite://your-database-file-path
 # Usage
 
 1. Start the development server:
+
 ```
 npm start
 ```
