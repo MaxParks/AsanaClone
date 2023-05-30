@@ -11,6 +11,5 @@ class UserTeam(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(f'users.id'), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey(f'teams.id'), nullable=False)
 
-
     user = db.relationship('User', backref=db.backref('user_teams', cascade='all,delete'))
     team = db.relationship('Team', backref=db.backref('team_users', cascade='all,delete'))
