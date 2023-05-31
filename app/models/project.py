@@ -34,5 +34,5 @@ class Project(db.Model):
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
             'owner': self.owner.to_dict(),
             'team': self.team.to_dict(),
-            'tasks': [task.to_dict() for task in self.tasks]
+            'tasks': {task.id: task.to_dict() for task in self.tasks}
         }

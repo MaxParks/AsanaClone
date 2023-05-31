@@ -39,5 +39,5 @@ def to_dict(self):
             'owner': self.owner.to_dict(),
             'assignee': self.assignee.to_dict() if self.assignee else None,
             'project': self.project.to_dict(),
-            'comments': [comment.to_dict() for comment in self.comments]
+            'comments': {comment.id: comment.to_dict() for comment in self.comments}
         }
