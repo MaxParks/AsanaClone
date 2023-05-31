@@ -28,6 +28,6 @@ class Team(db.Model):
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
             'owner': self.owner.to_dict(),
-            'members': [member.to_dict() for member in self.members],
-            'projects': [project.to_dict() for project in self.projects]
+            'members': {member.id: member.to_dict() for member in self.members},
+            'projects': {project.id: project.to_dict() for project in self.projects}
         }

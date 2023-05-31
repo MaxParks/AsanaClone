@@ -45,10 +45,10 @@ class User(db.Model, UserMixin):
             'lastName': self.lastName,
             'email': self.email,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
-            'owned_teams': [team.to_dict() for team in self.owned_teams],
-            'user_teams': [user_team.to_dict() for user_team in self.user_teams],
-            'owned_projects': [project.to_dict() for project in self.owned_projects],
-            'assigned_tasks': [task.to_dict() for task in self.assigned_tasks],
-            'owned_tasks': [task.to_dict() for task in self.owned_tasks],
-            'comments': [comment.to_dict() for comment in self.comments]
+            'owned_teams': {team.id: team.to_dict() for team in self.owned_teams},
+            'user_teams': {user_team.id: user_team.to_dict() for user_team in self.user_teams},
+            'owned_projects': {project.id: project.to_dict() for project in self.owned_projects},
+            'assigned_tasks': {task.id: task.to_dict() for task in self.assigned_tasks},
+            'owned_tasks': {task.id: task.to_dict() for task in self.owned_tasks},
+            'comments': {comment.id: comment.to_dict() for comment in self.comments}
         }
