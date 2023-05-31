@@ -16,6 +16,14 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # relationships
+    owned_teams = db.relationship('Team', back_populates='owner', lazy=True)
+    user_teams = db.relationship('UserTeam', back_populates='user', lazy=True)
+    owned_projects = db.relationship('Project', back_populates='owner', lazy=True)
+    assigned_tasks = db.relationship('Task', foreign_keys=[Task.assigned_to], back_populates='assignee', lazy=True)
+    owned_tasks = db.relationship('Task', foreign_keys=[Task.owner_id], back_populates='owner', lazy=True)
+    comments = db.relationship('TaskComment', back_populates='user', lazy=True)
 
     # Relationships
     owned_projects = db.relationship('Project', back_populates='owner', lazy=True)
