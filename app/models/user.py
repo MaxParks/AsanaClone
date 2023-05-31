@@ -3,10 +3,8 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from .task import Task
-from .team import Team
-from .user_team import UserTeam
-from .project import Project
-from .task_comment import TaskComment
+
+
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -21,6 +19,7 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # relationships
     owned_teams = db.relationship('Team', back_populates='owner')
     user_teams = db.relationship('UserTeam', back_populates='user')
     owned_projects = db.relationship('Project', back_populates='owner')

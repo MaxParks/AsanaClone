@@ -1,8 +1,6 @@
 from .db import db, environment, SCHEMA
 from datetime import datetime
-from .user import User
-from .project import Project
-from .task_comment import TaskComment
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'

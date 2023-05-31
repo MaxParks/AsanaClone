@@ -1,7 +1,6 @@
 from .db import db, environment, SCHEMA
 from datetime import datetime
-from .user import User
-from .task import Task
+
 
 class TaskComment(db.Model):
     __tablename__ = 'task_comments'
@@ -24,7 +23,7 @@ class TaskComment(db.Model):
             'user_id': self.user_id,
             'task_id': self.task_id,
             'comment': self.comment,
-            'created_at': self.created_at.strftime('%m/%d/%Y')
+            'created_at': self.created_at.strftime('%m/%d/%Y'),
             'user': self.user.to_dict(),
             'task': self.task.to_dict()
         }
