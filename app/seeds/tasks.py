@@ -1,27 +1,48 @@
-from app.models import db, Task
-from random import randint, choice
-from datetime import datetime, timedelta
+from app.models import db, User, Task, Project, environment, SCHEMA
+from sqlalchemy.sql import text
+from datetime import datetime
 
 def seed_tasks():
-    users_count = db.session.execute('SELECT COUNT(*) FROM users;').scalar()
+    # Get our users and a project
+    demo = User.query.filter_by(email='demo@aa.io').first()
+    marnie = User.query.filter_by(email='marnie@aa.io').first()
+    bobbie = User.query.filter_by(email='bobbie@aa.io').first()
+    demo_project = Project.query.filter_by(name='Demo Project').first()
 
-    for _ in range(10):  # Create 10 tasks
-        task = Task(
-            owner_id=randint(1, users_count),
-            name=f"Task {_}",
-            description=f"Description for Task {_}",
-            assigned_to=randint(1, users_count),
-            due_date=datetime.now() + timedelta(days=randint(1, 30)),
-            completed=bool(randint(0, 1)),
-            project_id=randint(1, 2),
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
-        )
-        db.session.add(task)
+    # Create some tasks
+    task1 = Task(
+        owner_id=demo.id,
+        name='Task 1',
+        description='This is task 1',
+        assigned_to=marnie.id,
+        due_date=datetime.now().date(),  # today's date
+        completed=False,
+        project_id=demo_project.id,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    task2 = Task(
+        owner_id=marnie.id,
+        name='Task 2',
+        description='This is task 2',
+        assigned_to=bobbie.id,
+        due_date=datetime.now().date(),  # today's date
+        completed=False,
+        project_id=demo_project.id,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    db.session.add(task1)
+    db.session.add(task2)
 
     db.session.commit()
 
-
 def undo_tasks():
-    db.session.execute('DELETE FROM tasks;')
+    if environment == "production":
+        db.session.execute(f"TRUNCATE table {SCHEMA}.tasks RESTART IDENTITY CASCADE;")
+    else:
+        db.session.execute(text("DELETE FROM tasks"))
+
     db.session.commit()

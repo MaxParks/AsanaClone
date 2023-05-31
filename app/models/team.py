@@ -1,5 +1,8 @@
 from .db import db, environment, SCHEMA
 from datetime import datetime
+from .user import User
+from .user_team import UserTeam
+from .project import Project
 
 class Team(db.Model):
     __tablename__ = 'teams'
@@ -23,5 +26,8 @@ class Team(db.Model):
             'owner_id': self.owner_id,
             'name': self.name,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
-            'updated_at': self.updated_at.strftime('%m/%d/%Y')
+            'updated_at': self.updated_at.strftime('%m/%d/%Y'),
+            'owner': self.owner.to_dict(),
+            'members': [member.to_dict() for member in self.members],
+            'projects': [project.to_dict() for project in self.projects]
         }
