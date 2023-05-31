@@ -17,7 +17,7 @@ class Task(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
+
  # Relationships
     owner = db.relationship('User', back_populates='owned_tasks')
     assignee = db.relationship('User', back_populates='assigned_tasks')
