@@ -25,6 +25,20 @@ class User(db.Model, UserMixin):
     owned_tasks = db.relationship('Task', foreign_keys=[Task.owner_id], back_populates='owner', lazy=True)
     comments = db.relationship('TaskComment', back_populates='user', lazy=True)
 
+    # Relationships
+    owned_projects = db.relationship('Project', back_populates='owner', lazy=True)
+    owned_tasks = db.relationship('Task', back_populates='owner', lazy=True)
+    assigned_tasks = db.relationship('Task', back_populates='assignee', lazy=True)
+    owned_teams = db.relationship('Team', back_populates='owner', lazy=True)
+    teams = db.relationship(
+        'Team',
+        secondary='user_team',
+        back_populates='users',
+        lazy='subquery'
+    )
+    comments = db.relationship('TaskComment', back_populates='user', lazy=True)
+
+
     @property
     def password(self):
         return self.hashed_password

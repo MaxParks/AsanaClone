@@ -2,6 +2,7 @@ from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .teams import seed_teams, undo_teams
 from .user_teams import seed_user_teams, undo_user_teams
+from .projects import seed_projects, undo_projects
 from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
@@ -20,17 +21,22 @@ def seed():
         undo_user_teams()
         undo_teams()
         undo_users()
+        undo_projects()
 
     seed_users()
     seed_teams()
     seed_user_teams()
+    seed_projects()
+
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
+    undo_projects()
     undo_user_teams()
     undo_teams()
     undo_users()
+
 
     # Add other undo functions here
