@@ -3,8 +3,10 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from .task import Task
-
-
+from .team import Team
+from .user_team import UserTeam
+from .project import Project
+from .task_comment import TaskComment
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -19,7 +21,6 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # relationships
     owned_teams = db.relationship('Team', back_populates='owner')
     user_teams = db.relationship('UserTeam', back_populates='user')
     owned_projects = db.relationship('Project', back_populates='owner')
@@ -44,5 +45,11 @@ class User(db.Model, UserMixin):
             'firstName': self.firstName,
             'lastName': self.lastName,
             'email': self.email,
-            'created_at': self.created_at.strftime('%m/%d/%Y')
+            'created_at': self.created_at.strftime('%m/%d/%Y'),
+            'owned_teams': [team.to_dict() for team in self.owned_teams],
+            'user_teams': [user_team.to_dict() for user_team in self.user_teams],
+            'owned_projects': [project.to_dict() for project in self.owned_projects],
+            'assigned_tasks': [task.to_dict() for task in self.assigned_tasks],
+            'owned_tasks': [task.to_dict() for task in self.owned_tasks],
+            'comments': [comment.to_dict() for comment in self.comments]
         }

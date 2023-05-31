@@ -1,5 +1,8 @@
 from .db import db, environment, SCHEMA
 from datetime import datetime
+from .user import User
+from .project import Project
+from .task_comment import TaskComment
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -34,5 +37,9 @@ def to_dict(self):
             'completed': self.completed,
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
-            'updated_at': self.updated_at.strftime('%m/%d/%Y')
+            'updated_at': self.updated_at.strftime('%m/%d/%Y'),
+            'owner': self.owner.to_dict(),
+            'assignee': self.assignee.to_dict() if self.assignee else None,
+            'project': self.project.to_dict(),
+            'comments': [comment.to_dict() for comment in self.comments]
         }
