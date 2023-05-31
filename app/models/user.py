@@ -2,6 +2,10 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from .team import Team
+from .project import Project
+from .task import Task
+from .task_comment import TaskComment
 
 
 class User(db.Model, UserMixin):
@@ -38,6 +42,14 @@ class User(db.Model, UserMixin):
     )
     comments = db.relationship('TaskComment', back_populates='user', lazy=True)
 
+
+    # relationships
+    owned_teams = db.relationship('Team', back_populates='owner')
+    user_teams = db.relationship('UserTeam', back_populates='user')
+    owned_projects = db.relationship('Project', back_populates='owner')
+    assigned_tasks = db.relationship('Task', foreign_keys=[Task.assigned_to], back_populates='assignee')
+    owned_tasks = db.relationship('Task', foreign_keys=[Task.owner_id], back_populates='owner')
+    comments = db.relationship('TaskComment', back_populates='user')
 
     @property
     def password(self):

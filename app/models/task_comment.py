@@ -1,4 +1,4 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .db import db, environment, SCHEMA
 from datetime import datetime
 
 class TaskComment(db.Model):
@@ -7,13 +7,12 @@ class TaskComment(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
-    comment = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(f'users.id'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey(f'tasks.id'), nullable=False)
+    comment = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    # Relationships
     user = db.relationship('User', back_populates='comments')
     task = db.relationship('Task', back_populates='comments')
 
@@ -23,5 +22,5 @@ class TaskComment(db.Model):
             'user_id': self.user_id,
             'task_id': self.task_id,
             'comment': self.comment,
-            'created_at': self.created_at.strftime('%m/%d/%Y %H:%M:%S')
+            'created_at': self.created_at.strftime('%m/%d/%Y')
         }
