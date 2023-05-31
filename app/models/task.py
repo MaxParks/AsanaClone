@@ -18,10 +18,10 @@ class Task(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
- # Relationships
-    owner = db.relationship('User', back_populates='owned_tasks')
-    assignee = db.relationship('User', back_populates='assigned_tasks')
-    project = db.relationship('Project', back_populates='tasks')
+    # Relationships
+    owner = db.relationship('User', back_populates='owned_tasks', foreign_keys=[owner_id])
+    assignee = db.relationship('User', back_populates='assigned_tasks', foreign_keys=[assigned_to])
+    project = db.relationship('Project', back_populates='tasks', lazy=True)
     comments = db.relationship('TaskComment', back_populates='task', lazy=True)
 
 

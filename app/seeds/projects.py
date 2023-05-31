@@ -13,7 +13,6 @@ def seed_projects():
     bobbie_team = Team.query.filter_by(name='Brilliance').first()
 
 
-
     demo_project = Project(
         owner_id=demo.id,
         team_id=demo_team.id,
