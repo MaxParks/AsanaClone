@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import Project, Task
+from app.models import Project
 
 dashboard_routes = Blueprint('dashboard_routes', __name__)
 
@@ -24,9 +24,10 @@ def get_user_dashboard():
     }
 
     # Add user's assigned tasks
-    for task_id, task_data in assigned_tasks.items():
+    for task in assigned_tasks:
+        task_data = task.to_dict()
         task_dict = {
-            'id': task_id,
+            'id': task_data['id'],
             'name': task_data['name'],
             'description': task_data['description'],
             'due_date': task_data['due_date'],
@@ -39,19 +40,19 @@ def get_user_dashboard():
 
         # Add task comments
         comments = task_data.get('comments', {})
-        for comment_id, comment_data in comments.items():
+        for comment in comments.values():
             comment_dict = {
-                'comment': comment_data['comment'],
-                'created_at': comment_data['created_at'],
-                'user': comment_data['user']['firstName']
+                'comment': comment['comment'],
+                'created_at': comment['created_at'],
+                'user': comment['user']['firstName']
             }
             task_dict['comments'].append(comment_dict)
 
         dashboard_data['assigned_tasks'].append(task_dict)
 
     # Add projects associated with user's teams
-    for user_team in user_teams.values():
-        team_id = user_team['team_id']
+    for user_team in user_teams:
+        team_id = user_team.team.id
         projects = Project.query.filter_by(team_id=team_id).all()
 
         for project in projects:
@@ -63,6 +64,7 @@ def get_user_dashboard():
             dashboard_data['projects'].append(project_dict)
 
     return jsonify(dashboard_data), 200
+
 
 
 
