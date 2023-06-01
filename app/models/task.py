@@ -31,7 +31,7 @@ def to_dict(self):
             'name': self.name,
             'description': self.description,
             'assigned_to': self.assigned_to,
-            'due_date': self.due_date,
+            'due_date': self.due_date.strftime('%m/%d/%Y'),
             'completed': self.completed,
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
