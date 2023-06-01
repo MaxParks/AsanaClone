@@ -36,8 +36,5 @@ def to_dict(self):
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
-            'owner': self.owner.to_dict(),
-            'assignee': self.assignee.to_dict() if self.assignee else None,
-            'project': self.project.to_dict(),
-            'comments': {comment.id: comment.to_dict() for comment in self.comments}
+            'comments': [comment.id for comment in self.comments]
         }
