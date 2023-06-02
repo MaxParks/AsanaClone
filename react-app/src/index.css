@@ -65,3 +65,12 @@ h5 {
 p {
     margin-bottom: 10px;
 }
+
+a {
+    text-decoration: none;
+    color: var(--color-black);
+}
+
+.page-container {
+    margin: 40px;
+}

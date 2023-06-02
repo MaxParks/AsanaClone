@@ -1,0 +1,8 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-button-container>*+* {
+    margin-left: 10px;
+}
