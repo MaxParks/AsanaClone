@@ -94,8 +94,7 @@ def get_user_dashboard():
     }
 
     # Get user's assigned tasks and related info
-    for task in user.assigned_tasks:
-        dashboard_data['assigned_tasks'].append(task.to_dict())
+    dashboard_data['assigned_tasks'] = {int(index + 1): task.to_dict() for index, task in enumerate(user.assigned_tasks)}
 
     # Get teams associated with user
     for user_team in user.user_teams:
