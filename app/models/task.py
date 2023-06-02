@@ -13,7 +13,7 @@ class Task(db.Model):
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
     assigned_to = db.Column(db.Integer, db.ForeignKey(f'users.id'))
-    due_date = db.Column(db.DateTime, default=datetime.utcnow)
+    due_date = db.Column(db.Date)
     completed = db.Column(db.Boolean)
     project_id = db.Column(db.Integer, db.ForeignKey(f'projects.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
@@ -24,20 +24,17 @@ class Task(db.Model):
     project = db.relationship('Project', back_populates='tasks')
     comments = db.relationship('TaskComment', back_populates='task')
 
-def to_dict(self):
+    def to_dict(self):
         return {
             'id': self.id,
             'owner_id': self.owner_id,
             'name': self.name,
             'description': self.description,
             'assigned_to': self.assigned_to,
-            'due_date': self.due_date.strftime('%m/%d/%Y'),
+            'due_date': self.due_date.strftime('%m/%d/%Y') if self.due_date else None,
             'completed': self.completed,
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
-            'owner': self.owner.to_dict(),
-            'assignee': self.assignee.to_dict() if self.assignee else None,
-            'project': self.project.to_dict(),
-            'comments': {comment.id: comment.to_dict() for comment in self.comments}
+            'comments': [comment.id for comment in self.comments]
         }
