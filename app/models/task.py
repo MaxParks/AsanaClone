@@ -24,14 +24,14 @@ class Task(db.Model):
     project = db.relationship('Project', back_populates='tasks')
     comments = db.relationship('TaskComment', back_populates='task')
 
-def to_dict(self):
+    def to_dict(self):
         return {
             'id': self.id,
             'owner_id': self.owner_id,
             'name': self.name,
             'description': self.description,
             'assigned_to': self.assigned_to,
-            'due_date': self.due_date.strftime('%m/%d/%Y'),
+            'due_date': self.due_date.strftime('%m/%d/%Y') if self.due_date else None,
             'completed': self.completed,
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
