@@ -45,4 +45,10 @@ class User(db.Model, UserMixin):
             'lastName': self.lastName,
             'email': self.email,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
+            'owned_teams': [team.id for team in self.owned_teams],
+            'user_teams': [user_team.id for user_team in self.user_teams],
+            'owned_projects': [project.id for project in self.owned_projects],
+            'assigned_tasks': [task.id for task in self.assigned_tasks],
+            'owned_tasks': [task.id for task in self.owned_tasks],
+            'comments': [comment.id for comment in self.comments]
         }

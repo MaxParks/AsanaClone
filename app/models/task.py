@@ -36,4 +36,5 @@ def to_dict(self):
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
+            'comments': [comment.id for comment in self.comments]
         }

@@ -32,5 +32,5 @@ class Project(db.Model):
             'description': self.description,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
-
+            'tasks': [task.id for task in self.tasks]
         }
