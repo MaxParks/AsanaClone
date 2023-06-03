@@ -80,7 +80,7 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('assigned_to', sa.Integer(), nullable=True),
-    sa.Column('due_date', sa.Date(), nullable=True),
+    sa.Column('due_date', sa.DateTime(), nullable=True),
     sa.Column('completed', sa.Boolean(), nullable=True),
     sa.Column('project_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
