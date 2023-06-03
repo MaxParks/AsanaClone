@@ -1,1 +1,76 @@
-/* TODO Add site wide styles */
+:root {
+    /* Colors */
+    --color-white: #FFFFFF;
+    --color-light-gray: #EEEBEA;
+    --color-medium-gray: #A2A0A2;
+    --color-dark-gray: #747373;
+    --color-charcoal: #424244;
+    --color-black: #1E1F21;
+
+    /* Fonts */
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-bold: 700;
+
+    /* Heading sizes */
+    --heading-1-size: 20px;
+    --heading-4-size: 20px;
+    --heading-5-size: 16px;
+}
+
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Remove bullet points from list items */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Basic styles */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    font-size: var(--heading-1-size);
+    font-weight: var(--font-bold);
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: var(--heading-4-size);
+    font-weight: var(--font-bold);
+    margin-bottom: 10px;
+}
+
+h5 {
+    font-size: var(--heading-5-size);
+    font-weight: var(--font-bold);
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-black);
+}
+
+.page-container {
+    margin: 40px;
+}
