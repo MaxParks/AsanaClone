@@ -72,6 +72,7 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from app.models import db, User, Task, Team, Project
+from app.utils import normalize_objects
 
 dashboard_routes = Blueprint('dashboard_routes', __name__)
 
@@ -88,27 +89,14 @@ def get_user_dashboard():
         'firstName': user.firstName,
         'lastName': user.lastName,
         'email': user.email,
-        'assigned_tasks': [],
-        'projects': [],
-        'teams': []
+        'assigned_tasks': normalize_objects(sorted(user.assigned_tasks, key=lambda task: task.due_date)),
+        'projects': normalize_objects(user.owned_projects),
+        'teams': normalize_objects(user.user_teams)
     }
 
-    # Get user's assigned tasks and related info
-    dashboard_data['assigned_tasks'] = {int(index + 1): task.to_dict() for index, task in enumerate(user.assigned_tasks)}
-
-    # Get teams associated with user
+    # Get projects associated with user's teams
     for user_team in user.user_teams:
         team = user_team.team
-        team_dict = team.to_dict()
-        team_dict['user_team_id'] = user_team.id
-        dashboard_data['teams'].append(team_dict)
-
-        # Get projects associated with user's teams
-        for project in team.projects:
-            dashboard_data['projects'].append(project.to_dict())
-
-    # Get user's owned projects
-    for project in user.owned_projects:
-        dashboard_data['projects'].append(project.to_dict())
+        dashboard_data['projects'].update(normalize_objects(team.projects))
 
     return jsonify(dashboard_data), 200
