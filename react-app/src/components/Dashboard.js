@@ -6,10 +6,12 @@ function Dashboard({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
-    <>
-      <h1>Dashboard</h1>
-      <ProfileButton user={sessionUser} />
-    </>
+    <div className="page-container">
+      <div className="header-container">
+        <h1>Home</h1>
+        <ProfileButton user={sessionUser} />
+      </div>
+    </div>
   );
 }
 

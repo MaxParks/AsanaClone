@@ -105,3 +105,14 @@ button {
 .left-side>*:not(:last-child) {
     margin-bottom: 30px;
 }
+
+/* App */
+.App {
+    display: flex;
+    min-height: 100vh;
+}
+
+.Content {
+    flex: 1;
+    margin-left: 20px;
+}
