@@ -6,7 +6,6 @@
     margin-top: 50px;
 }
 
-
 .signup2 .flex {
     display: flex;
     justify-content: flex-start;
@@ -20,7 +19,13 @@
 }
 
 .subheading {
-    font-size: 13px;
+    font-size: 15px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+.subheading-container {
+    margin-bottom: 20px;
 }
 
 .error-list {

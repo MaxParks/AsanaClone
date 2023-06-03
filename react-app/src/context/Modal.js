@@ -44,9 +44,7 @@ export function Modal () {
 
   if (!modalRef || !modalRef.current || !modalContent) return null
 
-  const isLoginFormModal = modalContent.type === LoginFormModal // Add this line
-
-  // Add a conditional class based on the modal type
+  const isLoginFormModal = modalContent.type === LoginFormModal 
   const modalClass = isLoginFormModal ? 'login-modal' : 'signup-modal'
 
   return ReactDOM.createPortal(

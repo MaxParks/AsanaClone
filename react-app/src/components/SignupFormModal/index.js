@@ -43,7 +43,8 @@ function SignUpFormModal () {
 
 
   return (
-    <div className='signup-form-container'>
+    <div className='signup-form-container signup-modal
+'>
       {step === 1 ? (
         <>
           <div className='header signup'>
@@ -75,7 +76,7 @@ function SignUpFormModal () {
             <div className='header signup'>
               <p>Welcome to ZenFlow!</p>
             </div>
-            <div>
+            <div className='subheading-container'>
               <p className='subheading'>You're signing in as {email}</p>
             </div>
           </div>
