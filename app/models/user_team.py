@@ -12,3 +12,10 @@ class UserTeam(db.Model):
 
     user = db.relationship('User', back_populates='user_teams')
     team = db.relationship('Team', back_populates='members')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'team_id': self.team_id
+        }
