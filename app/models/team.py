@@ -10,14 +10,14 @@ class Team(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey(f'users.id'), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey(f'users.id'))
     name = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     owner = db.relationship('User', back_populates='owned_teams')
-    members = db.relationship('UserTeam', back_populates='team')
+    members = db.relationship('UserTeam', back_populates='team', cascade="all, delete-orphan")
     projects = db.relationship('Project', back_populates='team')
 
     def to_dict(self):
