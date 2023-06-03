@@ -1,0 +1,9 @@
+.sidebar-container {
+    width: 240px;
+    background-color: var(--color-charcoal);
+    color: white;
+}
+
+.sidebar-content {
+    padding: 20px;
+}
