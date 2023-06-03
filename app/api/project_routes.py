@@ -24,7 +24,7 @@ def retrieve_project(id):
                 'description': task.description,
                 'due_date': task.due_date.isoformat(),
                 'completed': task.completed,
-                'assigned_to': task.assigned_to.to_dict(),
+                'assigned_to': task.assigned_to,
             }
             project_dict['tasks'].append(task_dict)
 
@@ -44,7 +44,8 @@ def create_project():
     data = request.get_json()
     name = data.get('name')
     description = data.get('description')
-    due_date = data.get('due_date')
+    date_string = data['due_date']
+    due_date = datetime.strptime(date_string, '%m/%d/%Y')
     team_id = data.get('team_id')
 
     if not name or not description or not due_date or not team_id:
@@ -75,8 +76,9 @@ def update_project(id):
 
     data = request.get_json()
     name = data.get('name')
+    date_string = data['due_date']
+    due_date = datetime.strptime(date_string, '%m/%d/%Y')
     description = data.get('description')
-    due_date = data.get('due_date')
 
     if not name or not description or not due_date:
         return {"message": "Invalid request body", "statusCode": 400}, 400
@@ -87,6 +89,7 @@ def update_project(id):
     project.updated_at = datetime.utcnow()
     db.session.commit()
     return jsonify(project.to_dict()), 200
+
 
 
 @project_routes.route('/<int:id>', methods=['DELETE'])

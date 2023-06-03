@@ -55,12 +55,16 @@ def update_team(id):
     name = data.get('name')
     new_member_email = data.get('new_member')
 
-    if not name and not new_member_email:
-        return {"message": "Invalid request body", "statusCode": 400}, 400
-
     team = Team.query.get(id)
     if not team:
         return {"message": "Team not found", "statusCode": 404}, 404
+
+    # Check if the current user is the owner of the project
+    if current_user.id != team.owner_id:
+        return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    if not name and not new_member_email:
+        return {"message": "Invalid request body", "statusCode": 400}, 400
 
     if name:
         team.name = name
