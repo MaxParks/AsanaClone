@@ -1,23 +1,9 @@
 .sidebar-container {
     width: 240px;
-    background-color: var(--color-dark-gray);
+    background-color: var(--color-charcoal);
     color: white;
 }
 
-.sidebar-header {
-    font-weight: var(--font-medium);
-}
-
 .sidebar-content {
-    padding: 40px 20px;
-}
-
-.sidebar-navigation-container {
-    margin: 50px 0px;
-}
-
-.sidebar-navigation>li {
-    padding: 10px 0px;
-    font-size: 18px;
-    color: var(--color-medium-gray);
+    padding: 20px;
 }

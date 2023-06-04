@@ -39,23 +39,20 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu} className="profile-button">
-        <p>SC</p>
-        {/* Need to pull user initials from state */}
+      <button onClick={openMenu}>
+        <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
-          <div className="dropdown-content">
-            <li>
-              {user.firstName} {user.lastName}
-            </li>
+          <>
+            <li>{user.username}</li>
             <li>{user.email}</li>
             <li>
               <button onClick={handleLogout}>Log Out</button>
             </li>
-          </div>
+          </>
         ) : (
-          <div className="dropdown-content">
+          <>
             <OpenModalButton
               buttonText="Log In"
               onItemClick={closeMenu}
@@ -67,7 +64,7 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </div>
+          </>
         )}
       </ul>
     </>

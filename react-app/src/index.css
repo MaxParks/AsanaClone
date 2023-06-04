@@ -1,10 +1,10 @@
 :root {
     /* Colors */
     --color-white: #FFFFFF;
-    --color-light-gray: #f5f4f3;
+    --color-light-gray: #EEEBEA;
     --color-medium-gray: #A2A0A2;
-    --color-dark-gray: #424244;
-    --color-charcoal: #1e1f21;
+    --color-dark-gray: #747373;
+    --color-charcoal: #424244;
     --color-black: #1E1F21;
 
     /* Fonts */
@@ -34,7 +34,7 @@ ol {
 
 /* Basic styles */
 body {
-    font-family: 'Montserrat', Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     font-size: 14px;
     line-height: 1.5;
 }
@@ -114,18 +114,5 @@ button {
 
 .Content {
     flex: 1;
-    /* margin-left: 20px; */
-}
-
-/* Dropdown */
-.dropdown-content {
-    text-align: center;
-}
-
-.dropdown-content li {
-    padding: 8px 16px;
-}
-
-.dropdown-content li:not(:last-child) {
-    border-bottom: 1px solid var(--color-light-gray);
+    margin-left: 20px;
 }
