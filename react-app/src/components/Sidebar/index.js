@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../assets/icons/collapse-caret.svg";
+import { ReactComponent as HomeIcon } from "../../assets/icons/home.svg";
 import "./Sidebar.css"; // import the corresponding CSS file
 
 const Sidebar = () => {
@@ -11,14 +12,21 @@ const Sidebar = () => {
   return (
     <div className="sidebar-container">
       <div className="sidebar-content">
-        <div className="sidebar-header">
-          <h1>ZenFlow</h1>
+        <div>
+          <h1 className="sidebar-header">ZenFlow</h1>
         </div>
-        <div className="sidebar-navigation">
-          <ul>
-            <li>Home</li>
-            <li>My Tasks</li>
-            <li>Inbox</li>
+        <div className="sidebar-navigation-container">
+          <ul className="sidebar-navigation">
+            <div className="sidebar-tab">
+              <HomeIcon />
+              <li>Home</li>
+            </div>
+            <div>
+              <li>My Tasks</li>
+            </div>
+            <div>
+              <li>Inbox</li>
+            </div>
           </ul>
         </div>
         <div className="sidebar-teams"></div>
