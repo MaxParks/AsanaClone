@@ -1,5 +1,6 @@
 import React, { useRef, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
+import LoginFormModal from '../components/LoginFormModal'
 import './Modal.css';
 
 const ModalContext = React.createContext();
@@ -38,22 +39,26 @@ export function ModalProvider({ children }) {
   );
 }
 
-export function Modal() {
-  const { modalRef, modalContent, closeModal } = useContext(ModalContext);
-  // If there is no div referenced by the modalRef or modalContent is not a
-  // truthy value, render nothing:
-  if (!modalRef || !modalRef.current || !modalContent) return null;
+export function Modal () {
+  const { modalRef, modalContent, closeModal } = useContext(ModalContext)
 
-  // Render the following component to the div referenced by the modalRef
+  if (!modalRef || !modalRef.current || !modalContent) return null
+
+  const isLoginFormModal = modalContent.type === LoginFormModal 
+  const modalClass = isLoginFormModal ? 'login-modal' : 'signup-modal'
+
   return ReactDOM.createPortal(
-    <div id="modal">
-      <div id="modal-background" onClick={closeModal} />
-      <div id="modal-content">
-        {modalContent}
-      </div>
+    <div id='modal'>
+      <div
+        id='modal-background'
+        onClick={closeModal}
+        className={modalClass} // Add the modal class here
+      />
+      <div id='modal-content'>{modalContent}</div>
     </div>,
     modalRef.current
-  );
+  )
 }
+
 
 export const useModal = () => useContext(ModalContext);
