@@ -8,6 +8,67 @@ team_routes = Blueprint('teams', __name__)
 def find_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
+@team_routes.route('/', methods=['GET'])
+@login_required
+def get_teams():
+    """
+    Retrieves the teams associated with the current user.
+    """
+    user_id = current_user.id
+    teams = Team.query.join(UserTeam).filter(UserTeam.user_id == user_id).all()
+    teams_data = []
+    for team in teams:
+        members_data = [
+            {
+                'id': member.id,
+                'team_id': member.team_id,
+                'user_id': member.user_id,
+                'name': member.user.firstName
+            }
+            for member in team.members
+        ]
+        team_dict = {
+            'id': team.id,
+            'name': team.name,
+            'members': members_data,
+            'projects': [project.to_dict() for project in team.projects],
+        }
+        teams_data.append(team_dict)
+    return jsonify(teams_data), 200
+
+
+@team_routes.route('/<int:id>/members', methods=['POST'])
+@login_required
+def invite_team_member(id):
+    """
+    Invites a user to join a team.
+    """
+    team = Team.query.get(id)
+    if not team:
+        return {"message": "Team not found", "statusCode": 404}, 404
+
+    if current_user.id != team.owner_id:
+        return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return {"message": "Invalid request body", "statusCode": 400}, 400
+
+    user = User.query.filter(User.email == email).first()
+    if not user:
+        return {"message": "User not found", "statusCode": 404}, 404
+
+    if user in team.members:
+        return {"message": "User is already a member of the team", "statusCode": 400}, 400
+
+    user_team = UserTeam(user_id=user.id, team_id=team.id)
+    db.session.add(user_team)
+    db.session.commit()
+
+    return jsonify(user_team.to_dict()), 201
+
 
 @team_routes.route('/', methods=['POST'])
 @login_required

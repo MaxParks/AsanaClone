@@ -27,7 +27,41 @@ def retrieve_task(id):
     task_dict['TaskComments'] = [comment.to_dict() for comment in task.comments]
     return jsonify([task_dict]), 200
 
-@tasks_routes.route('/current', methods=['GET'])
+# @tasks_routes.route('/current', methods=['GET'])
+# @login_required
+# def retrieve_user_tasks():
+#     """
+#     Retrieves tasks assigned to the current User.
+#     """
+#     user_id = current_user.id
+#     tasks = Task.query.filter(Task.assigned_to == user_id).all()
+#     tasks_data = {}
+#     for task in tasks:
+#         tasks_data[task.id] = {
+#             'name': task.name,
+#             'description': task.description,
+#             'due_date': task.due_date.strftime('%m/%d/%Y'),
+#             'completed': str(task.completed),
+#             'owner': {
+#                 'firstName': task.owner.firstName,
+#             },
+#             'assignee': task.assignee.firstName,
+#             'project': {
+#                 'name': task.project.name
+#             },
+#             'comments': {}
+#         }
+#         for comment in task.comments:
+#             tasks_data[task.id]['comments'][comment.id] = {
+#                 'comment': comment.comment,
+#                 'created_at': comment.created_at.strftime('%m/%d/%Y'),
+#                 'user': {
+#                     'firstName': comment.user.firstName
+#                 }
+#             }
+#     return jsonify({'Tasks': tasks_data}), 200
+
+@tasks_routes.route('/', methods=['GET'])
 @login_required
 def retrieve_user_tasks():
     """
@@ -35,31 +69,20 @@ def retrieve_user_tasks():
     """
     user_id = current_user.id
     tasks = Task.query.filter(Task.assigned_to == user_id).all()
-    tasks_data = {}
+    tasks_data = []
     for task in tasks:
-        tasks_data[task.id] = {
+        task_dict = {
+            'id': task.id,
             'name': task.name,
-            'description': task.description,
+            'completed': task.completed,
             'due_date': task.due_date.strftime('%m/%d/%Y'),
-            'completed': str(task.completed),
-            'owner': {
-                'firstName': task.owner.firstName,
-            },
-            'assignee': task.assignee.firstName,
             'project': {
-                'name': task.project.name
-            },
-            'comments': {}
-        }
-        for comment in task.comments:
-            tasks_data[task.id]['comments'][comment.id] = {
-                'comment': comment.comment,
-                'created_at': comment.created_at.strftime('%m/%d/%Y'),
-                'user': {
-                    'firstName': comment.user.firstName
-                }
+                'id': task.project.id,
+                'name': task.project.name,
             }
-    return jsonify({'Tasks': tasks_data}), 200
+        }
+        tasks_data.append(task_dict)
+    return jsonify(tasks_data), 200
 
 @tasks_routes.route('/', methods=['POST'])
 @login_required
@@ -182,8 +205,30 @@ def get_task_comments(id):
     #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
     comments = TaskComment.query.filter_by(task_id=id).all()
-    comments_data = [comment.to_dict() for comment in comments]
-    return jsonify(comments_data), 200
+    # comments_data = [comment.to_dict() for comment in comments]
+    # return jsonify(comments_data), 200
+    comments_data = []
+    for comment in comments:
+        comment_dict = {
+            'id': comment.id,
+            'comment': comment.comment,
+            'created_at': comment.created_at.strftime('%m/%d/%Y'),
+            'user': {
+                'firstName': comment.user.firstName,
+            },
+        }
+        comments_data.append(comment_dict)
+
+    task_data = {
+        'id': task.id,
+        'name': task.name,
+        'assignee': task.assigned_to,
+        'description': task.description,
+        'due_date': task.due_date.strftime('%m/%d/%Y'),
+        'comments': comments_data,
+    }
+
+    return jsonify(task_data), 200
 
 @tasks_routes.route('/<int:id>/comments', methods=['POST'])
 @login_required
