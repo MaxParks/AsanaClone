@@ -1,7 +1,50 @@
+.header-title {
+  color: white;
+  font-weight: var(--font-medium);
+}
+
+.profile-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border: 1px solid var(--color-charcoal);
+  border-radius: 50%;
+  background-color: #fc979a;
+}
+
+.profile-button p {
+  font-size: 12px;
+  font-weight: var(--font-regular);
+  margin: 0;
+  color: var(--color-charcoal);
+}
+
 .profile-dropdown {
   position: absolute;
+  right: 70px;
+  top: 90px;
+  min-width: 200px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 5px;
+  background: #1e1f21;
+  color: var(--color-light-gray);
+
 }
 
 .hidden {
   display: none;
+}
+
+.dropdown-content button {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  margin-top: 10px;
+  background-color: transparent;
+  color: white;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 5px;
+  cursor: pointer;
 }
