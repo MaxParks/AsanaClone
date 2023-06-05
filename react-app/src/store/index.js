@@ -1,9 +1,15 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import session from './session'
+import projects from './projects'
+import teams from './teams'
+import dashboard from './dashboard'
 
 const rootReducer = combineReducers({
   session,
+  projects,
+  teams,
+  dashboard
 });
 
 
