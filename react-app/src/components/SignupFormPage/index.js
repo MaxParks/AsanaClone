@@ -1,50 +1,37 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { signUp } from "../../store/session";
-import "./SignupForm.css";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { signUp } from '../../store/session'
+import './SignupForm.css'
 
 function SignupFormPage () {
   const dispatch = useDispatch()
   const sessionUser = useSelector(state => state.session.user)
   const [email, setEmail] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [errors, setErrors] = useState([])
-  const { closeModal } = useModal()
-  const history = useHistory()
 
   if (sessionUser) return <Redirect to='/' />
 
   const handleSubmit = async e => {
     e.preventDefault()
     if (password === confirmPassword) {
-      const data = await dispatch(signUp(firstName, lastName, email, password));
+      const data = await dispatch(signUp(username, email, password))
       if (data) {
-        setErrors(data);
+        setErrors(data)
       }
     } else {
       setErrors([
-        "Confirm Password field must be the same as the Password field",
-      ]);
+        'Confirm Password field must be the same as the Password field'
+      ])
     }
-
-  const renderErrors = () => {
-    return (
-      <ul className='error-list'>
-        {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
-        ))}
-      </ul>
-    )
   }
 
-
   return (
-    <div className='signup-form-container'>
-      <h1 className='form-heading'>What's your email?</h1>
+    <>
+      <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <ul>
           {errors.map((error, idx) => (
@@ -55,18 +42,41 @@ function SignupFormPage () {
           Email
           <input
             type='text'
-            placeholder='example@email.com'
             value={email}
             onChange={e => setEmail(e.target.value)}
+            required
           />
-        </div>
-        <div className='form-field'>
-          <button type='submit' className='signup-button'>
-            Sign up
-          </button>
-        </div>
+        </label>
+        <label>
+          Username
+          <input
+            type='text'
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type='password'
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Confirm Password
+          <input
+            type='password'
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            required
+          />
+        </label>
+        <button type='submit'>Sign Up</button>
       </form>
-    </div>
+    </>
   )
 }
 
