@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, useHistory } from 'react-router-dom'
-import { signUp } from '../../store/session'
-import { useModal } from '../../context/Modal'
-import './SignupForm.css'
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { signUp } from "../../store/session";
+import "./SignupForm.css";
 
 function SignupFormPage () {
   const dispatch = useDispatch()
@@ -22,16 +21,15 @@ function SignupFormPage () {
   const handleSubmit = async e => {
     e.preventDefault()
     if (password === confirmPassword) {
-      const data = await dispatch(signUp(firstName, lastName, email, password))
-      if (data && data.errors) {
-        setErrors(data.errors.map(error => error.msg))
+      const data = await dispatch(signUp(firstName, lastName, email, password));
+      if (data) {
+        setErrors(data);
       }
     } else {
       setErrors([
-        'Confirm Password field must be the same as the Password field'
-      ])
+        "Confirm Password field must be the same as the Password field",
+      ]);
     }
-  }
 
   const renderErrors = () => {
     return (
@@ -43,12 +41,18 @@ function SignupFormPage () {
     )
   }
 
+
   return (
     <div className='signup-form-container'>
       <h1 className='form-heading'>What's your email?</h1>
       <form onSubmit={handleSubmit}>
-        {renderErrors()}
-        <div className='form-field'>
+        <ul>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul>
+        <label>
+          Email
           <input
             type='text'
             placeholder='example@email.com'
