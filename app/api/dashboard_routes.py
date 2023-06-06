@@ -13,6 +13,8 @@ def get_user_dashboard():
     """
     user = current_user
 
+    print("------------------------", user.user_teams)
+
     dashboard_data = {
         'id': user.id,
         'firstName': user.firstName,
