@@ -43,6 +43,7 @@ def get_team_members_dict(project):
 def retrieve_project(id):
 
     project = Project.query.get(id)
+    print(project)
 
     if not project:
         return {"message": "Project not found", "statusCode": 404}, 404
