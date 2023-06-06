@@ -1,22 +1,30 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Task, TaskComment, User, Project
+from app.forms import TaskForm
 from datetime import datetime
 
 tasks_routes = Blueprint('tasks', __name__)
 
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
+
+# -------------- GET TASK BY ID  --------------------
 @tasks_routes.route('/<int:id>', methods=['GET'])
 @login_required
 def retrieve_task(id):
     task = Task.query.get(id)
+
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
 
-    # # Check if the current user is the owner of the task or the task is assigned to the current user
-    # if current_user.id != task.owner_id and current_user.id != task.assigned_to:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
-    # Check if the current user is the owner of the task or part of the team associated with the project
     if current_user.id != task.owner_id and current_user.id not in [user.id for user in task.project.team.members]:
         return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
@@ -24,40 +32,7 @@ def retrieve_task(id):
     task_dict['comments'] = [comment.to_dict() for comment in task.comments]
     return jsonify([task_dict]), 200
 
-# @tasks_routes.route('/current', methods=['GET'])
-# @login_required
-# def retrieve_user_tasks():
-#     """
-#     Retrieves tasks assigned to the current User.
-#     """
-#     user_id = current_user.id
-#     tasks = Task.query.filter(Task.assigned_to == user_id).all()
-#     tasks_data = {}
-#     for task in tasks:
-#         tasks_data[task.id] = {
-#             'name': task.name,
-#             'description': task.description,
-#             'due_date': task.due_date.strftime('%m/%d/%Y'),
-#             'completed': str(task.completed),
-#             'owner': {
-#                 'firstName': task.owner.firstName,
-#             },
-#             'assignee': task.assignee.firstName,
-#             'project': {
-#                 'name': task.project.name
-#             },
-#             'comments': {}
-#         }
-#         for comment in task.comments:
-#             tasks_data[task.id]['comments'][comment.id] = {
-#                 'comment': comment.comment,
-#                 'created_at': comment.created_at.strftime('%m/%d/%Y'),
-#                 'user': {
-#                     'firstName': comment.user.firstName
-#                 }
-#             }
-#     return jsonify({'Tasks': tasks_data}), 200
-
+# -------------- GET TASK BY CURRENT USER  --------------------
 @tasks_routes.route('/', methods=['GET'])
 @login_required
 def retrieve_user_tasks():
@@ -66,52 +41,44 @@ def retrieve_user_tasks():
     tasks_data = [task.to_dict() for task in tasks]
     return jsonify(tasks_data), 200
 
+# -------------- CREATE TASK  --------------------
 @tasks_routes.route('/', methods=['POST'])
 @login_required
 def create_task():
-    """
-    Creates a new task.
-    """
-    data = request.get_json()
-    name = data.get('name')
-    description = data.get('description')
-    assigned_to = data.get('assigned_to')
-    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d').date()
-    completed = data.get('completed')
-    project_id = data.get('project_id')
 
-    if not name or not description or not assigned_to or not due_date or not completed or not project_id:
-        return jsonify({'message': 'Invalid request body', 'statusCode': 400}), 400
+    form = TaskForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    project = Project.query.get(project_id)
-    if not project:
-        return jsonify({'message': 'Project not found', 'statusCode': 404}), 404
-
-    # # Check if the current user is part of the project
-    # if current_user.id not in [user.id for user in project.team.members]:
+    # if current_user not in project.team.members and current_user.id != project.owner_id:
     #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
-    # Check if the current user is associated with the project
-    if current_user not in project.team.members and current_user != project.owner:
-        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+    if form.validate_on_submit():
+        project_id = form.data['project_id']
 
-    owner_id = current_user.id
+        project = Project.query.get(project_id)
+        print("----------------------------", project)
+        if not project:
+            return jsonify({'message': 'Invalid project_id', 'statusCode': 400}), 400
+        if current_user not in project.team.members and current_user.id != project.owner_id:
+            return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
-    new_task = Task(
-        name=name,
-        description=description,
-        assigned_to=assigned_to,
-        due_date=due_date,
-        completed=completed,
-        project_id=project_id,
-        owner_id=owner_id,
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
-    )
-    db.session.add(new_task)
-    db.session.commit()
 
-    return jsonify(new_task.to_dict()), 201
+        due_date_str = form.data['due_date']
+        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+
+        task = Task(
+            owner_id = current_user.id,
+            name = form.data['name'],
+            description = form.data['description'],
+            assigned_to = form.data['assigned_to'],
+            due_date = due_date,
+            project_id = form.data['project_id']
+        )
+        db.session.add(task)
+        db.session.commit()
+        return task.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
 
 @tasks_routes.route('/<int:id>', methods=['PUT'])
 @login_required
