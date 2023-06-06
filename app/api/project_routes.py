@@ -43,7 +43,7 @@ def get_team_members_dict(project):
 def retrieve_project(id):
 
     project = Project.query.get(id)
-    print(project)
+    print("----------------------", project)
 
     if not project:
         return {"message": "Project not found", "statusCode": 404}, 404
@@ -72,9 +72,7 @@ def retrieve_project(id):
 
         project_dict['team_members'] = team_members_dict
 
-        return jsonify(project_dict)
-    else:
-        return {"message": "Project not found", "statusCode": 404}, 404
+    return jsonify(project_dict)
 
 
 
@@ -147,16 +145,17 @@ def update_project(id):
 @project_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_project(id):
-    """
-    Deletes a specific project by its ID.
-    """
     project = Project.query.get(id)
-    if project:
-        # Check if the current user is the owner of the project
-        if project.owner_id != current_user.id:
-            return {"message": "Unauthorized", "statusCode": 403}, 403
-        db.session.delete(project)
-        db.session.commit()
-        return {"message": "Successfully Deleted."}, 204
-    else:
+    if not project:
         return {"message": "Project not found", "statusCode": 404}, 404
+
+    team_id = project.team_id
+    team = Team.query.filter_by(id=team_id).options(joinedload('owner')).first()
+    owner_id = team.owner_id
+
+    if project.owner_id != current_user.id and current_user.id != team.owner_id:
+        return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    db.session.delete(project)
+    db.session.commit()
+    return {"message": "Successfully Deleted."}, 204

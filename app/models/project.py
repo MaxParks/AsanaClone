@@ -19,7 +19,7 @@ class Project(db.Model):
 
     owner = db.relationship('User', back_populates='owned_projects')
     team = db.relationship('Team', back_populates='projects')
-    tasks = db.relationship('Task', back_populates='project')
+    tasks = db.relationship('Task', back_populates='project', cascade='all, delete-orphan')
 
 
     def to_dict(self):

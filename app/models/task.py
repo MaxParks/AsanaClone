@@ -22,7 +22,7 @@ class Task(db.Model):
     owner = db.relationship('User', foreign_keys=[owner_id], back_populates='owned_tasks')
     assignee = db.relationship('User', foreign_keys=[assigned_to], back_populates='assigned_tasks')
     project = db.relationship('Project', back_populates='tasks')
-    comments = db.relationship('TaskComment', back_populates='task')
+    comments = db.relationship('TaskComment', back_populates='task', cascade='all, delete')
 
     def to_dict(self):
         return {
