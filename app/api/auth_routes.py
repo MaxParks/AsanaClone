@@ -19,6 +19,7 @@ def validation_errors_to_error_messages(validation_errors):
 
 
 @auth_routes.route('/')
+
 def authenticate():
     """
     Authenticates a user.
@@ -61,6 +62,14 @@ def sign_up():
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
+     # Check if email is already in use
+    if form.email.data:
+        user = User.query.filter(User.email == form.email.data).first()
+        if user:
+            return {'errors': ['Email is already in use.']}, 401
+
+
     if form.validate_on_submit():
         user = User(
             firstName=form.data['firstName'],

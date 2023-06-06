@@ -18,12 +18,7 @@ function SignupFormPage () {
   const handleSubmit = async e => {
     e.preventDefault()
     if (password === confirmPassword) {
-<<<<<<< HEAD
-      console.log('ERRORS', errors)
-      const data = await dispatch(signUp(firstName, lastName, email, password))
-=======
       const data = await dispatch(signUp(username, email, password))
->>>>>>> dev
       if (data) {
         setErrors(data)
       }
@@ -38,21 +33,13 @@ function SignupFormPage () {
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-<<<<<<< HEAD
-        <ul className='error-list'>
-=======
         <ul>
->>>>>>> dev
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
-<<<<<<< HEAD
-        <div className='form-field'>
-=======
         <label>
           Email
->>>>>>> dev
           <input
             type='text'
             value={email}

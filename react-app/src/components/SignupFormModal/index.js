@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useModal } from '../../context/Modal'
 import { useHistory } from 'react-router-dom'
@@ -13,46 +13,63 @@ function SignUpFormModal () {
   const [password, setPassword] = useState('')
   const [step, setStep] = useState(1)
   const [errors, setErrors] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(true) // Track modal state
   const { closeModal } = useModal()
   const history = useHistory()
 
+  const isValidEmail = email => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  // add code to check if user exists
   const handleContinue = e => {
     e.preventDefault()
     setErrors([]) // Clear any existing errors
-    setStep(2)
 
+    // Check if email field is empty
+    if (email.trim() === '') {
+      setErrors(['Email is required.'])
+    }
+    // Check if email format is valid
+    else if (!isValidEmail(email)) {
+      setErrors(['Invalid email format.'])
+    } else {
+      setStep(2)
+    }
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
-    const validationErrors = []
-    console.log('VALIDATION ERRORS --->',validationErrors)
+    console.log('VALIDATION ERRORS --->', errors)
 
-    if (validationErrors.length > 0) {
-      setErrors(validationErrors)
+    const data = await dispatch(signUp(firstName, lastName, email, password))
+
+    if (Array.isArray(data)) {
+      console.log('DATA ---->', data)
+      setErrors(data)
+    } else if (data && data.id) {
+      setIsModalOpen(false) // Close the modal after successful signup
+      history.push('/user/dashboard')
     } else {
-      const data = await dispatch(signUp(firstName, lastName, email, password))
-      if (data) {
-        setErrors(data)
-      } else if (data && data.id) {
-        history.push('/user/dashboard')
-        closeModal()
-      }
       closeModal()
     }
   }
 
+  useEffect(() => {
+    return () => {
+      closeModal()
+    }
+  }, [closeModal])
 
   return (
-    <div className='signup-form-container signup-modal
-'>
+    <div className='signup-form-container signup-modal'>
       {step === 1 ? (
         <>
           <div className='header signup'>
             <p>What's your email?</p>
           </div>
           <form onSubmit={handleContinue}>
-
             <div className='form-field signup'>
               <label htmlFor='email'></label>
               <input
@@ -64,6 +81,13 @@ function SignUpFormModal () {
                 onChange={e => setEmail(e.target.value)}
               />
             </div>
+            {errors.length > 0 && (
+              <ul className='error-list'>
+                {errors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}
             <div className='continue-btn'>
               <button type='submit' className='continue-btn'>
                 Sign Up
@@ -90,6 +114,9 @@ function SignUpFormModal () {
                 value={firstName}
                 onChange={e => setFirstName(e.target.value)}
               />
+              {errors.includes('This field is required.') && (
+                <span className='error-message'>This field is required.</span>
+              )}
             </div>
             <div className='form-field signup2'>
               <label htmlFor='lastName'>What is your last name?</label>
@@ -99,6 +126,9 @@ function SignUpFormModal () {
                 value={lastName}
                 onChange={e => setLastName(e.target.value)}
               />
+              {errors.includes('This field is required.') && (
+                <span className='error-message'>This field is required.</span>
+              )}
             </div>
             <div className='form-field'>
               <label htmlFor='password'>Password</label>
@@ -108,6 +138,9 @@ function SignUpFormModal () {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
+              {errors.includes('This field is required.') && (
+                <span className='error-message'>This field is required.</span>
+              )}
             </div>
             <div className='signup-btn'>
               <button type='submit' className='signup-btn'>
