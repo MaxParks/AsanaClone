@@ -5,7 +5,7 @@ const UPDATE_PROJECT = 'projects/UPDATE_PROJECT';
 const REMOVE_PROJECT = 'projects/REMOVE_PROJECT';
 
 // Action creators
-const loadProjects = (projects) => ({
+const loadProject = (projects) => ({
   type: LOAD_PROJECTS,
   payload: projects,
 });
@@ -26,7 +26,7 @@ const removeProject = (projectId) => ({
 });
 
 // Thunk actions
-export const fetchProject = (id) => async (dispatch) => {
+export const fetchProjects = (id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/projects${id}`);
     if (!response.ok) {
@@ -34,7 +34,7 @@ export const fetchProject = (id) => async (dispatch) => {
     }
 
     const data = await response.json();
-    dispatch(loadProjects(data));
+    dispatch(loadProject(data));
   } catch (error) {
     console.error(error);
     // Handle error if needed
