@@ -26,13 +26,14 @@ function SignUpFormModal () {
   const handleSubmit = async e => {
     e.preventDefault()
     const validationErrors = []
+    console.log('VALIDATION ERRORS --->',validationErrors)
 
     if (validationErrors.length > 0) {
       setErrors(validationErrors)
     } else {
       const data = await dispatch(signUp(firstName, lastName, email, password))
-      if (data && data.errors) {
-        setErrors(data.errors.map(error => error.msg))
+      if (data) {
+        setErrors(data)
       } else if (data && data.id) {
         history.push('/user/dashboard')
         closeModal()

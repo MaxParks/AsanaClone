@@ -22,32 +22,27 @@ function SignupFormPage () {
   const handleSubmit = async e => {
     e.preventDefault()
     if (password === confirmPassword) {
+      console.log('ERRORS', errors)
       const data = await dispatch(signUp(firstName, lastName, email, password))
-      if (data && data.errors) {
-        setErrors(data.errors.map(error => error.msg))
+      if (data) {
+        setErrors(data)
       }
     } else {
       setErrors([
-        'Confirm Password field must be the same as the Password field'
+        'Confirm Password field must be the same as the password field'
       ])
     }
-  }
-
-  const renderErrors = () => {
-    return (
-      <ul className='error-list'>
-        {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
-        ))}
-      </ul>
-    )
   }
 
   return (
     <div className='signup-form-container'>
       <h1 className='form-heading'>What's your email?</h1>
       <form onSubmit={handleSubmit}>
-        {renderErrors()}
+        <ul className='error-list'>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul>
         <div className='form-field'>
           <input
             type='text'
