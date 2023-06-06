@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import db, Project, User, Task
+from app.models import db, Project, User, Task, UserTeam
 from datetime import datetime
 
 project_routes = Blueprint('projects', __name__)
@@ -8,16 +8,32 @@ project_routes = Blueprint('projects', __name__)
 @project_routes.route('/<int:id>', methods=['GET'])
 @login_required
 def retrieve_project(id):
-    """
-    Retrieves a specific project by its ID, and its associated tasks.
-    """
+
     project = Project.query.get(id)
+
+    team_id = project.team_id
+
+    # Check if the current user is the owner of the project
+    if current_user.id != project.owner_id:
+        return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    project_dict = project.to_dict()
+
+    print("----------------------------------", project_dict)
+
+    user_ids = [user_id[0] for user_id in UserTeam.query.filter_by(team_id=team_id).distinct().values(UserTeam.user_id)]
+
+    print("----------------------------------", user_ids)
+
     if project:
         project_dict = project.to_dict()
         project_dict['tasks'] = []
 
+        sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
+
+
         # Add project's tasks
-        for task in project.tasks:
+        for task in sorted_tasks:
             task_dict = {
                 'id': task.id,
                 'name': task.name,
