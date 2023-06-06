@@ -8,7 +8,6 @@ from datetime import datetime
 def due_date_format(form, field):
     due_date = field.data
     if due_date and not due_date.strip():
-        # Convert an empty string to None
         field.data = None
     elif due_date is not None:
         try:

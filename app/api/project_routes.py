@@ -54,11 +54,6 @@ def retrieve_project(id):
         if current_user.id not in team_members_dict:
                     return {"message": "Unauthorized", "statusCode": 403}, 403
 
-    team_id = project.team_id
-    team = Team.query.filter_by(id=team_id).options(joinedload('owner')).first()
-    owner_id = team.owner_id
-    print('-----------------', owner_id)
-
     project_dict = project.to_dict()
     project_dict['tasks'] = []
 
@@ -120,32 +115,35 @@ def update_project(id):
     if not project:
         return {"message": "Project not found", "statusCode": 404}, 404
 
-    if current_user.id != project.owner_id:
+    team_id = project.team_id
+    team = Team.query.filter_by(id=team_id).options(joinedload('owner')).first()
+    owner_id = team.owner_id
+
+    if current_user.id != project.owner_id and current_user.id != team.owner_id:
         return {"message": "Unauthorized", "statusCode": 403}, 403
 
-    team_id = project.team_id
-    team = Team.query.filter_by(id=team_id)
-    owner_id = team.owner_id
-    print('-----------------', owner_id)
+    form = ProjectForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    data = request.get_json()
-    name = data.get('name')
-    date_string = data['due_date']
-    due_date = datetime.strptime(date_string, '%m/%d/%Y')
-    description = data.get('description')
+    if form.validate_on_submit():
+        team_id = form.data['team_id']
+        name = form.data['name']
+        due_date_str = form.data['due_date']
+        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        description = form.data['description']
 
-    if not name or not description or not due_date:
-        return {"message": "Invalid request body", "statusCode": 400}, 400
+        project.team_id = team_id
+        project.name = name
+        project.due_date = due_date
+        project.description = description
+        project.updated_at = datetime.utcnow()
+        db.session.commit()
 
-    project.name = name
-    project.description = description
-    project.due_date = due_date
-    project.updated_at = datetime.utcnow()
-    db.session.commit()
-    return jsonify(project.to_dict()), 200
+        return jsonify(project.to_dict()), 201
 
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-
+# -------------- DELETE PROJECT --------------------
 @project_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_project(id):
