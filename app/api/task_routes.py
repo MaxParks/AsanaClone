@@ -8,9 +8,6 @@ tasks_routes = Blueprint('tasks', __name__)
 @tasks_routes.route('/<int:id>', methods=['GET'])
 @login_required
 def retrieve_task(id):
-    """
-    Retrieves a specific task by its ID.
-    """
     task = Task.query.get(id)
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
@@ -24,7 +21,7 @@ def retrieve_task(id):
         return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
     task_dict = task.to_dict()
-    task_dict['TaskComments'] = [comment.to_dict() for comment in task.comments]
+    task_dict['comments'] = [comment.to_dict() for comment in task.comments]
     return jsonify([task_dict]), 200
 
 # @tasks_routes.route('/current', methods=['GET'])
@@ -64,24 +61,9 @@ def retrieve_task(id):
 @tasks_routes.route('/', methods=['GET'])
 @login_required
 def retrieve_user_tasks():
-    """
-    Retrieves tasks assigned to the current User.
-    """
     user_id = current_user.id
     tasks = Task.query.filter(Task.assigned_to == user_id).all()
-    tasks_data = []
-    for task in tasks:
-        task_dict = {
-            'id': task.id,
-            'name': task.name,
-            'completed': task.completed,
-            'due_date': task.due_date.strftime('%m/%d/%Y'),
-            'project': {
-                'id': task.project.id,
-                'name': task.project.name,
-            }
-        }
-        tasks_data.append(task_dict)
+    tasks_data = [task.to_dict() for task in tasks]
     return jsonify(tasks_data), 200
 
 @tasks_routes.route('/', methods=['POST'])
