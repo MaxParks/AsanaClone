@@ -5,13 +5,6 @@ from datetime import datetime
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
-    # demo = User(
-    #     username='Demo', email='demo@aa.io', password='password')
-    # marnie = User(
-    #     username='marnie', email='marnie@aa.io', password='password')
-    # bobbie = User(
-    #     username='bobbie', email='bobbie@aa.io', password='password')
-
     demo = User(
         firstName='Demo',
         lastName='User',
@@ -19,24 +12,72 @@ def seed_users():
         password='password',
         created_at=datetime.utcnow()
     )
+
     marnie = User(
         firstName='Marnie',
-        lastName='Johnson',
+        lastName='User',
         email='marnie@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
-    bobbie = User(
-        firstName='Bobbie',
-        lastName='Levsey',
-        email='bobbie@aa.io',
+
+    alice = User(
+        firstName='Alice',
+        lastName='User',
+        email='alice@aa.io',
+        password='password',
+        created_at=datetime.utcnow()
+    )
+
+    bob = User(
+        firstName='Bob',
+        lastName='User',
+        email='bob@aa.io',
+        password='password',
+        created_at=datetime.utcnow()
+    )
+
+    user5 = User(
+        firstName='User5',
+        lastName='User',
+        email='user5@aa.io',
+        password='password',
+        created_at=datetime.utcnow()
+    )
+
+    user6 = User(
+        firstName='User6',
+        lastName='User',
+        email='user6@aa.io',
+        password='password',
+        created_at=datetime.utcnow()
+    )
+
+    user7 = User(
+        firstName='User7',
+        lastName='User',
+        email='user7@aa.io',
+        password='password',
+        created_at=datetime.utcnow()
+    )
+
+    user8 = User(
+        firstName='User8',
+        lastName='User',
+        email='user8@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
 
     db.session.add(demo)
     db.session.add(marnie)
-    db.session.add(bobbie)
+    db.session.add(alice)
+    db.session.add(bob)
+    db.session.add(user5)
+    db.session.add(user6)
+    db.session.add(user7)
+    db.session.add(user8)
+
     db.session.commit()
 
 

@@ -23,12 +23,14 @@ class Project(db.Model):
 
 
     def to_dict(self):
+        due_date_str = self.due_date.strftime('%m-%d-%Y') if self.due_date is not None else None
+
         return {
             'id': self.id,
             'owner_id': self.owner_id,
             'team_id': self.team_id,
             'name': self.name,
-            'due_date': self.due_date,
+            'due_date': due_date_str,
             'description': self.description,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),

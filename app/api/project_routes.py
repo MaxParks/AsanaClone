@@ -1,32 +1,80 @@
 from flask import Blueprint, request, jsonify
+from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
-from app.models import db, Project, User, Task
+from app.models import db, Project, User, Task, Team, UserTeam
+from app.forms import ProjectForm
 from datetime import datetime
 
 project_routes = Blueprint('projects', __name__)
 
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
+
+
+def get_team_members_dict(project):
+    team_id = project.team_id
+
+    user_ids = [user_id[0] for user_id in UserTeam.query.filter_by(team_id=team_id).distinct().values(UserTeam.user_id)]
+
+    team_members = User.query.filter(User.id.in_(user_ids)).all()
+
+    team_members_dict = {}
+    for member in team_members:
+        user_info = {
+            'firstName': member.firstName,
+            'lastName': member.lastName,
+            'email': member.email
+        }
+        team_members_dict[member.id] = user_info
+
+    return team_members_dict
+
+
+# -------------- GET PROJECT --------------------
 @project_routes.route('/<int:id>', methods=['GET'])
 @login_required
 def retrieve_project(id):
-    """
-    Retrieves a specific project by its ID, and its associated tasks.
-    """
-    project = Project.query.get(id)
-    if project:
-        project_dict = project.to_dict()
-        project_dict['tasks'] = []
 
-        # Add project's tasks
-        for task in project.tasks:
-            task_dict = {
-                'id': task.id,
-                'name': task.name,
-                'description': task.description,
-                'due_date': task.due_date.isoformat(),
-                'completed': task.completed,
-                'assigned_to': task.assigned_to,
-            }
-            project_dict['tasks'].append(task_dict)
+    project = Project.query.get(id)
+
+    if not project:
+        return {"message": "Project not found", "statusCode": 404}, 404
+
+    team_members_dict = get_team_members_dict(project)
+
+    if current_user.id != project.owner_id:
+        if current_user.id not in team_members_dict:
+                    return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    team_id = project.team_id
+    team = Team.query.filter_by(id=team_id).options(joinedload('owner')).first()
+    owner_id = team.owner_id
+    print('-----------------', owner_id)
+
+    project_dict = project.to_dict()
+    project_dict['tasks'] = []
+
+    sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
+
+    for task in sorted_tasks:
+        task_dict = {
+            'id': task.id,
+            'name': task.name,
+            'description': task.description,
+            'due_date': task.due_date.isoformat(),
+            'completed': task.completed,
+            'assigned_to': task.assigned_to,
+        }
+        project_dict['tasks'].append(task_dict)
+
+        project_dict['team_members'] = team_members_dict
 
         return jsonify(project_dict)
     else:
@@ -34,45 +82,50 @@ def retrieve_project(id):
 
 
 
-
+# -------------- CREATE PROJECT --------------------
 @project_routes.route('/', methods=['POST'])
 @login_required
 def create_project():
-    """
-    Creates a new project.
-    """
-    data = request.get_json()
-    name = data.get('name')
-    description = data.get('description')
-    date_string = data['due_date']
-    due_date = datetime.strptime(date_string, '%m/%d/%Y')
-    team_id = data.get('team_id')
+    form = ProjectForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    if not name or not description or not due_date or not team_id:
-        return {"message": "Invalid request body", "statusCode": 400}, 400
+    if form.validate_on_submit():
+        due_date_str = form.data['due_date']
+        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
 
-    owner_id = current_user.id  # Use the authenticated user's ID as the owner_id
+        project = Project(
+            owner_id = current_user.id,
+            team_id = form.data['team_id'],
+            name = form.data['name'],
+            due_date = due_date,
+            description = form.data['description']
+        )
+        db.session.add(project)
+        db.session.commit()
+        return project.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-    new_project = Project(name=name, description=description, due_date=due_date, owner_id=owner_id, team_id=team_id, created_at=datetime.utcnow(), updated_at=datetime.utcnow())
     db.session.add(new_project)
     db.session.commit()
     return jsonify(new_project.to_dict()), 201
 
 
 
+# -------------- UPDATE PROJECT --------------------
 @project_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def update_project(id):
-    """
-    Updates a specific project by its ID.
-    """
     project = Project.query.get(id)
     if not project:
         return {"message": "Project not found", "statusCode": 404}, 404
 
-    # Check if the current user is the owner of the project
     if current_user.id != project.owner_id:
         return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    team_id = project.team_id
+    team = Team.query.filter_by(id=team_id)
+    owner_id = team.owner_id
+    print('-----------------', owner_id)
 
     data = request.get_json()
     name = data.get('name')
