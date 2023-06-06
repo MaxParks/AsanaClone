@@ -1,9 +1,20 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from app.models import db, Project, User, Task, UserTeam
+from app.forms import ProjectForm
 from datetime import datetime
 
 project_routes = Blueprint('projects', __name__)
+
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
 
 @project_routes.route('/<int:id>', methods=['GET'])
 @login_required
@@ -64,22 +75,25 @@ def retrieve_project(id):
 @project_routes.route('/', methods=['POST'])
 @login_required
 def create_project():
-    """
-    Creates a new project.
-    """
-    data = request.get_json()
-    name = data.get('name')
-    description = data.get('description')
-    date_string = data['due_date']
-    due_date = datetime.strptime(date_string, '%m/%d/%Y')
-    team_id = data.get('team_id')
+    form = ProjectForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    if not name or not description or not due_date or not team_id:
-        return {"message": "Invalid request body", "statusCode": 400}, 400
+    if form.validate_on_submit():
+        due_date_str = form.data['due_date']
+        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
 
-    owner_id = current_user.id  # Use the authenticated user's ID as the owner_id
+        project = Project(
+            owner_id = current_user.id,
+            team_id = form.data['team_id'],
+            name = form.data['name'],
+            due_date = due_date,
+            description = form.data['description']
+        )
+        db.session.add(project)
+        db.session.commit()
+        return project.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-    new_project = Project(name=name, description=description, due_date=due_date, owner_id=owner_id, team_id=team_id, created_at=datetime.utcnow(), updated_at=datetime.utcnow())
     db.session.add(new_project)
     db.session.commit()
     return jsonify(new_project.to_dict()), 201
