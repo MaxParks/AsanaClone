@@ -11,19 +11,29 @@ def retrieve_project(id):
 
     project = Project.query.get(id)
 
+    if not project:
+        return {"message": "Project not found", "statusCode": 404}, 404
+
     team_id = project.team_id
-
-    # Check if the current user is the owner of the project
-    if current_user.id != project.owner_id:
-        return {"message": "Unauthorized", "statusCode": 403}, 403
-
-    project_dict = project.to_dict()
-
-    print("----------------------------------", project_dict)
 
     user_ids = [user_id[0] for user_id in UserTeam.query.filter_by(team_id=team_id).distinct().values(UserTeam.user_id)]
 
-    print("----------------------------------", user_ids)
+    if current_user.id != project.owner_id:
+        if current_user.id not in user_ids:
+                    return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    team_members = User.query.filter(User.id.in_(user_ids)).all()
+
+    team_members_dict = {}
+    for member in team_members:
+        user_info = {
+            'firstName': member.firstName,
+            'lastName': member.lastName,
+            'email': member.email
+        }
+        team_members_dict[member.id] = user_info
+
+    project_dict = project.to_dict()
 
     if project:
         project_dict = project.to_dict()
@@ -31,8 +41,6 @@ def retrieve_project(id):
 
         sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
 
-
-        # Add project's tasks
         for task in sorted_tasks:
             task_dict = {
                 'id': task.id,
@@ -43,6 +51,8 @@ def retrieve_project(id):
                 'assigned_to': task.assigned_to,
             }
             project_dict['tasks'].append(task_dict)
+
+        project_dict['team_members'] = team_members_dict
 
         return jsonify(project_dict)
     else:
