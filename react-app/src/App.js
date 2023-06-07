@@ -9,9 +9,9 @@ import LoginFormPage from "./components/LoginFormPage";
 import Sidebar from "./components/Sidebar";
 import Navigation from "./components/Navigation";
 import Dashboard from "./components/Dashboard";
-import AllTasks from "./components/AllTasks";
+import UserTasks from "./components/Tasks/UserTasks";
 import Team from "./components/Team";
-import Project from "./components/Project";
+import GetProject from "./components/Projects/GetProject";
 
 function App() {
   const dispatch = useDispatch();
@@ -47,11 +47,11 @@ function App() {
               </Route>
 
               <Route path="/tasks/current">
-                {user ? <AllTasks /> : <Redirect to="/" />}
+                {user ? <UserTasks /> : <Redirect to="/" />}
               </Route>
 
               <Route path="/projects/:id">
-                {user ? <Project /> : <Redirect to="/" />}
+                {user ? <GetProject /> : <Redirect to="/" />}
               </Route>
 
               <Route path="/teams/:id">

@@ -1,7 +1,7 @@
 // Constants
 const LOAD_PROJECTS = "projects/loadProject";
-const ADD_PROJECT = "projects/ADD_PROJECT";
-const UPDATE_PROJECT = "projects/UPDATE_PROJECT";
+const ADD_PROJECT = "projects/createProject";
+const UPDATE_PROJECT = "projects/updateProject";
 const REMOVE_PROJECT = "projects/REMOVE_PROJECT";
 
 // Action creators
@@ -10,14 +10,17 @@ const loadProject = (data) => ({
   payload: data,
 });
 
-const addProject = (project) => ({
+const createProject = (data) => ({
   type: ADD_PROJECT,
-  payload: project,
+  payload: data,
 });
 
-const updateProject = (project) => ({
+const updateProject = (projectId, data) => ({
   type: UPDATE_PROJECT,
-  payload: project,
+  data: {
+    id: projectId,
+    ...data,
+  },
 });
 
 const removeProject = (projectId) => ({
@@ -35,47 +38,36 @@ export const getProjectThunk = (id) => async (dispatch) => {
   }
 };
 
-export const createProject =
+export const createProjectThunk =
   (name, description, due_date, team_id) => async (dispatch) => {
-    try {
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, due_date, team_id }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to create project");
-      }
+    const response = await fetch("/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, description, due_date, team_id }),
+    });
 
+    if (response.ok) {
       const data = await response.json();
-      dispatch(addProject(data));
-    } catch (error) {
-      console.error(error);
-      // Handle error if needed
+      dispatch(createProject(data));
+      return data;
     }
   };
 
-export const updateSingleProject =
-  (id, name, description, due_date) => async (dispatch) => {
-    try {
-      const response = await fetch(`/api/projects/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, due_date }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to update project");
-      }
-
+export const updateProjectThunk =
+  (projectId, updatedProjectData) => async (dispatch) => {
+    const response = await fetch(`/api/projects/${projectId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedProjectData),
+    });
+    if (response.ok) {
       const data = await response.json();
-      dispatch(updateProject(data));
-    } catch (error) {
-      console.error(error);
-      // Handle error if needed
+      dispatch(updateProject(projectId, data));
+      return data;
     }
   };
 
@@ -96,13 +88,14 @@ export const deleteProject = (id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = [];
+const initialState = {};
 
 // Reducer
 export default function projectsReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_PROJECTS:
       return {
+        ...state,
         ...action.payload,
       };
     case ADD_PROJECT:

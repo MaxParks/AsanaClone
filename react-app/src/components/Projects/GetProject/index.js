@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getProjectThunk } from "../store/projects";
+import { getProjectThunk } from "../../../store/projects";
 import { useParams } from "react-router-dom";
 
 function Project({ isLoaded }) {

@@ -9,6 +9,7 @@ import "./Navigation/Navigation.css";
 function Dashboard({ isLoaded }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+  const dashboardData = useSelector((state) => state.dashboard.dashboard);
 
   useEffect(() => {
     dispatch(getDashboardThunk());
