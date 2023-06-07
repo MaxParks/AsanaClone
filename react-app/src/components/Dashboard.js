@@ -53,7 +53,7 @@ function Dashboard() {
             <h2 className="section-title">My Tasks</h2>
             <div className="create-task-button">
               <OpenModalButton
-                buttonText="Add New Project"
+                buttonText="Add New Task"
                 modalComponent={<AddTaskModal />}
                 className="button-AddTaskModal"
               />

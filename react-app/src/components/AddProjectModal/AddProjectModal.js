@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { createProjectThunk } from '../../store/projects';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import { useHistory } from 'react-router-dom';
 // import 'AddProjectModal.css';
 
 function CreateProjectModal() {
+  const sessionUser = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const [team_id, setTeamId] = useState('');
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
   const history = useHistory();
@@ -20,12 +22,12 @@ function CreateProjectModal() {
     if (validationErrors.length > 0) {
       setErrors(validationErrors)
     } else{
-    const data = await dispatch(createProjectThunk(name, description, dueDate));
+    const data = await dispatch(createProjectThunk(name, description, dueDate, team_id));
     if (data && data.errors) {
       setErrors(data.errors.map(error => error.msg))
     } else if (data && data.id) {
       closeModal();
-      history.push('/dashboard');
+      history.push('/user/dashboard');
     }
     closeModal()
     }
@@ -48,6 +50,16 @@ function CreateProjectModal() {
             placeholder="Project name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="form-field">
+          <label htmlFor="team_id">Team</label>
+          <input
+            type="number"
+            id="team_id"
+            placeholder="Team"
+            value={team_id}
+            onChange={(e) => setTeamId(e.target.value)}
           />
         </div>
         <div className="form-field">
