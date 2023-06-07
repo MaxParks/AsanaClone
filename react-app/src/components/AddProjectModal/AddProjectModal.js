@@ -1,35 +1,41 @@
-import React, { useState } from 'react';
-import { createProjectThunk } from '../../store/projects';
-import { useDispatch, useSelector } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { createProjectThunk } from "../../store/projects";
+import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { useHistory } from "react-router-dom";
 // import 'AddProjectModal.css';
 
 function CreateProjectModal() {
   const sessionUser = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [team_id, setTeamId] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [team_id, setTeamId] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
   const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = []
+    console.log("------------------", 1);
+    const validationErrors = [];
     if (validationErrors.length > 0) {
-      setErrors(validationErrors)
-    } else{
-    const data = await dispatch(createProjectThunk(name, description, dueDate, team_id));
-    if (data && data.errors) {
-      setErrors(data.errors.map(error => error.msg))
-    } else if (data && data.id) {
+      setErrors(validationErrors);
+    } else {
+      console.log("------------------", 2);
+
+      const data = await dispatch(
+        createProjectThunk(name, description, dueDate, team_id)
+      );
+      console.log("------------------", 4);
+      if (data && data.errors) {
+        setErrors(data.errors.map((error) => error.msg));
+      } else if (data && data.id) {
+        closeModal();
+        history.push("/user/dashboard");
+      }
       closeModal();
-      history.push('/user/dashboard');
-    }
-    closeModal()
     }
   };
 
