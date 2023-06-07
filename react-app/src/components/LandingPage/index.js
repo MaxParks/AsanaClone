@@ -36,14 +36,14 @@ function LandingPage({ isLoaded }) {
         </div>
       </div>
       <div className="hero-container">
-        <div class="flex-split">
-          <div class="left-side">
+        <div className="flex-split">
+          <div className="left-side">
             <h3>Your ultimate cross-functional work platform</h3>
             <p style={{ fontSize: "16px" }}>
               Boost productivity effortlessly. ZenFlow empowers every team to
               deliver quality work, swiftly
             </p>
-            <div class="cta-buttons">
+            <div className="cta-buttons">
               <OpenModalButton
                 buttonText="Get Started"
                 modalComponent={<SignupFormModal />}
@@ -52,7 +52,7 @@ function LandingPage({ isLoaded }) {
               <button className="button-transparent">Learn How It Works</button>
             </div>
           </div>
-          <div class="right-side">
+          <div className="right-side">
             <img src="../../assets/images/hero-image.png" />
           </div>
         </div>

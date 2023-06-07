@@ -23,3 +23,5 @@ def user(id):
     """
     user = User.query.get(id)
     return user.to_dict()
+
+#  make route to check if user exists 
