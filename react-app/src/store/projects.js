@@ -1,13 +1,13 @@
 // Constants
-const LOAD_PROJECTS = 'projects/LOAD_PROJECTS';
-const ADD_PROJECT = 'projects/ADD_PROJECT';
-const UPDATE_PROJECT = 'projects/UPDATE_PROJECT';
-const REMOVE_PROJECT = 'projects/REMOVE_PROJECT';
+const LOAD_PROJECTS = "projects/loadProject";
+const ADD_PROJECT = "projects/ADD_PROJECT";
+const UPDATE_PROJECT = "projects/UPDATE_PROJECT";
+const REMOVE_PROJECT = "projects/REMOVE_PROJECT";
 
 // Action creators
-const loadProject = (projects) => ({
+const loadProject = (data) => ({
   type: LOAD_PROJECTS,
-  payload: projects,
+  payload: data,
 });
 
 const addProject = (project) => ({
@@ -26,70 +26,66 @@ const removeProject = (projectId) => ({
 });
 
 // Thunk actions
-export const fetchProjects = (id) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/projects${id}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch projects');
-    }
-
+export const getProjectThunk = (id) => async (dispatch) => {
+  const response = await fetch(`/api/projects/${id}`);
+  if (response.ok) {
     const data = await response.json();
     dispatch(loadProject(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
+    return data;
   }
 };
 
-export const createProject = (name, description, due_date, team_id) => async (dispatch) => {
-  try {
-    const response = await fetch('/api/projects', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, description, due_date, team_id }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to create project');
+export const createProject =
+  (name, description, due_date, team_id) => async (dispatch) => {
+    try {
+      const response = await fetch("/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description, due_date, team_id }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to create project");
+      }
+
+      const data = await response.json();
+      dispatch(addProject(data));
+    } catch (error) {
+      console.error(error);
+      // Handle error if needed
     }
+  };
 
-    const data = await response.json();
-    dispatch(addProject(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
-  }
-};
+export const updateSingleProject =
+  (id, name, description, due_date) => async (dispatch) => {
+    try {
+      const response = await fetch(`/api/projects/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description, due_date }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update project");
+      }
 
-export const updateSingleProject = (id, name, description, due_date) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/projects/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, description, due_date }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to update project');
+      const data = await response.json();
+      dispatch(updateProject(data));
+    } catch (error) {
+      console.error(error);
+      // Handle error if needed
     }
-
-    const data = await response.json();
-    dispatch(updateProject(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
-  }
-};
+  };
 
 export const deleteProject = (id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/projects/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     if (!response.ok) {
-      throw new Error('Failed to delete project');
+      throw new Error("Failed to delete project");
     }
 
     dispatch(removeProject(id));
@@ -106,7 +102,9 @@ const initialState = [];
 export default function projectsReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_PROJECTS:
-      return action.payload;
+      return {
+        ...action.payload,
+      };
     case ADD_PROJECT:
       return [...state, action.payload];
     case UPDATE_PROJECT:
