@@ -1,10 +1,10 @@
 :root {
     /* Colors */
     --color-white: #FFFFFF;
-    --color-light-gray: #EEEBEA;
+    --color-light-gray: #f5f4f3;
     --color-medium-gray: #A2A0A2;
-    --color-dark-gray: #747373;
-    --color-charcoal: #424244;
+    --color-dark-gray: #424244;
+    --color-charcoal: #1e1f21;
     --color-black: #1E1F21;
 
     /* Fonts */
@@ -14,6 +14,7 @@
 
     /* Heading sizes */
     --heading-1-size: 20px;
+    --heading-3-size: 45px;
     --heading-4-size: 20px;
     --heading-5-size: 16px;
 }
@@ -33,7 +34,7 @@ ol {
 
 /* Basic styles */
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     font-size: 14px;
     line-height: 1.5;
 }
@@ -50,6 +51,11 @@ h1 {
     margin-bottom: 10px;
 }
 
+h3 {
+    font-size: var(--heading-3-size);
+    font-weight: var(--font-regular);
+}
+
 h4 {
     font-size: var(--heading-4-size);
     font-weight: var(--font-bold);
@@ -62,15 +68,64 @@ h5 {
     margin-bottom: 10px;
 }
 
-p {
+/* p {
     margin-bottom: 10px;
-}
+} */
 
 a {
     text-decoration: none;
     color: var(--color-black);
 }
 
+button {
+    cursor: pointer;
+    text-align: center;
+    font-weight: var(--font-bold);
+    padding: 8px 15px;
+}
+
 .page-container {
-    margin: 40px;
+    padding: 40px 70px;
+    height: 100vh;
+}
+
+.flex-split {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-split .left-side,
+.flex-split .right-side {
+    flex-basis: 50%;
+    align-items: center;
+    padding: 20px;
+}
+
+.left-side>*:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+/* App */
+.App {
+    display: flex;
+    min-height: 100vh;
+}
+
+.Content {
+    flex: 1;
+    /* margin-left: 20px; */
+}
+
+/* Dropdown */
+.dropdown-content {
+    text-align: center;
+}
+
+.dropdown-content li {
+    padding: 8px 16px;
+}
+
+.dropdown-content li:not(:last-child) {
+    border-bottom: 1px solid var(--color-light-gray);
 }

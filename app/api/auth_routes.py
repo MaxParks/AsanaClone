@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, session, request, redirect, url_for
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -14,7 +14,7 @@ def validation_errors_to_error_messages(validation_errors):
     errorMessages = []
     for field in validation_errors:
         for error in validation_errors[field]:
-            errorMessages.append(f'{field} : {error}')
+            errorMessages.append(f'{error}')
     return errorMessages
 
 
@@ -41,7 +41,7 @@ def login():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
-        return user.to_dict()
+        return redirect(url_for('dashboard_routes.get_user_dashboard'))
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 

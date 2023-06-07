@@ -1,93 +1,123 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
-import { signUp } from "../../store/session";
-import "./SignupForm.css";
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useModal } from '../../context/Modal'
+import { useHistory } from 'react-router-dom'
+import { signUp } from '../../store/session'
+import './SignupForm.css'
 
-function SignupFormModal() {
-	const dispatch = useDispatch();
-	const [email, setEmail] = useState("");
-	const [firstName, setFirstName] = useState("");
-  	const [lastName, setLastName] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [errors, setErrors] = useState([]);
-	const { closeModal } = useModal();
+function SignUpFormModal () {
+  const dispatch = useDispatch()
+  const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [password, setPassword] = useState('')
+  const [step, setStep] = useState(1)
+  const [errors, setErrors] = useState([])
+  const { closeModal } = useModal()
+  const history = useHistory()
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if (password === confirmPassword) {
-			const data = await dispatch(signUp(firstName, lastName, email, password));
-			if (data) {
-				setErrors(data);
-			} else {
-				closeModal();
-			}
-		} else {
-			setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
-		}
-	};
+  const handleContinue = e => {
+    e.preventDefault()
+    setErrors([]) // Clear any existing errors
+    setStep(2)
 
-	return (
-		<>
-			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
-				<ul>
-					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
-					))}
-				</ul>
-				<label>
-					Email
-					<input
-						type="text"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					First Name
-					<input
-						type="text"
-						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Last Name
-					<input
-						type="text"
-						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Password
-					<input
-						type="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Confirm Password
-					<input
-						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
-					/>
-				</label>
-				<button type="submit">Sign Up</button>
-			</form>
-		</>
-	);
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const validationErrors = []
+
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors)
+    } else {
+      const data = await dispatch(signUp(firstName, lastName, email, password))
+      if (data && data.errors) {
+        setErrors(data.errors.map(error => error.msg))
+      } else if (data && data.id) {
+        history.push('/user/dashboard')
+        closeModal()
+      }
+      closeModal()
+    }
+  }
+
+
+  return (
+    <div className='signup-form-container signup-modal
+'>
+      {step === 1 ? (
+        <>
+          <div className='header signup'>
+            <p>What's your email?</p>
+          </div>
+          <form onSubmit={handleContinue}>
+
+            <div className='form-field signup'>
+              <label htmlFor='email'></label>
+              <input
+                className='email-input'
+                type='text'
+                id='email'
+                placeholder='name@company.com'
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </div>
+            <div className='continue-btn'>
+              <button type='submit' className='continue-btn'>
+                Sign Up
+              </button>
+            </div>
+          </form>
+        </>
+      ) : (
+        <>
+          <div className='signup2-flex'>
+            <div className='header signup'>
+              <p>Welcome to ZenFlow!</p>
+            </div>
+            <div className='subheading-container'>
+              <p className='subheading'>You're signing in as {email}</p>
+            </div>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className='form-field signup2'>
+              <label htmlFor='firstName'>What is your first name?</label>
+              <input
+                type='text'
+                id='firstName'
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className='form-field signup2'>
+              <label htmlFor='lastName'>What is your last name?</label>
+              <input
+                type='text'
+                id='lastName'
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
+              />
+            </div>
+            <div className='form-field'>
+              <label htmlFor='password'>Password</label>
+              <input
+                type='password'
+                id='password'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+            <div className='signup-btn'>
+              <button type='submit' className='signup-btn'>
+                Continue
+              </button>
+            </div>
+          </form>
+        </>
+      )}
+    </div>
+  )
 }
 
-export default SignupFormModal;
+export default SignUpFormModal

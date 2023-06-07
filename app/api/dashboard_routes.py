@@ -8,9 +8,7 @@ dashboard_routes = Blueprint('dashboard_routes', __name__)
 @dashboard_routes.route('/', methods=['GET'])
 @login_required
 def get_user_dashboard():
-    """
-    Retrieves the user's relevant tasks and projects for the dashboard
-    """
+
     user = current_user
 
     dashboard_data = {
@@ -22,11 +20,6 @@ def get_user_dashboard():
         'projects': normalize_objects(user.owned_projects),
         'teams': normalize_objects(user.user_teams)
     }
-
-    # Get projects associated with user's teams
-    # for user_team in user.user_teams:
-    #     team = user_team.team
-    #     dashboard_data['projects'].update(normalize_objects(team.projects))
 
     team_ids = set()
 
