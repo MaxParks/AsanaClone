@@ -10,6 +10,7 @@ import Sidebar from "./components/Sidebar";
 import Navigation from "./components/Navigation";
 import Dashboard from "./components/Dashboard";
 import UserTasks from "./components/Tasks/UserTasks";
+import Task from "./components/task"
 import Team from "./components/Team";
 import GetProject from "./components/Projects/GetProject";
 
@@ -48,6 +49,10 @@ function App() {
 
               <Route path="/tasks/current">
                 {user ? <UserTasks /> : <Redirect to="/" />}
+              </Route>
+
+              <Route path="/tasks/:id">
+                {user ? <Task /> : <Redirect to="/" />}
               </Route>
 
               <Route path="/projects/:id">

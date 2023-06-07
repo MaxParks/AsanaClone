@@ -1,0 +1,98 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: white;
+  }
+
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-date {
+    font-size: 18px;
+  }
+
+  .dashboard-greeting {
+    font-size: 24px;
+  }
+
+  .dashboard-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .tasks-container {
+    flex: 1;
+    background-color: var(--color-dark-gray);
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .projects-container {
+    flex: 1;
+    background-color: var(--color-dark-gray);
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .task-list,
+  .project-list {
+    margin-top: 10px;
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .header-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .task-item,
+  .project-item {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .task-item:hover,
+  .project-item:hover {
+    color: black;
+    /* background-color: white; */
+  }
+
+  .check-mark {
+    margin-right: 20px;
+  }
+
+  .task-name {
+    flex-grow: 1;
+  }
+
+  .add-task-button,
+  .add-project-button {
+    color: white;
+    background-color: gray;
+    border-radius: 5px;
+    padding: 8px 16px;
+  }
