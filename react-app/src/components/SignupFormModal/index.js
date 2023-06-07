@@ -22,32 +22,38 @@ function SignUpFormModal () {
     return emailRegex.test(email)
   }
 
-  // add code to check if user exists
   const handleContinue = e => {
     e.preventDefault()
     setErrors([]) // Clear any existing errors
 
-    // Check if email field is empty
     if (email.trim() === '') {
       setErrors(['Email is required.'])
-    }
-    // Check if email format is valid
-    else if (!isValidEmail(email)) {
+    } else if (!isValidEmail(email)) {
       setErrors(['Invalid email format.'])
     } else {
       setStep(2)
     }
   }
 
+  const handleGoBack = () => {
+    setStep(1)
+    setFirstName('')
+    setLastName('')
+    setPassword('')
+    setEmail(email)
+    setErrors([])
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log('VALIDATION ERRORS --->', errors)
 
     const data = await dispatch(signUp(firstName, lastName, email, password))
 
-    if (Array.isArray(data)) {
+    if (data) {
       console.log('DATA ---->', data)
+
       setErrors(data)
+      console.log('VALIDATION ERRORS --->', errors)
     } else if (data && data.id) {
       setIsModalOpen(false) // Close the modal after successful signup
       history.push('/user/dashboard')
@@ -115,7 +121,7 @@ function SignUpFormModal () {
                 onChange={e => setFirstName(e.target.value)}
               />
               {errors.includes('This field is required.') && (
-                <span className='error-message'>This field is required.</span>
+                <span className='error-message'>First name is required.</span>
               )}
             </div>
             <div className='form-field signup2'>
@@ -127,7 +133,7 @@ function SignUpFormModal () {
                 onChange={e => setLastName(e.target.value)}
               />
               {errors.includes('This field is required.') && (
-                <span className='error-message'>This field is required.</span>
+                <span className='error-message'>Last name is required.</span>
               )}
             </div>
             <div className='form-field'>
@@ -139,12 +145,24 @@ function SignUpFormModal () {
                 onChange={e => setPassword(e.target.value)}
               />
               {errors.includes('This field is required.') && (
-                <span className='error-message'>This field is required.</span>
+                <span className='error-message'>Password is required.</span>
               )}
             </div>
+            {errors.includes('Email is already in use.') && (
+              <span className='error-message'>
+                Email already in use. Please return to the previous screen.
+              </span>
+            )}
             <div className='signup-btn'>
               <button type='submit' className='signup-btn'>
                 Continue
+              </button>
+              <button
+                type='button'
+                className='back-arrow'
+                onClick={handleGoBack}
+              >
+                <i className='fas fa-arrow-left'></i>
               </button>
             </div>
           </form>

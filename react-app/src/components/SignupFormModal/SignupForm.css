@@ -104,3 +104,15 @@ button.signup-btn {
     color: red;
     margin-top: 5px;
 }
+
+.back-arrow {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    background-color: transparent;
+    color: gray;
+    border: none;
+    cursor: pointer;
+}
