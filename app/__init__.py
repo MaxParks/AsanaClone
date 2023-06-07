@@ -7,6 +7,10 @@ from flask_login import LoginManager
 from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
+from .api.dashboard_routes import dashboard_routes
+from .api.team_routes import team_routes
+from .api.project_routes import project_routes
+from .api.task_routes import tasks_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -28,6 +32,10 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
+app.register_blueprint(dashboard_routes, url_prefix='/api/dashboard')
+app.register_blueprint(team_routes, url_prefix='/api/teams')
+app.register_blueprint(project_routes, url_prefix='/api/projects')
+app.register_blueprint(tasks_routes, url_prefix='/api/tasks')
 db.init_app(app)
 Migrate(app, db)
 

@@ -1,0 +1,118 @@
+.signup-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.signup2 .flex {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.header {
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.signup p {
+    font-size: 30px;
+}
+
+.subheading {
+    font-size: 15px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+.subheading-container {
+    margin-bottom: 20px;
+}
+
+.error-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.form-field.signup {
+    margin-bottom: 20px;
+    width: 400px;
+}
+
+.form-field.signup2 {
+    margin-bottom: 20px;
+    width: 400px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 0;
+}
+
+button.continue-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.signup-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.continue-btn {
+    text-align: center;
+}
+
+.signup-btn {
+    text-align: center;
+}
+
+.signup2 .form-field label {
+    font-size: 18px;
+}
+
+.signup2 .form-field input {
+    font-size: 18px;
+}
+
+.error-message {
+    font-size: 12px;
+    color: red;
+    margin-top: 5px;
+}
+
+.back-arrow {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    background-color: transparent;
+    color: gray;
+    border: none;
+    cursor: pointer;
+}
