@@ -14,7 +14,7 @@ class Task(db.Model):
     description = db.Column(db.String)
     assigned_to = db.Column(db.Integer, db.ForeignKey(f'users.id'))
     due_date = db.Column(db.Date)
-    completed = db.Column(db.Boolean)
+    completed = db.Column(db.Boolean, default=False)
     project_id = db.Column(db.Integer, db.ForeignKey(f'projects.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
