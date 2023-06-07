@@ -67,9 +67,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE user_team SET SCHEMA {SCHEMA};")
-
+    
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('owner_id', sa.Integer(), nullable=False),
@@ -98,7 +96,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-
     # ### end Alembic commands ###
 
 
