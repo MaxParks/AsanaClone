@@ -21,3 +21,32 @@
     font-size: 18px;
     color: var(--color-medium-gray);
 }
+
+.sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sidebar-tab {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-navigation>li {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    font-size: 18px;
+    color: var(--color-medium-gray);
+}
+
+.sidebar-navigation>li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+/* Adjust spacing as needed */
+.sidebar-tab>svg,
+.sidebar-tab>span:nth-child(2) {
+    margin-right: 10px;
+}
