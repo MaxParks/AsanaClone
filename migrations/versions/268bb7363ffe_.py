@@ -1,21 +1,16 @@
-"""re migrating after merge
+"""empty message
 
-Revision ID: 4baaa0e77d92
-Revises:
-Create Date: 2023-05-30 20:53:21.831319
+Revision ID: 268bb7363ffe
+Revises: 
+Create Date: 2023-06-07 19:14:33.416134
 
 """
-
 from alembic import op
 import sqlalchemy as sa
 
-import os
-environment = os.getenv("FLASK_ENV")
-SCHEMA = os.environ.get("SCHEMA")
-
 
 # revision identifiers, used by Alembic.
-revision = '4baaa0e77d92'
+revision = '268bb7363ffe'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,21 +28,15 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
-
     op.create_table('teams',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('owner_id', sa.Integer(), nullable=False),
+    sa.Column('owner_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE teams SET SCHEMA {SCHEMA};")
-
     op.create_table('projects',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('owner_id', sa.Integer(), nullable=True),
@@ -61,27 +50,21 @@ def upgrade():
     sa.ForeignKeyConstraint(['team_id'], ['teams.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE projects SET SCHEMA {SCHEMA};")
-
     op.create_table('user_team',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('team_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['team_id'], ['teams.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('team_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['team_id'], ['teams.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE user_team SET SCHEMA {SCHEMA};")
-
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('assigned_to', sa.Integer(), nullable=True),
-    sa.Column('due_date', sa.DateTime(), nullable=True),
+    sa.Column('due_date', sa.Date(), nullable=True),
     sa.Column('completed', sa.Boolean(), nullable=True),
     sa.Column('project_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -91,9 +74,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['project_id'], ['projects.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE tasks SET SCHEMA {SCHEMA};")
-
     op.create_table('task_comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -104,8 +84,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE task_comments SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
