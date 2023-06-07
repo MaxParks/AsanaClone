@@ -1,11 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import ProfileButton from "./Navigation/ProfileButton";
+import { getDashboardThunk } from "../store/dashboard";
 
 import "./Navigation/Navigation.css";
 
 function Dashboard({ isLoaded }) {
+  const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+  const dashboardData = useSelector((state) => state.dashboard.dashboard);
+
+  useEffect(() => {
+    dispatch(getDashboardThunk());
+  }, [dispatch]);
 
   return (
     <div
