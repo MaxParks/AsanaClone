@@ -179,33 +179,25 @@ def create_task_comment(id):
 
     return jsonify(new_comment.to_dict()), 201
 
-
-
 # -------------- DELETE TASK COMMENT  --------------------
-@tasks_routes.route('/<int:task_id>/comments/<int:comment_id>', methods=['DELETE'])
+@tasks_routes.route('/comments/<int:comment_id>', methods=['DELETE'])
 @login_required
-def delete_task_comment(task_id, comment_id):
-    print("-----------------", id)
-    task = Task.query.get(id)
-    print("-----------------", task)
-    print("-----------------", task.comments)
+def delete_task_comment(comment_id):
+    """
+    Deletes a specific task comment by its ID.
+    """
+    comment = TaskComment.query.get(comment_id)
+    if not comment:
+        return jsonify({'message': 'Task comment not found', 'statusCode': 404}), 404
 
+    task = Task.query.get(comment.task_id)
+    project_id = task.project_id
+    project = Project.query.get(project_id)
 
+    if current_user.id != comment.user_id and current_user.id != task.owner_id and current_user.id != project.owner_id:
+        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
-    # task_comments = task.comments
-    # print("-----------------", task_comments)
-
-    # if not comment:
-    #     return jsonify({'message': 'Comment not found', 'statusCode': 404}), 404
-
-    # project_id = task.project_id
-    # project = Project.query.filter_by(id=project_id).options(joinedload('owner')).first()
-
-
-    # if current_user.id != comment.user_id and current_user.id != task.owner_id and current_user.id:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
-    # db.session.delete(comment)
-    # db.session.commit()
+    db.session.delete(comment)
+    db.session.commit()
 
     return '', 204
