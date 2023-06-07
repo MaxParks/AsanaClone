@@ -93,6 +93,7 @@ def run_migrations_online():
             target_metadata=get_metadata(),
             process_revision_directives=process_revision_directives,
             **current_app.extensions['migrate'].configure_args
+            version_table_pk=False
         )
 
         with context.begin_transaction():
