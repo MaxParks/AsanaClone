@@ -1,15 +1,12 @@
-.sidebar-container {
+.sidebar-content {
     width: 240px;
     background-color: var(--color-dark-gray);
     color: white;
 }
 
+
 .sidebar-header {
     font-weight: var(--font-medium);
-}
-
-.sidebar-content {
-    padding: 40px 20px;
 }
 
 .sidebar-navigation-container {
@@ -31,6 +28,8 @@
 .sidebar-tab {
     display: flex;
     align-items: center;
+    padding: 10px 20px;
+    width: 100%;
 }
 
 .sidebar-navigation>li {
@@ -45,8 +44,16 @@
     margin-bottom: 10px;
 }
 
-/* Adjust spacing as needed */
-.sidebar-tab>svg,
-.sidebar-tab>span:nth-child(2) {
-    margin-right: 10px;
+.second-tab-item {
+    margin-left: 15px;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-tab:hover {
+    background: #565557;
 }
