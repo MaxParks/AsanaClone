@@ -80,18 +80,32 @@ def create_task():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 
+
+# -------------- UPDATE TASK BY ID  --------------------
 @tasks_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def update_task(id):
-    """
-    Updates a specific task by its ID.
-    """
     task = Task.query.get(id)
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
 
-    if current_user.id != task.owner_id:
+    project_id = task.project_id
+    project = Project.query.filter_by(id=project_id).options(joinedload('owner')).first()
+    owner_id = project.owner_id
+
+    if current_user.id != task.owner_id and current_user.id != project.owner_id:
         return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+
+
+    form = TaskForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        team_id = form.data['team_id']
+        name = form.data['name']
+        due_date_str = form.data['due_date']
+        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        description = form.data['description']
 
     data = request.get_json()
     name = data.get('name')
@@ -115,6 +129,8 @@ def update_task(id):
 
     return jsonify(task.to_dict()), 200
 
+
+# -------------- DELETE TASK  --------------------
 @tasks_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_task(id):
@@ -125,7 +141,10 @@ def delete_task(id):
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
 
-    if current_user.id != task.owner_id:
+    project_id = task.project_id
+    project = Project.query.get(project_id)
+
+    if current_user.id != task.owner_id and current_user.id != project.owner_id:
         return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
     db.session.delete(task)
@@ -133,66 +152,15 @@ def delete_task(id):
 
     return '', 204
 
-# COMMENTS SECTION
 
-@tasks_routes.route('/<int:id>/comments', methods=['GET'])
-@login_required
-def get_task_comments(id):
-    """
-    Retrieves comments for a specific task by its ID.
-    """
-    task = Task.query.get(id)
-    if not task:
-        return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
-
-    project = task.project
-    if not project:
-        return jsonify({'message': 'Project not found', 'statusCode': 404}), 404
-
-    # # Check if the current user is associated with the project
-    # if current_user.id not in [user.id for user in project.team.members]:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
-    comments = TaskComment.query.filter_by(task_id=id).all()
-    # comments_data = [comment.to_dict() for comment in comments]
-    # return jsonify(comments_data), 200
-    comments_data = []
-    for comment in comments:
-        comment_dict = {
-            'id': comment.id,
-            'comment': comment.comment,
-            'created_at': comment.created_at.strftime('%m/%d/%Y'),
-            'user': {
-                'firstName': comment.user.firstName,
-            },
-        }
-        comments_data.append(comment_dict)
-
-    task_data = {
-        'id': task.id,
-        'name': task.name,
-        'assignee': task.assigned_to,
-        'description': task.description,
-        'due_date': task.due_date.strftime('%m/%d/%Y'),
-        'comments': comments_data,
-    }
-
-    return jsonify(task_data), 200
-
-@tasks_routes.route('/<int:id>/comments', methods=['POST'])
+# -------------- CREATE TASK COMMENT  --------------------
+@tasks_routes.route('/<int:id>', methods=['POST'])
 @login_required
 def create_task_comment(id):
-    """
-    Creates a new comment for a specific task by its ID.
-    """
+
     task = Task.query.get(id)
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
-
-    # # Check if the current user is part of the project associated with the task
-    # if current_user.id not in [user.id for user in task.project.team.members]:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
 
     data = request.get_json()
     comment = data.get('comment')
@@ -211,48 +179,33 @@ def create_task_comment(id):
 
     return jsonify(new_comment.to_dict()), 201
 
-@tasks_routes.route('/comments/<int:id>', methods=['PUT'])
+
+
+# -------------- DELETE TASK COMMENT  --------------------
+@tasks_routes.route('/<int:task_id>/comments/<int:comment_id>', methods=['DELETE'])
 @login_required
-def update_task_comment(id):
-    """
-    Updates a specific comment by its ID.
-    """
-    comment = TaskComment.query.get(id)
-    if not comment:
-        return jsonify({'message': 'Comment not found', 'statusCode': 404}), 404
-
-    # Check if the current user is the owner of the comment
-    if current_user.id != comment.user_id:
-        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
-    data = request.get_json()
-    comment_text = data.get('comment')
-
-    if not comment_text:
-        return jsonify({'message': 'Invalid request body', 'statusCode': 400}), 400
-
-    comment.comment = comment_text
-    db.session.commit()
-
-    return jsonify(comment.to_dict()), 200
+def delete_task_comment(task_id, comment_id):
+    print("-----------------", id)
+    task = Task.query.get(id)
+    print("-----------------", task)
+    print("-----------------", task.comments)
 
 
 
-@tasks_routes.route('/comments/<int:id>', methods=['DELETE'])
-@login_required
-def delete_task_comment(id):
-    """
-    Deletes a specific comment by its ID.
-    """
-    comment = TaskComment.query.get(id)
-    if not comment:
-        return jsonify({'message': 'Comment not found', 'statusCode': 404}), 404
+    # task_comments = task.comments
+    # print("-----------------", task_comments)
 
-    # Check if the current user is the owner of the comment
-    if current_user.id != comment.user_id:
-        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+    # if not comment:
+    #     return jsonify({'message': 'Comment not found', 'statusCode': 404}), 404
 
-    db.session.delete(comment)
-    db.session.commit()
+    # project_id = task.project_id
+    # project = Project.query.filter_by(id=project_id).options(joinedload('owner')).first()
+
+
+    # if current_user.id != comment.user_id and current_user.id != task.owner_id and current_user.id:
+    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+
+    # db.session.delete(comment)
+    # db.session.commit()
 
     return '', 204
