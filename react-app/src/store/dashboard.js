@@ -1,34 +1,26 @@
 // Constants
-const LOAD_DASHBOARD = 'dashboard/LOAD_DASHBOARD';
+const LOAD_DASHBOARD = "dashboard/loadDashboard";
 
 // Action creators
-const loadDashboard = (dashboard) => ({
+const loadDashboard = (data) => ({
   type: LOAD_DASHBOARD,
-  payload: dashboard,
+  payload: data,
 });
 
-// Thunk action
-export const fetchDashboard = () => async (dispatch) => {
-  try {
-    const response = await fetch('/api/dashboard');
-    if (!response.ok) {
-      throw new Error('Failed to fetch dashboard data');
-    }
+// Thunks
 
+export const getDashboardThunk = () => async (dispatch) => {
+  const response = await fetch("/api/dashboard/");
+
+  if (response.ok) {
     const data = await response.json();
     dispatch(loadDashboard(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
+    return data;
   }
 };
 
 // Initial state
-const initialState = {
-  teams: [],
-  projects: [],
-  tasks: [],
-};
+const initialState = {};
 
 // Reducer
 export default function dashboardReducer(state = initialState, action) {
@@ -36,9 +28,7 @@ export default function dashboardReducer(state = initialState, action) {
     case LOAD_DASHBOARD:
       return {
         ...state,
-        teams: action.payload.teams,
-        projects: action.payload.projects,
-        tasks: action.payload.tasks,
+        ...action.payload,
       };
     default:
       return state;
