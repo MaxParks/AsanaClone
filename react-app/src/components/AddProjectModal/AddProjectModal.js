@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { createProjectThunk } from '../../store/projects';
-import { useDispatch, useSelector } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { createProjectThunk } from "../../store/projects";
+import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { useHistory } from "react-router-dom";
 // import 'AddProjectModal.css';
 
 function CreateProjectModal( isLoaded ) {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [team_id, setTeamId] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [team_id, setTeamId] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
   const history = useHistory();
