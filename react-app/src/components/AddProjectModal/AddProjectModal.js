@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import { useHistory } from "react-router-dom";
 // import 'AddProjectModal.css';
 
-function CreateProjectModal( isLoaded ) {
+function CreateProjectModal(isLoaded) {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -18,16 +18,17 @@ function CreateProjectModal( isLoaded ) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = await dispatch(createProjectThunk(name, description, dueDate, team_id));
-    if (data) {
-      console.log('DATA ---->', data)
-      setErrors(data)
-      console.log('VALIDATION ERRORS --->', errors)
+    const data = await dispatch(
+      createProjectThunk(name, description, dueDate, team_id)
+    );
+    if (Array.isArray(data)) {
+      setErrors(data);
+      console.log("VALIDATION ERRORS --->", errors);
     } else if (data && data.id) {
       closeModal();
-      history.push('/user/dashboard');
+      history.push("/user/dashboard");
     } else {
-    closeModal()
+      closeModal();
     }
   };
 
