@@ -117,7 +117,7 @@ export const updateSingleTask =
   (id, name, description, assigned_to, due_date, completed, project_id) =>
   async (dispatch) => {
     try {
-      const response = await fetch(`/api/tasks/${id}`, {
+      const response = await fetch(`/api/tasks/${id}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

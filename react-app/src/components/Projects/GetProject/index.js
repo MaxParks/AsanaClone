@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getProjectThunk } from "../../../store/projects";
-import ProjectDeleteModal from "../../DeleteProjectModal";
+import ProjectDeleteModal from "../DeleteProjectModal";
 import OpenModalButton from "../../OpenModalButton";
 import { useParams } from "react-router-dom";
 import "./Project.css";
@@ -18,8 +18,6 @@ function Project({ isLoaded }) {
     dispatch(getProjectThunk(id));
   }, [dispatch, id]);
 
-
-
   return (
     <div>
       <h1>Project: {projectData.name}</h1>
@@ -27,18 +25,19 @@ function Project({ isLoaded }) {
       <p>Due Date: {projectData.due_date}</p>
       <h2>Tasks:</h2>
       <ul>
-        {projectData.tasks && projectData.tasks.map((task) => (
-          <li key={task.id}>
-            {task.name} - Assigned to: {task.assigned_to} - Due Date: {task.due_date}
-          </li>
-))}
+        {projectData.tasks &&
+          projectData.tasks.map((task) => (
+            <li key={task.id}>
+              {task.name} - Assigned to: {task.assigned_to} - Due Date:{" "}
+              {task.due_date}
+            </li>
+          ))}
       </ul>
       <OpenModalButton
         buttonText="Delete"
         modalComponent={<ProjectDeleteModal id={id} />}
         key={`delete-${id}`}
       />
-
     </div>
   );
 }
