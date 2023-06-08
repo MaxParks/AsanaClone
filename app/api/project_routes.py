@@ -84,10 +84,12 @@ def create_project():
 
     form = ProjectForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    print(form.data)
 
     if form.validate_on_submit():
         due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
+
         project = Project(
             owner_id = current_user.id,
             name = form.data['name'],
