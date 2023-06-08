@@ -65,7 +65,13 @@
   font-weight: bold;
 }
 
-.task-item,
+.task-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.task-link,
 .project-item {
   color: white;
   display: flex;
@@ -74,12 +80,12 @@
   transition: background-color 0.3s ease;
   padding: 5px;
   cursor: pointer;
+  width: 100%;
 }
 
 .task-item:hover,
 .project-item:hover {
   color: black;
-  /* background-color: white; */
 }
 
 .check-mark {
@@ -87,7 +93,7 @@
 }
 
 .task-name {
-  flex-grow: 1;
+  margin-right: auto;
 }
 
 

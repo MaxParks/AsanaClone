@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDashboardThunk } from "../../store/dashboard";
+import { updateSingleTask } from "../../store/tasks";
 import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
@@ -26,6 +27,26 @@ function Dashboard() {
   } else if (currentHour < 18) {
     greetingMessage = "Good afternoon";
   }
+
+  const toggleTaskCompletion = async (taskId) => {
+    const task = Object.values(dashboardData.assigned_tasks).find(
+      (task) => task.id === taskId
+    );
+
+    if (task) {
+      const updatedTask = {
+        // id: task.id,
+        name: task.name,
+        description: task.description,
+        assigned_to: task.assigned_to,
+        due_date: task.due_date,
+        completed: task.completed ? false : true,
+        project_id: task.project_id,
+      };
+
+      dispatch(updateSingleTask(taskId, updatedTask));
+    }
+  };
 
   return (
     <div
@@ -66,23 +87,18 @@ function Dashboard() {
           <div className="task-list">
             {dashboardData.assigned_tasks &&
               Object.values(dashboardData.assigned_tasks).map((task) => (
-                <Link
-                  to={`/tasks/${task.id}`}
-                  key={task.id}
-                  className="task-item"
-                >
-                  {task.isComplete ? (
-                    <span className="check-mark">
-                      <Checkmark />
-                    </span>
-                  ) : (
-                    <span className="check-mark">
-                      <Checkmark />
-                    </span>
-                  )}
-                  <span className="task-name">{task.name}</span>
-                  <span className="due-date">{task.due_date}</span>
-                </Link>
+                <div key={task.id} className="task-item">
+                  <span
+                    className="check-mark"
+                    onClick={() => toggleTaskCompletion(task.id)}
+                  >
+                    <Checkmark />
+                  </span>
+                  <Link to={`/tasks/${task.id}`} className="task-link">
+                    <span className="task-name">{task.name}</span>
+                    <span className="due-date">{task.due_date}</span>
+                  </Link>
+                </div>
               ))}
           </div>
         </div>
