@@ -19,8 +19,6 @@ function Project({ isLoaded }) {
     dispatch(getProjectThunk(id));
   }, [dispatch, id]);
 
-
-
   return (
     <div>
       <h1>Project: {projectData.name}</h1>
@@ -28,11 +26,13 @@ function Project({ isLoaded }) {
       <p>Due Date: {projectData.due_date}</p>
       <h2>Tasks:</h2>
       <ul>
-        {projectData.tasks && projectData.tasks.map((task) => (
-          <li key={task.id}>
-            {task.name} - Assigned to: {task.assigned_to} - Due Date: {task.due_date}
-          </li>
-))}
+        {projectData.tasks &&
+          projectData.tasks.map((task) => (
+            <li key={task.id}>
+              {task.name} - Assigned to: {task.assigned_to} - Due Date:{" "}
+              {task.due_date}
+            </li>
+          ))}
       </ul>
       <OpenModalButton
         buttonText="Delete"

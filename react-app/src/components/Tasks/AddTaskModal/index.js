@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { createTaskThunk } from "../../store/tasks";
+import { createTaskThunk } from "../../../store/tasks";
 import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
+import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
 
 function AddTaskModal({ isLoaded }) {

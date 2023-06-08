@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { createProjectThunk } from "../../store/projects";
+import { createProjectThunk } from "../../../store/projects";
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../../context/Modal";
+import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
 // import 'AddProjectModal.css';
 

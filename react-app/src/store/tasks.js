@@ -26,7 +26,7 @@ const addTask = (task) => ({
   payload: task,
 });
 
-const updateTask = (task) => ({
+const updateTask = (taskId, task) => ({
   type: UPDATE_TASK,
   payload: task,
 });
@@ -113,35 +113,36 @@ export const createTaskThunk =
     }
   };
 
-export const updateSingleTask =
-  (id, name, description, assigned_to, due_date, completed, project_id) =>
-  async (dispatch) => {
-    try {
-      const response = await fetch(`/api/tasks/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          assigned_to,
-          due_date,
-          completed,
-          project_id,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
+export const updateSingleTask = (id, taskData) => async (dispatch) => {
+  const { name, description, assigned_to, due_date, completed, project_id } =
+    taskData;
 
-      const data = await response.json();
-      dispatch(updateTask(data));
-    } catch (error) {
-      console.error(error);
-      // Handle error if needed
-    }
-  };
+  console.log(completed);
+
+  const response = await fetch(`/api/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id,
+      name,
+      description,
+      assigned_to,
+      due_date,
+      completed,
+      project_id,
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    dispatch(updateTask(id, data));
+    dispatch(getDashboardThunk());
+    return data;
+  }
+};
 
 export const deleteTask = (id) => async (dispatch) => {
   try {
@@ -218,7 +219,7 @@ export const deleteTaskComment = (id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = [];
+const initialState = {};
 
 // Reducer
 export default function tasksReducer(state = initialState, action) {
@@ -232,9 +233,10 @@ export default function tasksReducer(state = initialState, action) {
     case ADD_TASK:
       return [...state, action.payload];
     case UPDATE_TASK:
-      return state.map((task) =>
-        task.id === action.payload.id ? action.payload : task
-      );
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
     case REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);
     case ADD_TASK_COMMENT:
