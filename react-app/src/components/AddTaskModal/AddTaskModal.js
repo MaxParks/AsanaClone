@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { createTask } from '../../store/tasks';
-import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { createTaskThunk } from "../../store/tasks";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { useHistory } from "react-router-dom";
 
 function AddTaskModal({ projectId }) {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [assigned_to, setAssignedTo] = useState('');
-  const [due_date, setDueDate] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [assigned_to, setAssignedTo] = useState("");
+  const [due_date, setDueDate] = useState("");
   const [completed, setCompleted] = useState(false);
-  const [project_id, setProjectId] = useState('');
+  const [project_id, setProjectId] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
   const history = useHistory();
@@ -19,12 +19,19 @@ function AddTaskModal({ projectId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await dispatch(
-      createTask(name, description, assigned_to, due_date, completed, project_id)
+      createTaskThunk(
+        name,
+        description,
+        assigned_to,
+        due_date,
+        completed,
+        project_id
+      )
     );
 
     if (data && data.id) {
       closeModal();
-      history.push(`/projects/${projectId}`);
+      history.push("/user/dashboard/");
     } else if (data) {
       setErrors(data);
     } else {
@@ -68,7 +75,7 @@ function AddTaskModal({ projectId }) {
             id="completed"
             placeholder="Completed"
             value={completed}
-            onChange={(e) => setCompleted(e.target.value)}
+            onChange={(e) => setCompleted(e.target.checked)}
           />
         </div>
         <div className="form-field">

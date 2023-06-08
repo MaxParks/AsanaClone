@@ -49,9 +49,6 @@ def create_task():
     form = TaskForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    # if current_user not in project.team.members and current_user.id != project.owner_id:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
     if form.validate_on_submit():
         project_id = form.data['project_id']
 
@@ -64,7 +61,7 @@ def create_task():
 
 
         due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
 
         task = Task(
             owner_id = current_user.id,
