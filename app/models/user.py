@@ -5,7 +5,6 @@ from flask_login import UserMixin
 from .task import Task
 
 
-
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -52,3 +51,7 @@ class User(db.Model, UserMixin):
             'owned_tasks': [task.id for task in self.owned_tasks],
             'comments': [comment.id for comment in self.comments]
         }
+
+    # Update foreign key constraints with prefix in production
+    assigned_to = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('tasks.id')), nullable=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('tasks.id')), nullable=True)
