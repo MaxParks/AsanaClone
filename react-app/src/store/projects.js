@@ -1,6 +1,6 @@
 // Constants
 const LOAD_PROJECTS = "projects/loadProject";
-const ROJECT = "projects/createProject";
+const ADD_PROJECT = "projects/createProject";
 const UPDATE_PROJECT = "projects/updateProject";
 const REMOVE_PROJECT = "projects/REMOVE_PROJECT";
 
