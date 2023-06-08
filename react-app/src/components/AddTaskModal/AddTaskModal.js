@@ -8,8 +8,10 @@ function AddTaskModal({ projectId }) {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [assignedTo, setAssignedTo] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [assigned_to, setAssignedTo] = useState('');
+  const [due_date, setDueDate] = useState('');
+  const [completed, setCompleted] = useState(false);
+  const [project_id, setProjectId] = useState('');
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
   const history = useHistory();
@@ -17,13 +19,16 @@ function AddTaskModal({ projectId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await dispatch(
-      createTask(name, description, assignedTo, dueDate, false, projectId)
+      createTask(name, description, assigned_to, due_date, completed, project_id)
     );
-    if (data && data.errors) {
-      setErrors(data.errors.map((error) => error.msg));
-    } else if (data && data.id) {
+
+    if (data && data.id) {
       closeModal();
       history.push(`/projects/${projectId}`);
+    } else if (data) {
+      setErrors(data);
+    } else {
+      closeModal();
     }
   };
 
@@ -57,12 +62,32 @@ function AddTaskModal({ projectId }) {
           />
         </div>
         <div className="form-field">
+          <label htmlFor="completed">Completed</label>
+          <input
+            type="boolean"
+            id="completed"
+            placeholder="Completed"
+            value={completed}
+            onChange={(e) => setCompleted(e.target.value)}
+          />
+        </div>
+        <div className="form-field">
+          <label htmlFor="description">Project Id</label>
+          <input
+            type="number"
+            id="projectId"
+            placeholder="Project Id"
+            value={project_id}
+            onChange={(e) => setProjectId(e.target.value)}
+          />
+        </div>
+        <div className="form-field">
           <label htmlFor="assignedTo">Assigned To</label>
           <input
             type="text"
             id="assignedTo"
             placeholder="Assigned to"
-            value={assignedTo}
+            value={assigned_to}
             onChange={(e) => setAssignedTo(e.target.value)}
           />
         </div>
@@ -71,7 +96,7 @@ function AddTaskModal({ projectId }) {
           <input
             type="date"
             id="dueDate"
-            value={dueDate}
+            value={due_date}
             onChange={(e) => setDueDate(e.target.value)}
           />
         </div>

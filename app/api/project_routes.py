@@ -99,9 +99,6 @@ def create_project():
         return project.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-    db.session.add(new_project)
-    db.session.commit()
-    return jsonify(new_project.to_dict()), 201
 
 
 

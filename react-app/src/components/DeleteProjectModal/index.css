@@ -1,0 +1,26 @@
+.modal2 {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+  }
+
+  .form-header {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+
+  .delete2 {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .modal-button2 {
+    background-color: lightgrey;
+    cursor: pointer;
+  }
