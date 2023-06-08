@@ -54,7 +54,10 @@ export const createProjectThunk =
       const data = await response.json();
       dispatch(createProject(data));
       return data;
+    } else {
+      throw new Error("Failed to create project");
     }
+
   };
 
 export const updateProjectThunk =
@@ -100,14 +103,24 @@ export default function projectsReducer(state = initialState, action) {
         ...state,
         ...action.payload,
       };
-    case ADD_PROJECT:
-      return [...state, action.payload];
-    case UPDATE_PROJECT:
-      return state.map((project) =>
-        project.id === action.payload.id ? action.payload : project
-      );
-    case REMOVE_PROJECT:
-      return state.filter((project) => project.id !== action.payload);
+      case ADD_PROJECT: {
+        return {
+          ...state,
+          [action.payload.id]: action.payload
+        };
+      }
+      case UPDATE_PROJECT: {
+        return {
+          ...state,
+          [action.payload.id]: action.payload
+        };
+      }
+
+      case REMOVE_PROJECT: {
+        const newState = { ...state };
+        delete newState[action.payload];
+        return newState;
+      }
     default:
       return state;
   }
