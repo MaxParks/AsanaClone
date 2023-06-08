@@ -1,4 +1,4 @@
-from .db import db, environment, SCHEMA
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
 
@@ -9,8 +9,8 @@ class Project(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey(f'users.id'))
-    team_id = db.Column(db.Integer, db.ForeignKey(f'teams.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
+    team_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('teams.id')))
     name = db.Column(db.String, nullable=False)
     due_date = db.Column(db.Date)
     description = db.Column(db.String)
@@ -20,7 +20,6 @@ class Project(db.Model):
     owner = db.relationship('User', back_populates='owned_projects')
     team = db.relationship('Team', back_populates='projects')
     tasks = db.relationship('Task', back_populates='project', cascade='all, delete-orphan')
-
 
     def to_dict(self):
         due_date_str = self.due_date.strftime('%m-%d-%Y') if self.due_date is not None else None

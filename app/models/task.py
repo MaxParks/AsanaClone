@@ -1,4 +1,4 @@
-from .db import db, environment, SCHEMA
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
 
@@ -9,13 +9,13 @@ class Task(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey(f'users.id'), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
-    assigned_to = db.Column(db.Integer, db.ForeignKey(f'users.id'))
+    assigned_to = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
     due_date = db.Column(db.Date)
     completed = db.Column(db.Boolean, default=False)
-    project_id = db.Column(db.Integer, db.ForeignKey(f'projects.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('projects.id')), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
