@@ -22,8 +22,8 @@ class User(db.Model, UserMixin):
     owned_teams = db.relationship('Team', back_populates='owner')
     user_teams = db.relationship('UserTeam', back_populates='user')
     owned_projects = db.relationship('Project', back_populates='owner')
-    assigned_tasks = db.relationship('Task', foreign_keys=[Task.assigned_to], back_populates='assignee')
-    owned_tasks = db.relationship('Task', foreign_keys=[Task.owner_id], back_populates='owner')
+    assigned_tasks = db.relationship('Task', foreign_keys=[add_prefix_for_prod(Task.assigned_to)], back_populates='assignee')
+    owned_tasks = db.relationship('Task', foreign_keys=[add_prefix_for_prod(Task.owner_id)], back_populates='owner')
     comments = db.relationship('TaskComment', back_populates='user')
 
     @property
@@ -51,7 +51,3 @@ class User(db.Model, UserMixin):
             'owned_tasks': [task.id for task in self.owned_tasks],
             'comments': [comment.id for comment in self.comments]
         }
-
-    # Update foreign key constraints with prefix in production
-    assigned_to = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('tasks.id')), nullable=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('tasks.id')), nullable=True)
