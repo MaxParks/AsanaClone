@@ -117,7 +117,7 @@ def update_project(id):
     team = Team.query.filter_by(id=team_id).options(joinedload('owner')).first()
     owner_id = team.owner_id
 
-    if current_user.id != project.owner_id and current_user.id != team.owner_id:
+    if current_user.id != project.owner_id and current_user.id != owner_id:
         return {"message": "Unauthorized", "statusCode": 403}, 403
 
     form = ProjectForm()
@@ -127,7 +127,7 @@ def update_project(id):
         team_id = form.data['team_id']
         name = form.data['name']
         due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
         description = form.data['description']
 
         project.team_id = team_id

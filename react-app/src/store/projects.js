@@ -33,7 +33,7 @@ const removeProject = (projectId) => ({
 
 // Thunk actions
 export const getProjectThunk = (id) => async (dispatch) => {
-  const response = await fetch(`/api/projects/${id}/`);
+  const response = await fetch(`/api/projects/${id}`);
   if (response.ok) {
     const data = await response.json();
     dispatch(loadProject(data));
@@ -104,7 +104,7 @@ export default function projectsReducer(state = initialState, action) {
     case LOAD_PROJECTS:
       return {
         ...state,
-        [action.payload.id]: action.payload,
+        ...action.payload,
       };
     case ADD_PROJECT:
       return {
@@ -113,11 +113,11 @@ export default function projectsReducer(state = initialState, action) {
           [action.payload.id]: action.payload,
         },
       };
-    case UPDATE_PROJECT:
-      return {
-        ...state,
-        [action.payload.id]: action.payload,
-      };
+      case UPDATE_PROJECT:
+        return {
+          ...state,
+          [action.data.id]: action.data,
+        };
     case REMOVE_PROJECT:
       const newState = { ...state };
       delete newState[action.payload];

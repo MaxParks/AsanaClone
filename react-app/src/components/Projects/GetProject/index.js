@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getProjectThunk } from "../../../store/projects";
 import ProjectDeleteModal from "../../DeleteProjectModal";
+import UpdateProjectModal from "../../UpdateProjectModal";
 import OpenModalButton from "../../OpenModalButton";
 import { useParams } from "react-router-dom";
 import "./Project.css";
@@ -37,6 +38,11 @@ function Project({ isLoaded }) {
         buttonText="Delete"
         modalComponent={<ProjectDeleteModal id={id} />}
         key={`delete-${id}`}
+      />
+      <OpenModalButton
+        buttonText="Update"
+        modalComponent={<UpdateProjectModal id={id} />}
+        key={`update-${id}`}
       />
 
     </div>

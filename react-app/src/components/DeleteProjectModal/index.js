@@ -1,11 +1,13 @@
 import { useDispatch} from "react-redux";
 import { useModal } from "../../context/Modal"
 import { deleteProject} from "../../store/projects";
+import { useHistory } from "react-router-dom";
 import './index.css'
 
 function ProjectDeleteModal({ id }) {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
+    const history = useHistory();
 
 
     const handleDelete = async (e) => {
@@ -13,6 +15,7 @@ function ProjectDeleteModal({ id }) {
 
         await dispatch(deleteProject(id))
         .then(closeModal())
+        history.push(`/user/dashboard`);
     }
 
     return (
