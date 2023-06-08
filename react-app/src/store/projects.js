@@ -1,5 +1,6 @@
-// Constants
+import { getDashboardThunk } from "./dashboard";
 
+// Constants
 const LOAD_PROJECTS = "projects/loadProject";
 const ADD_PROJECT = "projects/createProject";
 const UPDATE_PROJECT = "projects/updateProject";
@@ -36,6 +37,7 @@ export const getProjectThunk = (id) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(loadProject(data));
+
     return data;
   }
 };
@@ -53,6 +55,8 @@ export const createProjectThunk =
     if (response.ok) {
       const data = await response.json();
       dispatch(createProject(data));
+      dispatch(getDashboardThunk());
+
       return data;
     } else {
       throw new Error("Failed to create project");
@@ -92,21 +96,7 @@ export const deleteProject = (id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = {
-  session: {},
-  projects: {},
-  teams: [],
-  dashboard: {
-    assigned_tasks: {},
-    email: "",
-    firstName: "",
-    id: 0,
-    lastName: "",
-    projects: {},
-    teams: {},
-  },
-  tasks: [],
-};
+const initialState = {};
 
 // Reducer
 export default function projectsReducer(state = initialState, action) {
@@ -119,12 +109,8 @@ export default function projectsReducer(state = initialState, action) {
     case ADD_PROJECT:
       return {
         ...state,
-        dashboard: {
-          ...state.dashboard,
-          projects: {
-            ...state.dashboard.projects,
-            [action.payload.id]: action.payload,
-          },
+        projects: {
+          [action.payload.id]: action.payload,
         },
       };
     case UPDATE_PROJECT:
