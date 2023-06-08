@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { createTaskThunk } from "../../../store/tasks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
 
 function AddTaskModal({ isLoaded }) {
   const dispatch = useDispatch();
+  const dashboardData = useSelector((state) => state.dashboard);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [assigned_to, setAssignedTo] = useState("");
@@ -18,25 +20,34 @@ function AddTaskModal({ isLoaded }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(
-      createTaskThunk(
-        name,
-        description,
-        assigned_to,
-        due_date,
-        completed,
-        project_id
-      )
-    );
 
-    if (data && data.id) {
-      closeModal();
-      history.push("/user/dashboard/");
-    } else if (data) {
-      setErrors(data);
-    } else {
-      closeModal();
+    const errors = {};
+
+    if (!name) {
+      errors.name = "Name is a required field.";
     }
+
+    if (!project_id) {
+      errors.project_id = "Project ID is a required field.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+
+    setErrors({});
+
+    const newTask = {
+      name,
+      description,
+      assigned_to,
+      due_date,
+      project_id,
+    };
+
+    dispatch(createTaskThunk(newTask));
+    closeModal();
   };
 
   return (
@@ -44,9 +55,8 @@ function AddTaskModal({ isLoaded }) {
       <h2>Add New Task</h2>
       <form onSubmit={handleSubmit}>
         <ul className="error-list">
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
+          {errors.name && <li>{errors.name}</li>}
+          {errors.project_id && <li>{errors.project_id}</li>}
         </ul>
         <div className="form-field">
           <label htmlFor="name">Name</label>
@@ -66,16 +76,6 @@ function AddTaskModal({ isLoaded }) {
             placeholder="Task description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="form-field">
-          <label htmlFor="completed">Completed</label>
-          <input
-            type="boolean"
-            id="completed"
-            placeholder="Completed"
-            value={completed}
-            onChange={(e) => setCompleted(e.target.checked)}
           />
         </div>
         <div className="form-field">
