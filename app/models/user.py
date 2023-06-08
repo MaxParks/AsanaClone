@@ -22,8 +22,8 @@ class User(db.Model, UserMixin):
     owned_teams = db.relationship('Team', back_populates='owner')
     user_teams = db.relationship('UserTeam', back_populates='user')
     owned_projects = db.relationship('Project', back_populates='owner')
-    assigned_tasks = db.relationship('Task', foreign_keys=[add_prefix_for_prod('Task.assigned_to')], back_populates='assignee')
-    owned_tasks = db.relationship('Task', foreign_keys=[add_prefix_for_prod('Task.owner_id')], back_populates='owner')
+    assigned_tasks = db.relationship('Task', foreign_keys=[Task.assigned_to], back_populates='assignee')
+    owned_tasks = db.relationship('Task', foreign_keys=[Task.owner_id], back_populates='owner')
     comments = db.relationship('TaskComment', back_populates='user')
 
     @property
