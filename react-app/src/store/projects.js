@@ -30,7 +30,7 @@ const removeProject = (projectId) => ({
 
 // Thunk actions
 export const getProjectThunk = (id) => async (dispatch) => {
-  const response = await fetch(`/api/projects/${id}`);
+  const response = await fetch(`/api/projects/${id}/`);
   if (response.ok) {
     const data = await response.json();
     dispatch(loadProject(data));
@@ -40,7 +40,7 @@ export const getProjectThunk = (id) => async (dispatch) => {
 
 export const createProjectThunk =
   (name, description, due_date, team_id) => async (dispatch) => {
-    const response = await fetch("/api/projects", {
+    const response = await fetch("/api/projects/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,21 @@ export const deleteProject = (id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = {};
+const initialState = {
+  session: {},
+  projects: {},
+  teams: [],
+  dashboard: {
+    assigned_tasks: {},
+    email: "",
+    firstName: "",
+    id: 0,
+    lastName: "",
+    projects: {},
+    teams: {},
+  },
+  tasks: [],
+};
 
 // Reducer
 export default function projectsReducer(state = initialState, action) {
@@ -96,10 +110,19 @@ export default function projectsReducer(state = initialState, action) {
     case LOAD_PROJECTS:
       return {
         ...state,
-        ...action.payload,
+        [action.payload.id]: action.payload,
       };
     case ADD_PROJECT:
-      return [...state, action.payload];
+      return {
+        ...state,
+        dashboard: {
+          ...state.dashboard,
+          projects: {
+            ...state.dashboard.projects,
+            [action.payload.id]: action.payload,
+          },
+        },
+      };
     case UPDATE_PROJECT:
       return state.map((project) =>
         project.id === action.payload.id ? action.payload : project
