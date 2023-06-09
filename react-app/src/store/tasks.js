@@ -154,6 +154,7 @@ export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(addTaskComment(taskId, data));
+    dispatch(fetchTaskById(taskId));
     return data;
   }
 };
@@ -202,7 +203,7 @@ export default function tasksReducer(state = initialState, action) {
     case ADD_TASK_COMMENT:
       return {
         ...state,
-        [action.data.id]: action.data,
+        [action.payload.id]: action.paylod,
       };
     case REMOVE_TASK_COMMENT:
       return state.map((task) => {

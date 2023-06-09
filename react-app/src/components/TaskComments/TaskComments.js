@@ -13,6 +13,10 @@ function TaskComments(props) {
 
   return (
     <div>
+      <div className="add-comment-section">
+        <input type="text" placeholder="Add a comment..." />
+        <button>Add Comment</button>
+      </div>
       {comments &&
         comments.map((comment) => (
           <div key={comment.id} className="task-comment-wrapper">
