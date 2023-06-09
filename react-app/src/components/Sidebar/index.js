@@ -9,6 +9,8 @@ import { ReactComponent as NotificationBell } from '../../assets/icons/notificat
 import { ReactComponent as PlusButton } from '../../assets/icons/plus.svg'
 import './Sidebar.css'
 import Team from '../Teams'
+import AddTeamModal from '../Teams/AddTeamModal'
+import OpenModalButton from '../OpenModalButton'
 
 const Sidebar = ({
   openTeamDropdown,
@@ -61,7 +63,11 @@ const Sidebar = ({
         <div className='sidebar-tab'>
           <p>Teams</p>
           <div className='second-tab-item centered'>
-            <PlusButton />
+            {/* <PlusButton /> */}
+            <OpenModalButton
+              modalComponent={<AddTeamModal />}
+              className='add-team'
+            />
           </div>
         </div>
         <ul className='team-list'>
