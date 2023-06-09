@@ -7,6 +7,7 @@ import "./Team.css";
 const Team = ({ teamId, closeTeamDropdown }) => {
   const dispatch = useDispatch()
   const teamData = useSelector(state => state.teams.selectedTeam)
+  console.group('TEAM DATA --->', teamData)
 
   useEffect(() => {
     dispatch(getSingleTeamThunk(teamId))
@@ -16,7 +17,7 @@ const Team = ({ teamId, closeTeamDropdown }) => {
     return <div>Loading...</div>
   }
 
-  // Function to get initials from a name
+  // function to get initials of each member to render in member icon
   const getInitials = (firstName, lastName) => {
     const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
     const capitalizedLastLetter = lastName.charAt(0).toUpperCase()

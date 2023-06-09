@@ -4,7 +4,6 @@
     color: white;
 }
 
-
 .sidebar-header {
     font-weight: var(--font-medium);
 }
@@ -64,4 +63,32 @@
     /* Rest of the styles */
 }
 
+.team-name {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+}
 
+.team-arrow {
+    position: absolute;
+    left: -1px;
+    /* Adjust the position to align with 'Teams' heading */
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid var(--color-medium-gray);
+    transition: transform 0.3s;
+}
+
+.team-arrow.rotated {
+    transform: translateY(-50%) rotate(315deg);
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid var(--color-medium-gray);
+    width: 6px;
+    height: 6px;
+}

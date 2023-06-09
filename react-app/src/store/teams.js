@@ -6,7 +6,6 @@ const REMOVE_TEAM = 'teams/removeTeam'
 const LOAD_SINGLE_TEAM = 'teams/loadSingleTeam'
 
 // Action creators
-
 const loadTeams = data => ({
   type: LOAD_TEAMS,
   payload: data

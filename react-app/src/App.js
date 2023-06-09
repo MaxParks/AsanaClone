@@ -18,6 +18,8 @@ const App = () => {
   const dispatch = useDispatch()
   const [isLoaded, setIsLoaded] = useState(false)
   const user = useSelector(state => state.session.user)
+
+  // save state of the teams and the data associated to them in team list
   const [selectedTeamId, setSelectedTeamId] = useState(null)
   const [selectedTeamData, setSelectedTeamData] = useState(null)
 
@@ -25,6 +27,8 @@ const App = () => {
     dispatch(authenticate()).then(() => setIsLoaded(true))
   }, [dispatch])
 
+
+  // pass team dropdown state to the Sidebar as prop to render it there
   const openTeamDropdown = (teamId, teamData) => {
     setSelectedTeamId(teamId)
     setSelectedTeamData(teamData)
@@ -41,6 +45,7 @@ const App = () => {
         <div className='App'>
           {user && (
             <Sidebar
+            closeTeamDropdown={closeTeamDropdown}
               openTeamDropdown={openTeamDropdown}
               selectedTeamId={selectedTeamId}
               selectedTeamData={selectedTeamData}
