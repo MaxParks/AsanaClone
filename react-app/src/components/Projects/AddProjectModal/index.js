@@ -25,7 +25,7 @@ function CreateProjectModal(isLoaded) {
       console.log("VALIDATION ERRORS --->", errors);
     } else if (data && data.id) {
       closeModal();
-      history.push("/user/dashboard");
+      history.push(`/projects/${data.id}`);
     } else {
       closeModal();
     }
