@@ -51,9 +51,9 @@ def retrieve_project(id):
 
     team_members_dict = get_team_members_dict(project)
 
-    if current_user.id != project.owner_id:
-        if current_user.id not in team_members_dict:
-                    return {"message": "Unauthorized", "statusCode": 403}, 403
+    # if current_user.id != project.owner_id:
+    #     if current_user.id not in team_members_dict:
+    #                 return {"message": "Unauthorized", "statusCode": 403}, 403
 
     project_dict = project.to_dict()
     project_dict['tasks'] = []

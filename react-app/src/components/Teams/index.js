@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTeams} from "../../store/teams"
-import { getProjectThunk } from '../../store/projects'
-import { getDashboardThunk } from '../../store/dashboard'
 import { useParams } from "react-router-dom";
+import { getSingleTeamThunk } from "../../store/teams";
 // import "./Team.css";
 
-
-const Team = () => {
+function Team () {
   const dispatch = useDispatch()
   const { id } = useParams()
-
-  const dashboardData = useSelector(state => state.dashboard)
-  const teamData = dashboardData.teams ? dashboardData.teams[id] : null
-  console.log('TEAM DATA --->', teamData)
+  const teamData = useSelector(state => state.teams.selectedTeam)
+  console.log('TEAM DATA', teamData)
 
   useEffect(() => {
-    dispatch(getDashboardThunk())
-  }, [dispatch])
+    dispatch(getSingleTeamThunk(id))
+  }, [dispatch, id])
 
   if (!teamData) {
     return <div>Loading...</div>
+  }
+
+  // Function to get initials from a name
+  const getInitials = (firstName, lastName) => {
+    const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
+    const capitalizedLastLetter = lastName.charAt(0).toUpperCase()
+    return `${capitalizedFirstLetter}${capitalizedLastLetter}`
   }
 
   return (
@@ -28,14 +30,16 @@ const Team = () => {
       <h1>Team: {teamData.name}</h1>
       <h2>Members:</h2>
       <ul>
-        {teamData.members.map(memberId => (
-          <li key={memberId}>Member ID: {memberId}</li>
+        {teamData.members.map(member => (
+          <li key={member.id}>
+            {getInitials(member.firstName, member.lastName)} - {member.name}
+          </li>
         ))}
       </ul>
       <h2>Projects:</h2>
       <ul>
-        {teamData.projects.map(projectId => (
-          <li key={projectId}>Project ID: {projectId}</li>
+        {teamData.projects.map(project => (
+          <li key={project.id}>{project.name}</li>
         ))}
       </ul>
     </div>
@@ -43,3 +47,4 @@ const Team = () => {
 }
 
 export default Team
+
