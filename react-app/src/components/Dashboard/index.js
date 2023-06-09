@@ -75,24 +75,40 @@ function Dashboard() {
           <div className="section-title-container">
             <h2 className="section-title">My Tasks</h2>
           </div>
+
           <div className="add-task-container">
-            <Checkmark />
-            <OpenModalButton
-              buttonText="Add New Task"
-              modalComponent={<AddTaskModal />}
-              className="add-task"
-            />
+            {/* <div className="add-task-text-container">
+              <Checkmark />
+              <OpenModalButton
+                buttonText="Add New Task"
+                modalComponent={<AddTaskModal />}
+                className="add-task"
+              />
+            </div> */}
+
+            <div className="task-item add-item">
+              <div>
+                <Checkmark />
+              </div>
+              <div className="task-link">
+                <OpenModalButton
+                  buttonText="Click here to add a new task..."
+                  modalComponent={<AddTaskModal />}
+                  className="add-task text-name"
+                />
+              </div>
+            </div>
           </div>
           <div className="task-list">
             {dashboardData.assigned_tasks &&
               Object.values(dashboardData.assigned_tasks).map((task) => (
                 <div key={task.id} className="task-item">
-                  <span
+                  <div
                     className={`checkmark ${task.completed ? "green" : ""}`}
                     onClick={() => toggleTaskCompletion(task.id)}
                   >
                     <Checkmark />
-                  </span>
+                  </div>
                   <Link to={`/tasks/${task.id}`} className="task-link">
                     <span className="task-name">{task.name}</span>
                     <span className="task-due-date">{task.due_date}</span>
