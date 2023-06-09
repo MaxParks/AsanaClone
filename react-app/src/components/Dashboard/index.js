@@ -95,7 +95,7 @@ function Dashboard() {
                   </span>
                   <Link to={`/tasks/${task.id}`} className="task-link">
                     <span className="task-name">{task.name}</span>
-                    <span className="due-date">{task.due_date}</span>
+                    <span className="task-due-date">{task.due_date}</span>
                   </Link>
                 </div>
               ))}
