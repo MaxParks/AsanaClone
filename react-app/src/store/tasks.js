@@ -85,39 +85,34 @@ export const fetchTaskById = (id) => async (dispatch) => {
   }
 };
 
-export const createTaskThunk =
-  (name, description, assigned_to, due_date, completed, project_id) =>
-  async (dispatch) => {
-    const response = await fetch("/api/tasks/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        description,
-        assigned_to,
-        due_date,
-        completed,
-        project_id,
-      }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(addTask(data));
-      dispatch(getDashboardThunk());
+export const createTaskThunk = (taskData) => async (dispatch) => {
+  const { name, description, assigned_to, due_date, project_id } = taskData;
+  console.log(taskData);
+  const response = await fetch("/api/tasks/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      assigned_to,
+      due_date,
+      project_id,
+    }),
+  });
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addTask(data));
+    dispatch(getDashboardThunk());
 
-      return data;
-    } else {
-      throw new Error("Failed to create project");
-    }
-  };
+    return data;
+  }
+};
 
 export const updateSingleTask = (id, taskData) => async (dispatch) => {
   const { name, description, assigned_to, due_date, completed, project_id } =
     taskData;
-
-  console.log(completed);
 
   const response = await fetch(`/api/tasks/${id}`, {
     method: "PUT",
@@ -231,7 +226,10 @@ export default function tasksReducer(state = initialState, action) {
         task.id === action.payload.id ? action.payload : task
       );
     case ADD_TASK:
-      return [...state, action.payload];
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
     case UPDATE_TASK:
       return {
         ...state,

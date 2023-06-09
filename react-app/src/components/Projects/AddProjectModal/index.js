@@ -3,7 +3,6 @@ import { createProjectThunk } from "../../../store/projects";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
-// import 'AddProjectModal.css';
 
 function CreateProjectModal(isLoaded) {
   const dispatch = useDispatch();

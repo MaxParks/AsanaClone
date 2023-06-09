@@ -25,6 +25,14 @@
     padding-top: 100px;
 }
 
+.hero-image {
+    max-width: 500px;
+}
+
+.landing-page-title {
+    color: black;
+}
+
 .button-transparent {
     border: 2px solid black;
     background-color: transparent;

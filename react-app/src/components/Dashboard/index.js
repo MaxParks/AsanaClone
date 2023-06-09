@@ -35,7 +35,6 @@ function Dashboard() {
 
     if (task) {
       const updatedTask = {
-        // id: task.id,
         name: task.name,
         description: task.description,
         assigned_to: task.assigned_to,
@@ -89,14 +88,14 @@ function Dashboard() {
               Object.values(dashboardData.assigned_tasks).map((task) => (
                 <div key={task.id} className="task-item">
                   <span
-                    className="check-mark"
+                    className={`checkmark ${task.completed ? "green" : ""}`}
                     onClick={() => toggleTaskCompletion(task.id)}
                   >
                     <Checkmark />
                   </span>
                   <Link to={`/tasks/${task.id}`} className="task-link">
                     <span className="task-name">{task.name}</span>
-                    <span className="due-date">{task.due_date}</span>
+                    <span className="task-due-date">{task.due_date}</span>
                   </Link>
                 </div>
               ))}
