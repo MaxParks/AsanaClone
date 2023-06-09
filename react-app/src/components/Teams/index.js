@@ -32,7 +32,7 @@ function Team () {
       <ul>
         {teamData.members.map(member => (
           <li key={member.id}>
-            {getInitials(member.firstName, member.lastName)} - {member.name}
+            {getInitials(member.firstName, member.lastName)}
           </li>
         ))}
       </ul>
@@ -47,4 +47,3 @@ function Team () {
 }
 
 export default Team
-
