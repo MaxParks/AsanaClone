@@ -40,13 +40,10 @@
   border: .5px solid var(--color-light-gray);
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-between; */
-  /* Remove this line */
   flex-grow: 1;
-  /* Add this line */
-  /* width: 100%; */
-  /* Remove this line */
   min-width: 200px;
+  padding: 20px;
+  height: auto;
 }
 
 @media (max-width: 1100px) {
@@ -63,7 +60,7 @@
 
 .task-list,
 .project-list {
-  margin-top: 10px;
+  margin-top: 5px;
   width: 100%;
 }
 
@@ -84,26 +81,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  margin: 5px;
+  border-bottom: .5px solid var(--color-medium-gray);
 }
 
-.task-name {
+.open-modal-button-task-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   flex-grow: 1;
   flex-shrink: 1;
-  max-width: 200px;
+  max-width: 180px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  text-align: start;
+  padding: 2px;
 }
 
-
 .task-due-date {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-x: hidden;
   width: 80px;
-  /* margin-left: auto; */
-  min-width: 80px;
 }
 
 .task-link,
@@ -124,7 +122,7 @@
 }
 
 .checkmark {
-  margin-right: 20px;
+  margin-right: 5px;
 
 }
 
@@ -132,16 +130,28 @@
   fill: green;
 }
 
-.task-name {
-  margin-right: auto;
+.checkmark:hover {
+  cursor: pointer;
 }
 
+.checkmark:hover path {
+  fill: green;
+}
 
 .add-task-container {
   display: flex;
   align-items: center;
   width: 100%;
+  padding: 10px 0;
+  flex-grow: 1;
+}
+
+.add-task-text-container {
+  display: flex;
+  align-items: center;
   border-bottom: .5px solid var(--color-medium-gray);
+  width: 95%;
+  margin: 0 auto;
 }
 
 .open-modal-button-add-task {
@@ -150,4 +160,9 @@
   color: var(--color-medium-gray);
   font-weight: var(--font-regular);
   padding: 0;
+  font-size: 14px;
+}
+
+.add-item {
+  width: 100%;
 }

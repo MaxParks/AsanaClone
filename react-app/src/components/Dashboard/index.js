@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDashboardThunk } from "../../store/dashboard";
+import { fetchTaskById } from "../../store/tasks";
 import { updateSingleTask } from "../../store/tasks";
+import { toggleTaskCompletion, formatDueDate } from "../../utils";
 import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
 import AddTaskModal from "../Tasks/AddTaskModal";
-import "./Dashboard.css";
+import TaskModal from "../Tasks/TaskModal";
+
 import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
+import "./Dashboard.css";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const dashboardData = useSelector((state) => state.dashboard);
+  const [selectedTask, setSelectedTask] = useState(null); // Add a state to track the selected task
 
   useEffect(() => {
     dispatch(getDashboardThunk());
@@ -28,23 +33,9 @@ function Dashboard() {
     greetingMessage = "Good afternoon";
   }
 
-  const toggleTaskCompletion = async (taskId) => {
-    const task = Object.values(dashboardData.assigned_tasks).find(
-      (task) => task.id === taskId
-    );
-
-    if (task) {
-      const updatedTask = {
-        name: task.name,
-        description: task.description,
-        assigned_to: task.assigned_to,
-        due_date: task.due_date,
-        completed: task.completed ? false : true,
-        project_id: task.project_id,
-      };
-
-      dispatch(updateSingleTask(taskId, updatedTask));
-    }
+  // Function to handle closing the task modal
+  const closeTaskModal = () => {
+    setSelectedTask(null);
   };
 
   return (
@@ -75,28 +66,50 @@ function Dashboard() {
           <div className="section-title-container">
             <h2 className="section-title">My Tasks</h2>
           </div>
+
           <div className="add-task-container">
-            <Checkmark />
-            <OpenModalButton
-              buttonText="Add New Task"
-              modalComponent={<AddTaskModal />}
-              className="add-task"
-            />
+            <div className="task-item add-item">
+              <div>
+                <Checkmark />
+              </div>
+              <div className="task-link">
+                <OpenModalButton
+                  buttonText="Click here to add a new task..."
+                  modalComponent={<AddTaskModal />}
+                  className="add-task text-name"
+                />
+              </div>
+            </div>
           </div>
           <div className="task-list">
             {dashboardData.assigned_tasks &&
               Object.values(dashboardData.assigned_tasks).map((task) => (
                 <div key={task.id} className="task-item">
-                  <span
+                  <div
                     className={`checkmark ${task.completed ? "green" : ""}`}
-                    onClick={() => toggleTaskCompletion(task.id)}
+                    onClick={() =>
+                      toggleTaskCompletion(
+                        task.id,
+                        dashboardData,
+                        dispatch,
+                        updateSingleTask
+                      )
+                    }
                   >
                     <Checkmark />
-                  </span>
-                  <Link to={`/tasks/${task.id}`} className="task-link">
-                    <span className="task-name">{task.name}</span>
-                    <span className="task-due-date">{task.due_date}</span>
-                  </Link>
+                  </div>
+                  <div className="task-link">
+                    <OpenModalButton
+                      buttonText={task.name}
+                      modalComponent={
+                        <TaskModal task={task} closeModal={closeTaskModal} />
+                      }
+                      className="task-name"
+                    />
+                    <span className="task-due-date">
+                      {formatDueDate(task.due_date)}
+                    </span>
+                  </div>
                 </div>
               ))}
           </div>
