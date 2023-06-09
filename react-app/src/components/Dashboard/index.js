@@ -47,6 +47,34 @@ function Dashboard() {
     }
   };
 
+  function formatDueDate(dueDate) {
+    const currentDate = new Date();
+    const taskDate = new Date(dueDate);
+
+    const isSameDay =
+      currentDate.getDate() === taskDate.getDate() &&
+      currentDate.getMonth() === taskDate.getMonth() &&
+      currentDate.getFullYear() === taskDate.getFullYear();
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    if (isSameDay) {
+      return "today";
+    } else if (
+      taskDate.getDate() === tomorrow.getDate() &&
+      taskDate.getMonth() === tomorrow.getMonth() &&
+      taskDate.getFullYear() === tomorrow.getFullYear()
+    ) {
+      return "tomorrow";
+    } else {
+      return taskDate.toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+      });
+    }
+  }
+
   return (
     <div
       className="page-container"
@@ -77,15 +105,6 @@ function Dashboard() {
           </div>
 
           <div className="add-task-container">
-            {/* <div className="add-task-text-container">
-              <Checkmark />
-              <OpenModalButton
-                buttonText="Add New Task"
-                modalComponent={<AddTaskModal />}
-                className="add-task"
-              />
-            </div> */}
-
             <div className="task-item add-item">
               <div>
                 <Checkmark />
@@ -111,7 +130,9 @@ function Dashboard() {
                   </div>
                   <Link to={`/tasks/${task.id}`} className="task-link">
                     <span className="task-name">{task.name}</span>
-                    <span className="task-due-date">{task.due_date}</span>
+                    <span className="task-due-date">
+                      {formatDueDate(task.due_date)}
+                    </span>
                   </Link>
                 </div>
               ))}
