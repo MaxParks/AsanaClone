@@ -1,0 +1,63 @@
+.page-container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* changed to flex-start to align items to the left */
+    padding: 20px;
+    background-color: var(--color-charcoal);
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    position: relative; /* added for absolute positioning of the profile button */
+  }
+
+  .header-container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .header-title1 {
+    font-size: 2.5em;
+    font-weight: bold;
+  }
+
+  .profile-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  .due-date1 {
+    margin-left: 20px;
+    font-size: 1.2em;
+    text-decoration: underline; /* Add underline */
+  }
+
+  .project-description1 {
+    margin-top: 20px;
+    font-size: 1.2em;
+    text-decoration: underline; /* Add underline */
+  }
+
+  .tasks-list1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid white; /* Add line above tasks */
+    border-bottom: 1px solid white; /* Add line below tasks */
+    padding: 10px 0; /* Add some padding to give space to the lines */
+  }
+
+  .task-item1 {
+    font-size: 1em;
+    padding: 10px 0;
+  }
+
+  .open-modal-button1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }

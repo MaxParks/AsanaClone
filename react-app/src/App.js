@@ -10,7 +10,8 @@ import Sidebar from "./components/Sidebar";
 import Navigation from "./components/Navigation";
 import Dashboard from "./components/Dashboard";
 import UserTasks from "./components/Tasks/UserTasks";
-import Team from "./components/Team";
+import Task from "./components/task";
+import Team from "./components/Teams";
 import GetProject from "./components/Projects/GetProject";
 
 function App() {
@@ -42,12 +43,16 @@ function App() {
                 <SignupFormPage />
               </Route>
 
-              <Route path="/user/dashboard">
+              <Route path="/user/dashboard/">
                 {user ? <Dashboard /> : <Redirect to="/" />}
               </Route>
 
-              <Route path="/tasks/current">
+              <Route path="/tasks/current/">
                 {user ? <UserTasks /> : <Redirect to="/" />}
+              </Route>
+
+              <Route path="/tasks/:id">
+                {user ? <Task /> : <Redirect to="/" />}
               </Route>
 
               <Route path="/projects/:id">

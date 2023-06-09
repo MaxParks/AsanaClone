@@ -2,7 +2,7 @@
 const LOAD_DASHBOARD = "dashboard/loadDashboard";
 
 // Action creators
-const loadDashboard = (data) => ({
+export const loadDashboard = (data) => ({
   type: LOAD_DASHBOARD,
   payload: data,
 });

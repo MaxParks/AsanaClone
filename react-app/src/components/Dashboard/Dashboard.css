@@ -1,0 +1,153 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: white;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-date {
+  font-size: 18px;
+}
+
+.dashboard-greeting {
+  font-size: 24px;
+}
+
+.dashboard-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.split-container {
+  flex: 1;
+  background-color: var(--color-dark-gray);
+  border-radius: 10px;
+  border: .5px solid var(--color-light-gray);
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+  /* Remove this line */
+  flex-grow: 1;
+  /* Add this line */
+  /* width: 100%; */
+  /* Remove this line */
+  min-width: 200px;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .split-container {
+    width: 400px;
+  }
+
+}
+
+.task-list,
+.project-list {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.task-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 200px;
+}
+
+
+.task-due-date {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 80px;
+  /* margin-left: auto; */
+  min-width: 80px;
+}
+
+.task-link,
+.project-item {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease;
+  padding: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.task-item:hover,
+.project-item:hover {
+  color: black;
+}
+
+.checkmark {
+  margin-right: 20px;
+
+}
+
+.green path {
+  fill: green;
+}
+
+.task-name {
+  margin-right: auto;
+}
+
+
+.add-task-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: .5px solid var(--color-medium-gray);
+}
+
+.open-modal-button-add-task {
+  border: none;
+  background-color: transparent;
+  color: var(--color-medium-gray);
+  font-weight: var(--font-regular);
+  padding: 0;
+}

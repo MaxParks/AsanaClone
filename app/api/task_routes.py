@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from app.models import db, Task, TaskComment, User, Project
 from app.forms import TaskForm
 from datetime import datetime
+from sqlalchemy.orm import joinedload
+
 
 tasks_routes = Blueprint('tasks', __name__)
 
@@ -49,9 +51,6 @@ def create_task():
     form = TaskForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    # if current_user not in project.team.members and current_user.id != project.owner_id:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
     if form.validate_on_submit():
         project_id = form.data['project_id']
 
@@ -64,7 +63,7 @@ def create_task():
 
 
         due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
 
         task = Task(
             owner_id = current_user.id,
@@ -101,33 +100,19 @@ def update_task(id):
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        team_id = form.data['team_id']
-        name = form.data['name']
-        due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
-        description = form.data['description']
+        task.name = form.name.data
+        task.description = form.description.data
+        task.assigned_to = form.assigned_to.data
+        task.due_date = datetime.strptime(form.due_date.data, '%m/%d/%Y').date() if form.due_date.data else None
+        task.completed = request.json["completed"]
+        task.project_id = form.project_id.data
+        task.updated_at = datetime.utcnow()
+        db.session.commit()
 
-    data = request.get_json()
-    name = data.get('name')
-    description = data.get('description')
-    assigned_to = data.get('assigned_to')
-    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d').date()
-    completed = data.get('completed')
-    project_id = data.get('project_id')
-
-    if not name or not description or not assigned_to or not due_date or not completed or not project_id:
-        return jsonify({'message': 'Invalid request body', 'statusCode': 400}), 400
-
-    task.name = name
-    task.description = description
-    task.assigned_to = assigned_to
-    task.due_date = due_date
-    task.completed = completed
-    task.project_id = project_id
-    task.updated_at = datetime.utcnow()
-    db.session.commit()
-
-    return jsonify(task.to_dict()), 200
+        return jsonify(task.to_dict()), 200
+    else:
+        errors = form_errors(form)
+        return jsonify({'message': 'Validation errors', 'errors': errors, 'statusCode': 400}), 400
 
 
 # -------------- DELETE TASK  --------------------

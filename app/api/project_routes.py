@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from app.models import db, Project, User, Task, Team, UserTeam
 from app.forms import ProjectForm
 from datetime import datetime
+from app.api.auth_routes import authenticate
 
 project_routes = Blueprint('projects', __name__)
 
@@ -80,28 +81,27 @@ def retrieve_project(id):
 @project_routes.route('/', methods=['POST'])
 @login_required
 def create_project():
+
     form = ProjectForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    print(form.data)
 
     if form.validate_on_submit():
         due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
 
         project = Project(
             owner_id = current_user.id,
-            team_id = form.data['team_id'],
             name = form.data['name'],
             due_date = due_date,
-            description = form.data['description']
+            description = form.data['description'],
+            team_id = form.data['team_id'],
         )
         db.session.add(project)
         db.session.commit()
         return project.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
-    db.session.add(new_project)
-    db.session.commit()
-    return jsonify(new_project.to_dict()), 201
 
 
 
@@ -117,7 +117,7 @@ def update_project(id):
     team = Team.query.filter_by(id=team_id).options(joinedload('owner')).first()
     owner_id = team.owner_id
 
-    if current_user.id != project.owner_id and current_user.id != team.owner_id:
+    if current_user.id != project.owner_id and current_user.id != owner_id:
         return {"message": "Unauthorized", "statusCode": 403}, 403
 
     form = ProjectForm()
@@ -127,7 +127,7 @@ def update_project(id):
         team_id = form.data['team_id']
         name = form.data['name']
         due_date_str = form.data['due_date']
-        due_date = datetime.strptime(due_date_str, '%m/%d/%Y').date() if due_date_str else None
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
         description = form.data['description']
 
         project.team_id = team_id

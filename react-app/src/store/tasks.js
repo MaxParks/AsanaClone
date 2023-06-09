@@ -1,12 +1,14 @@
+import { getDashboardThunk } from "./dashboard";
+
 // Constants
-const LOAD_TASKS = 'tasks/LOAD_TASKS';
-const LOAD_TASK = 'tasks/LOAD_TASK'
-const ADD_TASK = 'tasks/ADD_TASK';
-const UPDATE_TASK = 'tasks/UPDATE_TASK';
-const REMOVE_TASK = 'tasks/REMOVE_TASK';
-const ADD_TASK_COMMENT = 'tasks/ADD_TASK_COMMENT';
-const UPDATE_TASK_COMMENT = 'tasks/UPDATE_TASK_COMMENT';
-const REMOVE_TASK_COMMENT = 'tasks/REMOVE_TASK_COMMENT';
+const LOAD_TASKS = "tasks/loadTasks";
+const LOAD_TASK = "tasks/loadTask";
+const ADD_TASK = "tasks/addTask";
+const UPDATE_TASK = "tasks/updateTask";
+const REMOVE_TASK = "tasks/removeTask";
+const ADD_TASK_COMMENT = "tasks/addTaskComment";
+const UPDATE_TASK_COMMENT = "tasks/updateTaskComment";
+const REMOVE_TASK_COMMENT = "tasks/removeTaskComment";
 
 // Action creators
 const loadTasks = (tasks) => ({
@@ -15,16 +17,16 @@ const loadTasks = (tasks) => ({
 });
 
 const loadTask = (taskId) => ({
-    type: LOAD_TASK,
-    payload: taskId,
-  });
+  type: LOAD_TASK,
+  payload: taskId,
+});
 
 const addTask = (task) => ({
   type: ADD_TASK,
   payload: task,
 });
 
-const updateTask = (task) => ({
+const updateTask = (taskId, task) => ({
   type: UPDATE_TASK,
   payload: task,
 });
@@ -55,9 +57,9 @@ const removeTaskComment = (commentId) => ({
 // Thunk actions
 export const fetchTasks = () => async (dispatch) => {
   try {
-    const response = await fetch('/api/tasks');
+    const response = await fetch("/api/tasks/");
     if (!response.ok) {
-      throw new Error('Failed to fetch tasks');
+      throw new Error("Failed to fetch tasks");
     }
 
     const data = await response.json();
@@ -69,69 +71,81 @@ export const fetchTasks = () => async (dispatch) => {
 };
 
 export const fetchTaskById = (id) => async (dispatch) => {
-    try {
-      const response = await fetch(`/api/tasks/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch task');
-      }
-
-      const data = await response.json();
-      dispatch(loadTask(data));
-    } catch (error) {
-      console.error(error);
-      // Handle error if needed
-    }
-  };
-
-export const createTask = (name, description, assigned_to, due_date, completed, project_id) => async (dispatch) => {
   try {
-    const response = await fetch('/api/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, description, assigned_to, due_date, completed, project_id }),
-    });
+    const response = await fetch(`/api/tasks/${id}/`);
     if (!response.ok) {
-      throw new Error('Failed to create task');
+      throw new Error("Failed to fetch task");
     }
 
     const data = await response.json();
-    dispatch(addTask(data));
+    dispatch(loadTask(data));
   } catch (error) {
     console.error(error);
     // Handle error if needed
   }
 };
 
-export const updateSingleTask = (id, name, description, assigned_to, due_date, completed, project_id) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/tasks/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, description, assigned_to, due_date, completed, project_id }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to update task');
-    }
-
+export const createTaskThunk = (taskData) => async (dispatch) => {
+  const { name, description, assigned_to, due_date, project_id } = taskData;
+  console.log(taskData);
+  const response = await fetch("/api/tasks/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      assigned_to,
+      due_date,
+      project_id,
+    }),
+  });
+  if (response.ok) {
     const data = await response.json();
-    dispatch(updateTask(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
+    dispatch(addTask(data));
+    dispatch(getDashboardThunk());
+
+    return data;
+  }
+};
+
+export const updateSingleTask = (id, taskData) => async (dispatch) => {
+  const { name, description, assigned_to, due_date, completed, project_id } =
+    taskData;
+
+  const response = await fetch(`/api/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id,
+      name,
+      description,
+      assigned_to,
+      due_date,
+      completed,
+      project_id,
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    dispatch(updateTask(id, data));
+    dispatch(getDashboardThunk());
+    return data;
   }
 };
 
 export const deleteTask = (id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/tasks/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     if (!response.ok) {
-      throw new Error('Failed to delete task');
+      throw new Error("Failed to delete task");
     }
 
     dispatch(removeTask(id));
@@ -144,14 +158,14 @@ export const deleteTask = (id) => async (dispatch) => {
 export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
   try {
     const response = await fetch(`/api/tasks/${taskId}/comments`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ comment }),
     });
     if (!response.ok) {
-      throw new Error('Failed to add task comment');
+      throw new Error("Failed to add task comment");
     }
 
     const data = await response.json();
@@ -165,14 +179,14 @@ export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
 export const updateSingleTaskComment = (id, comment) => async (dispatch) => {
   try {
     const response = await fetch(`/api/tasks/comments/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ comment }),
     });
     if (!response.ok) {
-      throw new Error('Failed to update task comment');
+      throw new Error("Failed to update task comment");
     }
 
     const data = await response.json();
@@ -186,10 +200,10 @@ export const updateSingleTaskComment = (id, comment) => async (dispatch) => {
 export const deleteTaskComment = (id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/tasks/comments/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     if (!response.ok) {
-      throw new Error('Failed to delete task comment');
+      throw new Error("Failed to delete task comment");
     }
 
     dispatch(removeTaskComment(id));
@@ -200,7 +214,7 @@ export const deleteTaskComment = (id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = [];
+const initialState = {};
 
 // Reducer
 export default function tasksReducer(state = initialState, action) {
@@ -208,15 +222,19 @@ export default function tasksReducer(state = initialState, action) {
     case LOAD_TASKS:
       return action.payload;
     case LOAD_TASK:
-        return state.map((task) =>
-          task.id === action.payload.id ? action.payload : task
-        );
-    case ADD_TASK:
-      return [...state, action.payload];
-    case UPDATE_TASK:
       return state.map((task) =>
         task.id === action.payload.id ? action.payload : task
       );
+    case ADD_TASK:
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
+    case UPDATE_TASK:
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
     case REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);
     case ADD_TASK_COMMENT:

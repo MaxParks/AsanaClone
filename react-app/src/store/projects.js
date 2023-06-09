@@ -1,5 +1,6 @@
-// Constants
+import { getDashboardThunk } from "./dashboard";
 
+// Constants
 const LOAD_PROJECTS = "projects/loadProject";
 const ADD_PROJECT = "projects/createProject";
 const UPDATE_PROJECT = "projects/updateProject";
@@ -36,13 +37,14 @@ export const getProjectThunk = (id) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(loadProject(data));
+
     return data;
   }
 };
 
 export const createProjectThunk =
   (name, description, due_date, team_id) => async (dispatch) => {
-    const response = await fetch("/api/projects", {
+    const response = await fetch("/api/projects/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +55,11 @@ export const createProjectThunk =
     if (response.ok) {
       const data = await response.json();
       dispatch(createProject(data));
+      dispatch(getDashboardThunk());
+
       return data;
+    } else {
+      throw new Error("Failed to create project");
     }
   };
 
@@ -101,13 +107,21 @@ export default function projectsReducer(state = initialState, action) {
         ...action.payload,
       };
     case ADD_PROJECT:
-      return [...state, action.payload];
-    case UPDATE_PROJECT:
-      return state.map((project) =>
-        project.id === action.payload.id ? action.payload : project
-      );
+      return {
+        ...state,
+        projects: {
+          [action.payload.id]: action.payload,
+        },
+      };
+      case UPDATE_PROJECT:
+        return {
+          ...state,
+          [action.data.id]: action.data,
+        };
     case REMOVE_PROJECT:
-      return state.filter((project) => project.id !== action.payload);
+      const newState = { ...state };
+      delete newState[action.payload];
+      return newState;
     default:
       return state;
   }
