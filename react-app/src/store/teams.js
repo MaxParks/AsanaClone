@@ -1,182 +1,164 @@
 // Constants
-const LOAD_TEAMS = 'teams/LOAD_TEAMS';
-const ADD_TEAM = 'teams/ADD_TEAM';
-const UPDATE_TEAM = 'teams/UPDATE_TEAM';
-const REMOVE_TEAM = 'teams/REMOVE_TEAM';
-const INVITE_MEMBER = 'teams/INVITE_MEMBER';
-// const RETRIEVE_TEAM = 'teams/RETRIEVE_TEAM';
+const LOAD_TEAMS = 'teams/loadTeams'
+const ADD_TEAM = 'teams/addTeam'
+const UPDATE_TEAM = 'teams/updateTeam'
+const REMOVE_TEAM = 'teams/removeTeam'
+const LOAD_SINGLE_TEAM = 'teams/loadSingleTeam'
 
 // Action creators
-const loadTeams = (teams) => ({
+const loadTeams = data => ({
   type: LOAD_TEAMS,
-  payload: teams,
-});
+  payload: data
+})
 
-const addTeam = (team) => ({
+const addTeam = data => ({
   type: ADD_TEAM,
-  payload: team,
-});
+  payload: data
+})
 
-const updateTeam = (team) => ({
+const updateTeam = (teamId, data) => ({
   type: UPDATE_TEAM,
-  payload: team,
-});
+  data: {
+    id: teamId,
+    ...data
+  }
+})
 
-const removeTeam = (teamId) => ({
+const removeTeam = teamId => ({
   type: REMOVE_TEAM,
-  payload: teamId,
-});
+  payload: teamId
+})
 
-const inviteMember = (teamId, member) => ({
-  type: INVITE_MEMBER,
-  payload: { teamId, member },
-});
-
-// const retrieveTeam = (team) => ({
-//   type: RETRIEVE_TEAM,
-//   payload: team,
-// });
+const loadSingleTeam = data => ({
+  type: LOAD_SINGLE_TEAM,
+  payload: data
+})
 
 // Thunk actions
-export const fetchTeams = () => async (dispatch) => {
-  try {
-    const response = await fetch('/api/teams');
-    if (!response.ok) {
-      throw new Error('Failed to fetch teams');
-    }
 
-    const data = await response.json();
-    dispatch(loadTeams(data));
-  } catch (error) {
-    console.error(error);
+export const getTeamsThunk = () => async dispatch => {
+  const response = await fetch('/api/teams/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (response.ok) {
+    const data = await response.json()
+    dispatch(loadTeams(data))
+  } else {
     // Handle error if needed
   }
-};
+}
 
-export const createTeam = (name, members) => async (dispatch) => {
-  try {
-    const response = await fetch('/api/teams', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, members }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to create team');
+export const getSingleTeamThunk = teamId => async dispatch => {
+  const response = await fetch(`/api/teams/${teamId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
+  })
 
-    const data = await response.json();
-    dispatch(addTeam(data));
-  } catch (error) {
-    console.error(error);
+  if (response.ok) {
+    const data = await response.json()
+    dispatch(loadSingleTeam(data))
+  } else {
     // Handle error if needed
   }
-};
+}
 
-export const updateSingleTeam = (id, name, newMember) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/teams/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, new_member: newMember }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to update team');
-    }
+export const createTeamThunk = (name, members) => async dispatch => {
+  const response = await fetch('/api/teams/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, members })
+  })
 
-    const data = await response.json();
-    dispatch(updateTeam(data));
-  } catch (error) {
-    console.error(error);
+  if (response.ok) {
+    const data = await response.json()
+    dispatch(addTeam(data))
+  } else {
     // Handle error if needed
   }
-};
+}
 
-export const deleteTeam = (id) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/teams/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error('Failed to delete team');
-    }
+export const updateTeamThunk = (teamId, updatedTeamData) => async dispatch => {
+  const response = await fetch(`/api/teams/${teamId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updatedTeamData)
+  })
 
-    dispatch(removeTeam(id));
-  } catch (error) {
-    console.error(error);
+  if (response.ok) {
+    const data = await response.json()
+    dispatch(updateTeam(teamId, data))
+  } else {
     // Handle error if needed
   }
-};
+}
 
-export const inviteSingleMember = (teamId, email) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/teams/${teamId}/members`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to invite team member');
+export const deleteTeamThunk = teamId => async dispatch => {
+  const response = await fetch(`/api/teams/${teamId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
     }
+  })
 
-    const data = await response.json();
-    dispatch(inviteMember(teamId, data));
-  } catch (error) {
-    console.error(error);
+  if (response.ok) {
+    dispatch(removeTeam(teamId))
+  } else {
     // Handle error if needed
   }
-};
-
-// export const retrieveSingleTeam = (id) => async (dispatch) => {
-//   try {
-//     const response = await fetch(`/api/teams/${id}`);
-//     if (!response.ok) {
-//       throw new Error('Failed to retrieve team');
-//     }
-
-//     const data = await response.json();
-//     dispatch(retrieveTeam(data));
-//   } catch (error) {
-//     console.error(error);
-//     // Handle error if needed
-//   }
-// };
+}
 
 // Initial state
-const initialState = [];
+const initialState = {}
 
 // Reducer
-export default function teamsReducer(state = initialState, action) {
+export default function teamsReducer (state = initialState, action) {
   switch (action.type) {
     case LOAD_TEAMS:
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload
+      }
     case ADD_TEAM:
-      return [...state, action.payload];
+      return {
+        ...state,
+        teams: {
+          ...state.teams,
+          [action.payload.id]: action.payload
+        }
+      }
     case UPDATE_TEAM:
-      return state.map((team) =>
-        team.id === action.payload.id ? action.payload : team
-      );
+      return {
+        ...state,
+        teams: {
+          ...state.teams,
+          [action.data.id]: {
+            ...state.teams[action.data.id],
+            ...action.data
+          }
+        }
+      }
     case REMOVE_TEAM:
-      return state.filter((team) => team.id !== action.payload);
-    case INVITE_MEMBER:
-      return state.map((team) =>
-        team.id === action.payload.teamId
-          ? {
-              ...team,
-              members: [...team.members, action.payload.member],
-            }
-          : team
-      );
-    // case RETRIEVE_TEAM:
-    //   return state.map((team) =>
-    //     team.id === action.payload.id ? action.payload : team
-    //   );
+      const { [action.payload]: deletedTeam, ...updatedTeams } = state.teams
+      return {
+        ...state,
+        teams: updatedTeams
+      }
+    case LOAD_SINGLE_TEAM:
+      return {
+        ...state,
+        selectedTeam: action.payload
+      }
     default:
-      return state;
+      return state
   }
 }
