@@ -1,0 +1,55 @@
+#modal-content>.task-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-charcoal);
+    width: 500px;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+}
+
+.task-content {
+    padding: 10px 20px;
+}
+
+.task-header {
+    border-bottom: .5px solid var(--color-medium-gray);
+}
+
+.task-label {
+    color: var(--color-medium-gray);
+    font-size: 12px;
+}
+
+.task-top-section {
+    display: flex;
+    flex-direction: row;
+    gap: 150px;
+    padding: 10px 0;
+}
+
+.task-description-section {
+    padding: 10px 0;
+}
+
+.task-assigned-to-icon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.user-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--color-charcoal);
+    border-radius: 50%;
+    background-color: #fc979a;
+    font-size: 8px;
+    font-weight: var(--font-medium);
+    color: black;
+}

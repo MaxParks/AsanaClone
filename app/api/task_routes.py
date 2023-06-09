@@ -32,7 +32,26 @@ def retrieve_task(id):
 
     task_dict = task.to_dict()
     task_dict['comments'] = [comment.to_dict() for comment in task.comments]
-    return jsonify([task_dict]), 200
+
+    assigned_to_user = User.query.get(task.assigned_to)
+
+    if assigned_to_user:
+        assigned_to_user_dict = {
+            'first_name': assigned_to_user.firstName,
+            'last_name': assigned_to_user.lastName
+        }
+        task_dict['assigned_to'] = assigned_to_user_dict
+    else:
+        task_dict['assigned_to'] = None
+
+    # Fetch the project data
+    project = Project.query.get(task.project_id)
+    if project:
+        task_dict['project'] = project.name
+    else:
+        task_dict['project'] = None
+
+    return jsonify(task_dict), 200
 
 # -------------- GET TASK BY CURRENT USER  --------------------
 @tasks_routes.route('/', methods=['GET'])

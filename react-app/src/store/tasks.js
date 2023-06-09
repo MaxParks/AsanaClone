@@ -71,23 +71,17 @@ export const fetchTasks = () => async (dispatch) => {
 };
 
 export const fetchTaskById = (id) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/tasks/${id}/`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch task");
-    }
-
+  const response = await fetch(`/api/tasks/${id}`);
+  if (response.ok) {
     const data = await response.json();
     dispatch(loadTask(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
+    return data;
   }
 };
 
 export const createTaskThunk = (taskData) => async (dispatch) => {
   const { name, description, assigned_to, due_date, project_id } = taskData;
-  console.log(taskData);
+
   const response = await fetch("/api/tasks/", {
     method: "POST",
     headers: {
@@ -222,18 +216,19 @@ export default function tasksReducer(state = initialState, action) {
     case LOAD_TASKS:
       return action.payload;
     case LOAD_TASK:
-      return state.map((task) =>
-        task.id === action.payload.id ? action.payload : task
-      );
-    case ADD_TASK:
       return {
         ...state,
         [action.payload.id]: action.payload,
       };
+    case ADD_TASK:
+      return {
+        ...state,
+        task: action.payload,
+      };
     case UPDATE_TASK:
       return {
         ...state,
-        [action.payload.id]: action.payload,
+        task: action.payload,
       };
     case REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);

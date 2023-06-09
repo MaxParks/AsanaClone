@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDashboardThunk } from "../../store/dashboard";
+import { fetchTaskById } from "../../store/tasks";
 import { updateSingleTask } from "../../store/tasks";
 import { toggleTaskCompletion, formatDueDate } from "../../utils";
 import ProfileButton from "../Navigation/ProfileButton";
@@ -31,13 +32,6 @@ function Dashboard() {
   } else if (currentHour < 18) {
     greetingMessage = "Good afternoon";
   }
-
-  const openTaskModal = (taskId) => {
-    const task = Object.values(dashboardData.assigned_tasks).find(
-      (task) => task.id === taskId
-    );
-    setSelectedTask(task);
-  };
 
   // Function to handle closing the task modal
   const closeTaskModal = () => {
@@ -111,7 +105,6 @@ function Dashboard() {
                         <TaskModal task={task} closeModal={closeTaskModal} />
                       }
                       className="task-name"
-                      onClick={() => openTaskModal(task.id)}
                     />
                     <span className="task-due-date">
                       {formatDueDate(task.due_date)}
