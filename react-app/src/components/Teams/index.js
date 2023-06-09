@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSingleTeamThunk } from "../../store/teams";
-// import "./Team.css";
+import "./Team.css";
 
 const Team = ({ teamId, closeTeamDropdown }) => {
   const dispatch = useDispatch()
@@ -24,23 +24,22 @@ const Team = ({ teamId, closeTeamDropdown }) => {
   }
 
   return (
-    <div>
-      <h1>Team: {teamData.name}</h1>
-      <h2>Members:</h2>
-      <ul>
+    <div className='team-container'>
+      <div className='member-list'>
         {teamData.members.map(member => (
-          <li key={member.id}>
+          <div key={member.id} className='member-initials'>
             {getInitials(member.firstName, member.lastName)}
+          </div>
+        ))}
+      </div>
+      <ul className='project-list'>
+        {teamData.projects.map(project => (
+          <li key={project.id} className='project-item'>
+            &#9670; {project.name}
           </li>
         ))}
       </ul>
-      <h2>Projects:</h2>
-      <ul>
-        {teamData.projects.map(project => (
-          <li key={project.id}>{project.name}</li>
-        ))}
-      </ul>
-      <button onClick={closeTeamDropdown}>Close</button>
+      {/* <button onClick={closeTeamDropdown}>Close</button> */}
     </div>
   )
 }

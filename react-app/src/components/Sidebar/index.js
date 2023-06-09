@@ -42,7 +42,6 @@ const Sidebar = ({
         <h1 className='sidebar-header'>ZenFlow</h1>
       </div>
       <div className='sidebar-navigation-container'>
-        ;
         <ul className='sidebar-navigation'>
           <div className='sidebar-tab'>
             <HomeIcon />
