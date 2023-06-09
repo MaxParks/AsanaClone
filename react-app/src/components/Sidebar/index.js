@@ -17,6 +17,7 @@ const Sidebar = () => {
   }
 
   const dashboardData = useSelector(state => state.dashboard)
+  console.log('DASHBOARD DATA --->', dashboardData)
 
   const dispatch = useDispatch()
 
@@ -61,7 +62,7 @@ const Sidebar = () => {
                 </li>
               ))}
           </ul>
-      
+
       </div>
     </div>
   )

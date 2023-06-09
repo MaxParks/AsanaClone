@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTeams} from "../../store/teams"
+import { getProjectThunk } from '../../store/projects'
 import { getDashboardThunk } from '../../store/dashboard'
 import { useParams } from "react-router-dom";
 // import "./Team.css";
