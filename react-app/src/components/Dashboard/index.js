@@ -7,10 +7,10 @@ import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
 import AddTaskModal from "../Tasks/AddTaskModal";
+import "./Dashboard.css";
 import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
 
 import { toggleTaskCompletion, formatDueDate } from "../../utils";
-import "./Dashboard.css";
 
 function Dashboard() {
   const dispatch = useDispatch();
