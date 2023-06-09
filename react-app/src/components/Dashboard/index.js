@@ -7,8 +7,10 @@ import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
 import AddTaskModal from "../Tasks/AddTaskModal";
-import "./Dashboard.css";
 import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
+
+import { toggleTaskCompletion, formatDueDate } from "../../utils";
+import "./Dashboard.css";
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -26,53 +28,6 @@ function Dashboard() {
     greetingMessage = "Good morning";
   } else if (currentHour < 18) {
     greetingMessage = "Good afternoon";
-  }
-
-  const toggleTaskCompletion = async (taskId) => {
-    const task = Object.values(dashboardData.assigned_tasks).find(
-      (task) => task.id === taskId
-    );
-
-    if (task) {
-      const updatedTask = {
-        name: task.name,
-        description: task.description,
-        assigned_to: task.assigned_to,
-        due_date: task.due_date,
-        completed: task.completed ? false : true,
-        project_id: task.project_id,
-      };
-
-      dispatch(updateSingleTask(taskId, updatedTask));
-    }
-  };
-
-  function formatDueDate(dueDate) {
-    const currentDate = new Date();
-    const taskDate = new Date(dueDate);
-
-    const isSameDay =
-      currentDate.getDate() === taskDate.getDate() &&
-      currentDate.getMonth() === taskDate.getMonth() &&
-      currentDate.getFullYear() === taskDate.getFullYear();
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    if (isSameDay) {
-      return "today";
-    } else if (
-      taskDate.getDate() === tomorrow.getDate() &&
-      taskDate.getMonth() === tomorrow.getMonth() &&
-      taskDate.getFullYear() === tomorrow.getFullYear()
-    ) {
-      return "tomorrow";
-    } else {
-      return taskDate.toLocaleDateString(undefined, {
-        day: "numeric",
-        month: "short",
-      });
-    }
   }
 
   return (
@@ -124,7 +79,14 @@ function Dashboard() {
                 <div key={task.id} className="task-item">
                   <div
                     className={`checkmark ${task.completed ? "green" : ""}`}
-                    onClick={() => toggleTaskCompletion(task.id)}
+                    onClick={() =>
+                      toggleTaskCompletion(
+                        task.id,
+                        dashboardData,
+                        dispatch,
+                        updateSingleTask
+                      )
+                    }
                   >
                     <Checkmark />
                   </div>
