@@ -1,43 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTeams} from "../../store/teams"
-import { getProjectThunk } from '../../store/projects'
-import { getDashboardThunk } from '../../store/dashboard'
 import { useParams } from "react-router-dom";
-// import "./Team.css";
+import { getSingleTeamThunk } from "../../store/teams";
+import "./Team.css";
 
-
-const Team = () => {
+const Team = ({ teamId, closeTeamDropdown }) => {
   const dispatch = useDispatch()
-  const { id } = useParams()
-
-  const dashboardData = useSelector(state => state.dashboard)
-  const teamData = dashboardData.teams ? dashboardData.teams[id] : null
-  console.log('TEAM DATA --->', teamData)
+  const teamData = useSelector(state => state.teams.selectedTeam)
+  console.group('TEAM DATA --->', teamData)
 
   useEffect(() => {
-    dispatch(getDashboardThunk())
-  }, [dispatch])
+    dispatch(getSingleTeamThunk(teamId))
+  }, [dispatch, teamId])
 
   if (!teamData) {
     return <div>Loading...</div>
   }
 
+  // function to get initials of each member to render in member icon
+  const getInitials = (firstName, lastName) => {
+    const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
+    const capitalizedLastLetter = lastName.charAt(0).toUpperCase()
+    return `${capitalizedFirstLetter}${capitalizedLastLetter}`
+  }
+
   return (
-    <div>
-      <h1>Team: {teamData.name}</h1>
-      <h2>Members:</h2>
-      <ul>
-        {teamData.members.map(memberId => (
-          <li key={memberId}>Member ID: {memberId}</li>
+    <div className='team-container'>
+      <div className='member-list'>
+        {teamData.members.map(member => (
+          <div key={member.id} className='member-initials'>
+            {getInitials(member.firstName, member.lastName)}
+          </div>
+        ))}
+      </div>
+      <ul className='project-list'>
+        {teamData.projects.map(project => (
+          <li key={project.id} className='project-item'>
+            &#9670; {project.name}
+          </li>
         ))}
       </ul>
-      <h2>Projects:</h2>
-      <ul>
-        {teamData.projects.map(projectId => (
-          <li key={projectId}>Project ID: {projectId}</li>
-        ))}
-      </ul>
+      {/* <button onClick={closeTeamDropdown}>Close</button> */}
     </div>
   )
 }
