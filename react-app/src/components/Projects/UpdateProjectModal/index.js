@@ -3,6 +3,7 @@ import { updateProjectThunk, getProjectThunk } from "../../../store/projects";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { useHistory, useParams } from "react-router-dom";
+import './UpdateProjectModal.css'
 
 function UpdateProjectModal({ id }) {
   const dispatch = useDispatch();
