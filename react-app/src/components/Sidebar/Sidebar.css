@@ -57,3 +57,11 @@
 .sidebar-tab:hover {
     background: #565557;
 }
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    /* Rest of the styles */
+}
+
+

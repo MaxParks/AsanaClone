@@ -4,15 +4,13 @@ import { useParams } from "react-router-dom";
 import { getSingleTeamThunk } from "../../store/teams";
 // import "./Team.css";
 
-function Team () {
+const Team = ({ teamId, closeTeamDropdown }) => {
   const dispatch = useDispatch()
-  const { id } = useParams()
   const teamData = useSelector(state => state.teams.selectedTeam)
-  console.log('TEAM DATA', teamData)
 
   useEffect(() => {
-    dispatch(getSingleTeamThunk(id))
-  }, [dispatch, id])
+    dispatch(getSingleTeamThunk(teamId))
+  }, [dispatch, teamId])
 
   if (!teamData) {
     return <div>Loading...</div>
@@ -42,6 +40,7 @@ function Team () {
           <li key={project.id}>{project.name}</li>
         ))}
       </ul>
+      <button onClick={closeTeamDropdown}>Close</button>
     </div>
   )
 }

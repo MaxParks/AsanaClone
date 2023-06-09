@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { getDashboardThunk } from '../../store/dashboard'
 import '../../assets/icons/collapse-caret.svg'
 import { ReactComponent as HomeIcon } from '../../assets/icons/home.svg'
 import { ReactComponent as Checkmark } from '../../assets/icons/checkmark.svg'
 import { ReactComponent as NotificationBell } from '../../assets/icons/notification-bell.svg'
 import { ReactComponent as PlusButton } from '../../assets/icons/plus.svg'
+import './Sidebar.css'
+import Team from '../Teams'
 
-import './Sidebar.css' // import the corresponding CSS file
-
-const Sidebar = () => {
-  const [isTeamsCollapsed, setIsTeamsCollapsed] = useState(true)
-  const toggleTeams = () => {
-    setIsTeamsCollapsed(!isTeamsCollapsed)
-  }
-
+const Sidebar = ({
+  openTeamDropdown,
+  selectedTeamId,
+  selectedTeamData,
+  closeTeamDropdown
+}) => {
   const dashboardData = useSelector(state => state.dashboard)
-  console.log('DASHBOARD DATA --->', dashboardData)
-
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
     dispatch(getDashboardThunk())
   }, [dispatch])
+
+  const toggleTeamDropdown = teamId => {
+    const teamDropdownIsOpen = selectedTeamId === teamId
+    if (teamDropdownIsOpen) {
+      history.push('/') // Update URL to remove team id
+      openTeamDropdown(null, null)
+    } else {
+      history.push(`/teams/${teamId}`) // Update URL with the selected team id
+      const teamData = dashboardData.teams[teamId]
+      openTeamDropdown(teamId, teamData)
+    }
+  }
 
   return (
     <div className='sidebar-content'>
@@ -31,6 +42,7 @@ const Sidebar = () => {
         <h1 className='sidebar-header'>ZenFlow</h1>
       </div>
       <div className='sidebar-navigation-container'>
+        ;
         <ul className='sidebar-navigation'>
           <div className='sidebar-tab'>
             <HomeIcon />
@@ -47,22 +59,36 @@ const Sidebar = () => {
         </ul>
       </div>
       <div className='sidebar-teams'>
-        <div className='sidebar-tab' onClick={toggleTeams}>
+        <div className='sidebar-tab'>
           <p>Teams</p>
           <div className='second-tab-item centered'>
             <PlusButton />
           </div>
         </div>
-
-          <ul className='team-list'>
-            {dashboardData.teams &&
-              Object.values(dashboardData.teams).map(team => (
-                <li key={team.id}>
-                  <Link to={`/teams/${team.id}`}>{team.name}</Link>
-                </li>
-              ))}
-          </ul>
-
+        <ul className='team-list'>
+          {dashboardData.teams &&
+            Object.values(dashboardData.teams).map(team => (
+              <li key={team.id}>
+                <div
+                  className={`team-name${
+                    selectedTeamId === team.id ? ' active' : ''
+                  }`}
+                  onClick={() => toggleTeamDropdown(team.id)}
+                >
+                  {team.name}
+                </div>
+                {selectedTeamId === team.id && (
+                  <div className='team-dropdown'>
+                    <Team
+                      teamId={team.id}
+                      teamData={selectedTeamData}
+                      closeTeamDropdown={closeTeamDropdown}
+                    />
+                  </div>
+                )}
+              </li>
+            ))}
+        </ul>
       </div>
     </div>
   )
