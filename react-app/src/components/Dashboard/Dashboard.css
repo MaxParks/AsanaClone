@@ -88,8 +88,13 @@
   color: black;
 }
 
-.check-mark {
+.checkmark {
   margin-right: 20px;
+
+}
+
+.green path {
+  fill: green;
 }
 
 .task-name {

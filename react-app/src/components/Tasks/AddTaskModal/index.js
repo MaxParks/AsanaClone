@@ -12,7 +12,6 @@ function AddTaskModal({ isLoaded }) {
   const [description, setDescription] = useState("");
   const [assigned_to, setAssignedTo] = useState("");
   const [due_date, setDueDate] = useState("");
-  const [completed, setCompleted] = useState(false);
   const [project_id, setProjectId] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
@@ -22,15 +21,12 @@ function AddTaskModal({ isLoaded }) {
     e.preventDefault();
 
     const errors = {};
-
     if (!name) {
       errors.name = "Name is a required field.";
     }
-
     if (!project_id) {
       errors.project_id = "Project ID is a required field.";
     }
-
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
       return;
