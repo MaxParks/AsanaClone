@@ -11,7 +11,7 @@ import Navigation from "./components/Navigation";
 import Dashboard from "./components/Dashboard";
 import UserTasks from "./components/Tasks/UserTasks";
 import Task from "./components/task";
-import Team from "./components/Team";
+import Team from "./components/Teams";
 import GetProject from "./components/Projects/GetProject";
 
 function App() {
