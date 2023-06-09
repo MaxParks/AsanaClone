@@ -53,3 +53,20 @@
     font-weight: var(--font-medium);
     color: black;
 }
+
+.task-comment-wrapper {
+    border-bottom: .5px solid var(--color-medium-gray);
+}
+
+.task-comment-name {
+    font-size: 12px;
+    color: var(--color-medium-gray);
+}
+
+.task-comment {
+    padding: 5px 0;
+}
+
+.task-comment-description {
+    padding-left: 28px;
+}

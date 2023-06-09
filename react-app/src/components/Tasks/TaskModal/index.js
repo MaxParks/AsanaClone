@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskById } from "../../../store/tasks";
 import { formatDueDate } from "../../../utils";
+import TaskComments from "../../TaskComments/TaskComments";
 import "./TaskModal.css";
 
 function TaskModal({ task, onClose }) {
@@ -45,7 +46,9 @@ function TaskModal({ task, onClose }) {
           <p className="task-label">Description</p>
           <p>{task.description}</p>
         </div>
-        <div className="task-comments-section"></div>
+        <div className="task-comments-section">
+          <TaskComments taskId={task.id} />
+        </div>
       </div>
     </div>
   );

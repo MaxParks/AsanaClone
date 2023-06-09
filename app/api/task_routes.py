@@ -31,7 +31,21 @@ def retrieve_task(id):
         return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
     task_dict = task.to_dict()
-    task_dict['comments'] = [comment.to_dict() for comment in task.comments]
+    task_dict['comments'] = []
+
+    for comment in task.comments:
+        comment_dict = comment.to_dict()
+        user = User.query.get(comment.user_id)
+        if user:
+            user_dict = {
+                'first_name': user.firstName,
+                'last_name': user.lastName
+            }
+            comment_dict['user'] = user_dict
+        else:
+            comment_dict['user'] = None
+
+        task_dict['comments'].append(comment_dict)
 
     assigned_to_user = User.query.get(task.assigned_to)
 
