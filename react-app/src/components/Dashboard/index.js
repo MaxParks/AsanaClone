@@ -3,19 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDashboardThunk } from "../../store/dashboard";
 import { updateSingleTask } from "../../store/tasks";
+import { toggleTaskCompletion, formatDueDate } from "../../utils";
 import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
 import AddTaskModal from "../Tasks/AddTaskModal";
-import "./Dashboard.css";
-import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
+import TaskModal from "../Tasks/TaskModal";
 
-import { toggleTaskCompletion, formatDueDate } from "../../utils";
+import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
+import "./Dashboard.css";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const dashboardData = useSelector((state) => state.dashboard);
+  const [selectedTask, setSelectedTask] = useState(null); // Add a state to track the selected task
 
   useEffect(() => {
     dispatch(getDashboardThunk());
@@ -29,6 +31,18 @@ function Dashboard() {
   } else if (currentHour < 18) {
     greetingMessage = "Good afternoon";
   }
+
+  const openTaskModal = (taskId) => {
+    const task = Object.values(dashboardData.assigned_tasks).find(
+      (task) => task.id === taskId
+    );
+    setSelectedTask(task);
+  };
+
+  // Function to handle closing the task modal
+  const closeTaskModal = () => {
+    setSelectedTask(null);
+  };
 
   return (
     <div
@@ -90,12 +104,19 @@ function Dashboard() {
                   >
                     <Checkmark />
                   </div>
-                  <Link to={`/tasks/${task.id}`} className="task-link">
-                    <span className="task-name">{task.name}</span>
+                  <div className="task-link">
+                    <OpenModalButton
+                      buttonText={task.name}
+                      modalComponent={
+                        <TaskModal task={task} closeModal={closeTaskModal} />
+                      }
+                      className="task-name"
+                      onClick={() => openTaskModal(task.id)}
+                    />
                     <span className="task-due-date">
                       {formatDueDate(task.due_date)}
                     </span>
-                  </Link>
+                  </div>
                 </div>
               ))}
           </div>
