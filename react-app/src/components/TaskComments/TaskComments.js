@@ -43,10 +43,10 @@ function TaskComments(props) {
     }
   };
 
-  const handleDeleteComment = (commentId) => {
-    setCommentToDelete(taskId, commentId);
-    setShowDeleteModal(true);
-  };
+  // const handleDeleteComment = (commentId) => {
+  //   setCommentToDelete(taskId, commentId);
+  //   setShowDeleteModal(true);
+  // };
 
   return (
     <div>
@@ -87,7 +87,7 @@ function TaskComments(props) {
                     className="delete-comment-button"
                     modalComponent={
                       <DeleteCommentModal
-                        handleDeleteComment={handleDeleteComment}
+                      // handleDeleteComment={handleDeleteComment}
                       />
                     }
                   />
