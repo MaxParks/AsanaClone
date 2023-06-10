@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addSingleTaskComment, fetchTaskById } from "../../store/tasks";
 
-import "../Tasks/TaskModal/TaskModal.css";
+import "../Teams/Tasks/TaskModal/TaskModal.css";
 
 function TaskComments(props) {
   const { taskId } = props;
