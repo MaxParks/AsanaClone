@@ -10,12 +10,12 @@ const REMOVE_PROJECT = "projects/REMOVE_PROJECT";
 // Action creators
 
 const loadProject = (data) => ({
-  type: LOAD_PROJECTS,
+  type: LOAD_PROJECT,
   payload: data,
 });
 
 const loadProjects = (data) => ({
-  type: LOAD_PROJECT,
+  type: LOAD_PROJECTS,
   payload: data,
 });
 
