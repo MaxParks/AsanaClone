@@ -11,6 +11,16 @@ function TaskComments(props) {
 
   const comments = taskData[taskId]?.comments;
 
+  const [hoveredCommentId, setHoveredCommentId] = useState(null);
+
+  const handleMouseEnter = (commentId) => {
+    setHoveredCommentId(commentId);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredCommentId(null);
+  };
+
   return (
     <div>
       <div className="add-comment-section">
@@ -19,16 +29,29 @@ function TaskComments(props) {
       </div>
       {comments &&
         comments.map((comment) => (
-          <div key={comment.id} className="task-comment-wrapper">
+          <div
+            key={comment.id}
+            className="task-comment-wrapper"
+            onMouseEnter={() => handleMouseEnter(comment.id)}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="task-comment">
               <div className="task-assigned-to-icon">
                 <p className="user-icon">
                   {comment.user.first_name.charAt(0)}
                   {comment.user.last_name.charAt(0)}
                 </p>
-                <p className="task-comment-name">{comment.user.first_name} </p>
+                <div className="task-comment-text">
+                  <p className="task-comment-name">
+                    {comment.user.first_name}{" "}
+                  </p>
+                  <p className="task-comment-description">{comment.comment}</p>
+                </div>
+                {comment.user.owner_id === comment.user.id &&
+                hoveredCommentId === comment.id ? (
+                  <button className="delete-comment-button">X</button>
+                ) : null}
               </div>
-              <p className="task-comment-description">{comment.comment}</p>
             </div>
           </div>
         ))}

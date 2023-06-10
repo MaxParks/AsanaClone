@@ -34,10 +34,33 @@
     padding: 10px 0;
 }
 
+.task-comments-section {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+
 .task-assigned-to-icon {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 5px;
+    border-radius: 5px;
+}
+
+.delete-comment-button {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    width: 20px;
+    height: 20;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.task-assigned-to-icon:hover {
+    background-color: var(--color-dark-gray);
 }
 
 .user-icon {
@@ -54,9 +77,10 @@
     color: black;
 }
 
-/* .task-comment-wrapper {
-    border-bottom: .5px solid var(--color-medium-gray);
-} */
+.task-comment-text {
+    display: flex;
+    flex-direction: column;
+}
 
 .task-comment-name {
     font-size: 12px;
@@ -65,8 +89,4 @@
 
 .task-comment {
     padding: 5px 0;
-}
-
-.task-comment-description {
-    padding-left: 28px;
 }
