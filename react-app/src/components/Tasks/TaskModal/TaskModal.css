@@ -34,9 +34,24 @@
     padding: 10px 0;
 }
 
+.add-comment-section {
+    display: flex;
+}
+
 .task-comments-section {
     max-height: 300px;
     overflow-y: auto;
+}
+
+.add-task-comment-input {
+    background-color: transparent;
+    border-radius: 15px;
+    border: .5px solid var(--color-dark-gray);
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    box-shadow: none;
+    color: var(--color-medium-gray);
 }
 
 

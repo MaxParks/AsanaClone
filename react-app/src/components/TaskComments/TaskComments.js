@@ -49,6 +49,7 @@ function TaskComments(props) {
           placeholder="Add a comment..."
           value={commentText}
           onChange={handleCommentTextChange}
+          className="add-task-comment-input"
         />
         <button onClick={handleAddComment}>Add Comment</button>
       </div>
