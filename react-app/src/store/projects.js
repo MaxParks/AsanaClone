@@ -1,7 +1,8 @@
 import { getDashboardThunk } from "./dashboard";
 
 // Constants
-const LOAD_PROJECTS = "projects/loadProject";
+const LOAD_PROJECT = "projects/loadProject";
+const LOAD_PROJECTS = "projects/loadProjects";
 const ADD_PROJECT = "projects/createProject";
 const UPDATE_PROJECT = "projects/updateProject";
 const REMOVE_PROJECT = "projects/REMOVE_PROJECT";
@@ -10,6 +11,11 @@ const REMOVE_PROJECT = "projects/REMOVE_PROJECT";
 
 const loadProject = (data) => ({
   type: LOAD_PROJECTS,
+  payload: data,
+});
+
+const loadProjects = (data) => ({
+  type: LOAD_PROJECT,
   payload: data,
 });
 
@@ -39,6 +45,17 @@ export const getProjectThunk = (id) => async (dispatch) => {
     dispatch(loadProject(data));
 
     return data;
+  }
+};
+
+export const getProjectsThunk = (teamId) => async (dispatch) => {
+  const response = await fetch(`/api/projects/team/${teamId}`);
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(loadProject(data));
+    return data;
+  } else {
+    throw new Error("Failed to retrieve projects");
   }
 };
 
@@ -104,6 +121,11 @@ export default function projectsReducer(state = initialState, action) {
     case LOAD_PROJECTS:
       return {
         ...state,
+        projects: action.payload,
+      };
+    case LOAD_PROJECT:
+      return {
+        ...state,
         ...action.payload,
       };
     case ADD_PROJECT:
@@ -113,11 +135,11 @@ export default function projectsReducer(state = initialState, action) {
           [action.payload.id]: action.payload,
         },
       };
-      case UPDATE_PROJECT:
-        return {
-          ...state,
-          [action.data.id]: action.data,
-        };
+    case UPDATE_PROJECT:
+      return {
+        ...state,
+        [action.data.id]: action.data,
+      };
     case REMOVE_PROJECT:
       const newState = { ...state };
       delete newState[action.payload];

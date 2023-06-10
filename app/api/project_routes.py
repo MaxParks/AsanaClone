@@ -77,6 +77,38 @@ def retrieve_project(id):
 
 
 
+# -------------- GET ALL PROJECTS --------------------
+@project_routes.route('/team/<int:team_id>', methods=['GET'])
+@login_required
+def retrieve_projects(team_id):
+
+    if not team_id:
+        return {"message": "Missing team_id parameter", "statusCode": 400}, 400
+
+    team = Team.query.get(team_id)
+
+    if not team:
+        return {"message": "Team not found", "statusCode": 404}, 404
+
+    print("-----------------------------------------------", team.owner_id)
+
+    user_team = UserTeam.query.filter_by(user_id=current_user.id, team_id=team_id).first()
+
+    if not user_team and (team.owner_id != current_user.id):
+        return {"message": "Unauthorized", "statusCode": 403}, 403
+
+    projects = Project.query.filter_by(team_id=team_id).all()
+
+    project_list = []
+    for project in projects:
+        team_members_dict = get_team_members_dict(project)
+        project_dict = project.to_dict()
+        project_dict['team_members'] = team_members_dict
+        project_list.append(project_dict)
+
+    return jsonify(project_list)
+
+
 # -------------- CREATE PROJECT --------------------
 @project_routes.route('/', methods=['POST'])
 @login_required

@@ -44,7 +44,7 @@ const toggleTeamDropdown = teamId => {
 
     // Add the teamId to openDropdowns if it's closed
     setOpenDropdowns([teamId])
-    history.push(`/teams/${teamId}`) // Update URL with the selected team id
+    // history.push(`/teams/${teamId}`) // Update URL with the selected team id
     const teamData = dashboardData.teams[teamId]
     openTeamDropdown(teamId, teamData)
   }
