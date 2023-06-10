@@ -31,7 +31,8 @@ function Project({ isLoaded }) {
   useEffect(() => {
     // Fetch project data when component mounts
     dispatch(getProjectThunk(id));
-  }, [dispatch, id]);
+  }, [dispatch, id])
+  ;
 
   return (
     <div className="page-container1">

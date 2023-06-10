@@ -55,7 +55,7 @@ function CreateProjectModal(isLoaded) {
   };
 
   return (
-    <div className="create-project-modal-container">
+    <div className="add-task-modal-container">
       <h2>Create New Project</h2>
       <form onSubmit={handleSubmit}>
         <ul className="error-list">
@@ -66,7 +66,6 @@ function CreateProjectModal(isLoaded) {
           {errors.general && errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <div className="form-field">
-          <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
@@ -76,7 +75,6 @@ function CreateProjectModal(isLoaded) {
           />
         </div>
         <div className="form-field">
-          <label htmlFor="team_id">Team</label>
           <select
             id="team_id"
             value={team_id}
@@ -91,7 +89,6 @@ function CreateProjectModal(isLoaded) {
           </select>
         </div>
         <div className="form-field">
-          <label htmlFor="description">Description</label>
           <input
             type="text"
             id="description"
@@ -101,7 +98,6 @@ function CreateProjectModal(isLoaded) {
           />
         </div>
         <div className="form-field">
-          <label htmlFor="dueDate">Due Date</label>
           <input
             type="date"
             id="dueDate"
