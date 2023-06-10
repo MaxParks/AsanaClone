@@ -160,7 +160,7 @@ export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
   }
 };
 
-export const deleteTaskComment = (id) => async (dispatch) => {
+export const deleteTaskComment = (taskId, id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/tasks/comments/${id}`, {
       method: "DELETE",
@@ -168,8 +168,10 @@ export const deleteTaskComment = (id) => async (dispatch) => {
     if (!response.ok) {
       throw new Error("Failed to delete task comment");
     }
-
+    const data = await response.json();
     dispatch(removeTaskComment(id));
+    dispatch(fetchTaskById(taskId));
+    return data;
   } catch (error) {
     console.error(error);
     // Handle error if needed
@@ -207,15 +209,22 @@ export default function tasksReducer(state = initialState, action) {
         [action.payload.id]: action.paylod,
       };
     case REMOVE_TASK_COMMENT:
-      return state.map((task) => {
-        const filteredComments = task.comments.filter(
-          (comment) => comment.id !== action.payload
-        );
-        return {
-          ...task,
-          comments: filteredComments,
-        };
-      });
+      return Object.keys(state).reduce((updatedState, taskId) => {
+        if (taskId === action.payload) {
+          const task = state[taskId];
+          const filteredComments = task.comments.filter(
+            (comment) => comment.id !== action.payload
+          );
+          updatedState[taskId] = {
+            ...task,
+            comments: filteredComments,
+          };
+        } else {
+          updatedState[taskId] = state[taskId];
+        }
+        return updatedState;
+      }, {});
+
     default:
       return state;
   }

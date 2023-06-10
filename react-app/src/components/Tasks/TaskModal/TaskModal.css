@@ -63,7 +63,7 @@
     border-radius: 5px;
 }
 
-.delete-comment-button {
+.open-modal-button-delete-comment-button {
     position: absolute;
     top: 5px;
     right: 15px;

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addSingleTaskComment, fetchTaskById } from "../../store/tasks";
+import OpenModalButton from "../OpenModalButton";
+import DeleteCommentModal from "./DeleteTaskComment";
 
 import "../Tasks/TaskModal/TaskModal.css";
 
@@ -41,6 +43,11 @@ function TaskComments(props) {
     }
   };
 
+  // const handleDeleteComment = (commentId) => {
+  //   setCommentToDelete(taskId, commentId);
+  //   setShowDeleteModal(true);
+  // };
+
   return (
     <div>
       <div className="add-comment-section">
@@ -75,7 +82,15 @@ function TaskComments(props) {
                 </div>
                 {comment.user.owner_id === comment.user.id &&
                 hoveredCommentId === comment.id ? (
-                  <button className="delete-comment-button">X</button>
+                  <OpenModalButton
+                    buttonText="X"
+                    className="delete-comment-button"
+                    modalComponent={
+                      <DeleteCommentModal
+                      // handleDeleteComment={handleDeleteComment}
+                      />
+                    }
+                  />
                 ) : null}
               </div>
             </div>
