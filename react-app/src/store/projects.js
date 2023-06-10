@@ -48,11 +48,11 @@ export const getProjectThunk = (id) => async (dispatch) => {
   }
 };
 
-export const getProjectsThunk = (teamId) => async (dispatch) => {
-  const response = await fetch(`/api/projects/team/${teamId}`);
+export const getProjectsThunk = () => async (dispatch) => {
+  const response = await fetch(`/api/projects/`);
   if (response.ok) {
     const data = await response.json();
-    dispatch(loadProject(data));
+    dispatch(loadProjects(data));
     return data;
   } else {
     throw new Error("Failed to retrieve projects");

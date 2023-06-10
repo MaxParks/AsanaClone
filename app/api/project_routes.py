@@ -39,74 +39,101 @@ def get_team_members_dict(project):
 
 
 # -------------- GET PROJECT --------------------
-@project_routes.route('/<int:id>', methods=['GET'])
-@login_required
-def retrieve_project(id):
+# @project_routes.route('/<int:id>', methods=['GET'])
+# @login_required
+# def retrieve_project(id):
 
-    project = Project.query.get(id)
-    print("----------------------", project)
+#     project = Project.query.get(id)
+#     print("----------------------", project)
 
-    if not project:
-        return {"message": "Project not found", "statusCode": 404}, 404
+#     if not project:
+#         return {"message": "Project not found", "statusCode": 404}, 404
 
-    team_members_dict = get_team_members_dict(project)
+#     team_members_dict = get_team_members_dict(project)
 
-    # if current_user.id != project.owner_id:
-    #     if current_user.id not in team_members_dict:
-    #                 return {"message": "Unauthorized", "statusCode": 403}, 403
+#     # if current_user.id != project.owner_id:
+#     #     if current_user.id not in team_members_dict:
+#     #                 return {"message": "Unauthorized", "statusCode": 403}, 403
 
-    project_dict = project.to_dict()
-    project_dict['tasks'] = []
+#     project_dict = project.to_dict()
+#     project_dict['tasks'] = []
 
-    sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
+#     sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
 
-    for task in sorted_tasks:
-        task_dict = {
-            'id': task.id,
-            'name': task.name,
-            'description': task.description,
-            'due_date': task.due_date.isoformat(),
-            'completed': task.completed,
-            'assigned_to': task.assigned_to,
-        }
-        project_dict['tasks'].append(task_dict)
+#     for task in sorted_tasks:
+#         task_dict = {
+#             'id': task.id,
+#             'name': task.name,
+#             'description': task.description,
+#             'due_date': task.due_date.isoformat(),
+#             'completed': task.completed,
+#             'assigned_to': task.assigned_to,
+#         }
+#         project_dict['tasks'].append(task_dict)
 
-        project_dict['team_members'] = team_members_dict
+#         project_dict['team_members'] = team_members_dict
 
-    return jsonify(project_dict)
+#     return jsonify(project_dict)
 
+
+
+# # -------------- GET ALL PROJECTS --------------------
+# @project_routes.route('/team/<int:team_id>', methods=['GET'])
+# @login_required
+# def retrieve_projects(team_id):
+
+#     if not team_id:
+#         return {"message": "Missing team_id parameter", "statusCode": 400}, 400
+
+#     team = Team.query.get(team_id)
+
+#     if not team:
+#         return {"message": "Team not found", "statusCode": 404}, 404
+
+#     print("-----------------------------------------------", team.owner_id)
+
+#     user_team = UserTeam.query.filter_by(user_id=current_user.id, team_id=team_id).first()
+
+#     if not user_team and (team.owner_id != current_user.id):
+#         return {"message": "Unauthorized", "statusCode": 403}, 403
+
+#     projects = Project.query.filter_by(team_id=team_id).all()
+
+#     project_list = []
+#     for project in projects:
+#         team_members_dict = get_team_members_dict(project)
+#         project_dict = project.to_dict()
+#         project_dict['team_members'] = team_members_dict
+#         project_list.append(project_dict)
+
+#     return jsonify(project_list)
 
 
 # -------------- GET ALL PROJECTS --------------------
-@project_routes.route('/team/<int:team_id>', methods=['GET'])
+@project_routes.route('/', methods=['GET'])
 @login_required
-def retrieve_projects(team_id):
-
-    if not team_id:
-        return {"message": "Missing team_id parameter", "statusCode": 400}, 400
-
-    team = Team.query.get(team_id)
-
-    if not team:
-        return {"message": "Team not found", "statusCode": 404}, 404
-
-    print("-----------------------------------------------", team.owner_id)
-
-    user_team = UserTeam.query.filter_by(user_id=current_user.id, team_id=team_id).first()
-
-    if not user_team and (team.owner_id != current_user.id):
-        return {"message": "Unauthorized", "statusCode": 403}, 403
-
-    projects = Project.query.filter_by(team_id=team_id).all()
+def retrieve_projects():
+    user_teams = UserTeam.query.filter_by(user_id=current_user.id).all()
 
     project_list = []
-    for project in projects:
+    for user_team in user_teams:
+        team = user_team.team
+        team_projects = team.projects
+        for project in team_projects:
+            team_members_dict = get_team_members_dict(project)
+            project_dict = project.to_dict()
+            project_dict['team_members'] = team_members_dict
+            project_list.append(project_dict)
+
+    owned_projects = current_user.owned_projects
+    for project in owned_projects:
         team_members_dict = get_team_members_dict(project)
         project_dict = project.to_dict()
         project_dict['team_members'] = team_members_dict
         project_list.append(project_dict)
 
     return jsonify(project_list)
+
 
 
 # -------------- CREATE PROJECT --------------------
