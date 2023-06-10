@@ -117,14 +117,7 @@ function Dashboard() {
 
         <div className="split-container">
           <div className="section-title-container">
-            <h2 className="section-title">Projects</h2>
-            <div className="create-project-button">
-              <OpenModalButton
-                buttonText="Add New Project"
-                modalComponent={<CreateProjectModal />}
-                className="button-CreateProjectModal"
-              />
-            </div>
+            <h2 className="section-title">Projects:</h2>
             <div className="project-list">
               {dashboardData.projects &&
                 Object.values(dashboardData.projects).map((project) => (
@@ -136,6 +129,13 @@ function Dashboard() {
                     {project.name}
                   </Link>
                 ))}
+                <div className="create-project-button">
+              <OpenModalButton
+                buttonText="Add New Project"
+                modalComponent={<CreateProjectModal />}
+                className="button-CreateProjectModal"
+              />
+            </div>
             </div>
           </div>
         </div>

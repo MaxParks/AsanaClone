@@ -48,14 +48,14 @@ function Project({ isLoaded }) {
        {userIsOwner && (
         <div className="open-modal-button2">
           <OpenModalButton
-            buttonText="Delete"
-            modalComponent={<ProjectDeleteModal id={id} />}
-            key={`delete-${id}`}
-          />
-          <OpenModalButton
             buttonText="Update"
             modalComponent={<UpdateProjectModal id={id} />}
             key={`update-${id}`}
+          />
+          <OpenModalButton
+            buttonText="Delete"
+            modalComponent={<ProjectDeleteModal id={id} />}
+            key={`delete-${id}`}
           />
         </div>
       )}
