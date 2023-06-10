@@ -118,8 +118,9 @@
 
 .task-item:hover,
 .project-item:hover {
-  color: black;
+  color: var(--color-medium-gray);
 }
+
 
 .checkmark {
   margin-right: 5px;

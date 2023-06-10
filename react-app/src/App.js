@@ -11,6 +11,7 @@ import Navigation from './components/Navigation'
 import Dashboard from './components/Dashboard'
 import UserTasks from './components/Tasks/UserTasks'
 import Task from './components/task'
+import TeamDropdown from './components/Teams/TeamDropdown'
 import Team from './components/Teams'
 import GetProject from './components/Projects/GetProject'
 
@@ -71,7 +72,7 @@ const App = () => {
                 {user ? <Dashboard /> : <Redirect to='/' />}
               </Route>
               <Route exact path='/teams/:id'>
-                {user ? <Dashboard /> : <Redirect to='/' />}
+                {user ? <Team /> : <Redirect to='/' />}
               </Route>
             </Switch>
           </div>

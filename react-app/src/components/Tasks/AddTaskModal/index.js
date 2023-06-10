@@ -1,21 +1,68 @@
 import React, { useState } from "react";
 import { createTaskThunk } from "../../../store/tasks";
 import { useDispatch, useSelector } from "react-redux";
+import { getSingleTeamThunk } from "../../../store/teams";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
+
+import "./AddTaskModal.css";
 
 function AddTaskModal({ isLoaded }) {
   const dispatch = useDispatch();
   const dashboardData = useSelector((state) => state.dashboard);
 
+  const teams = Object.values(dashboardData.teams);
+  const projects = Object.values(dashboardData.projects);
+
+  console.log(dashboardData);
+
+  const teamArray = Object.values(dashboardData.teams); // Convert the object to an array
+
+  const projectNames = teamArray.reduce((names, team) => {
+    const teamProjects = team.projects.map((project, index) => {
+      if (index === 0) {
+        const firstProjectName = projects[project.id]?.name; // Use optional chaining to handle undefined values
+        return firstProjectName;
+      }
+      const projectName = projects[project.id]?.name; // Use optional chaining to handle undefined values
+      return projectName;
+    });
+    return [...names, ...teamProjects];
+  }, []);
+
+  const uniqueProjectNames = [...new Set(projectNames)];
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [assigned_to, setAssignedTo] = useState("");
   const [due_date, setDueDate] = useState("");
   const [project_id, setProjectId] = useState("");
+  const [availableUsers, setAvailableUsers] = useState([]);
+  const [assigned_to, setAssignedTo] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
   const history = useHistory();
+
+  const fetchAssignedToUsers = async (projectId) => {
+    if (projectId) {
+      const selectedProject = dashboardData.projects[projectId];
+      if (selectedProject) {
+        const teamId = selectedProject.team_id;
+        console.log(teamId);
+        const teamData = await dispatch(getSingleTeamThunk(teamId));
+        if (teamData) {
+          const assignedToUsers = teamData.members.map((member) => ({
+            id: member.id,
+            name: member.username,
+          }));
+          setAvailableUsers(assignedToUsers);
+        } else {
+          setAvailableUsers([]); // Reset the available users when no project is selected
+        }
+      }
+    } else {
+      setAvailableUsers([]); // Reset the available users when no project is selected
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,47 +102,51 @@ function AddTaskModal({ isLoaded }) {
           {errors.project_id && <li>{errors.project_id}</li>}
         </ul>
         <div className="form-field">
-          <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
-            placeholder="Task name"
+            placeholder="task name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className="form-field">
-          <label htmlFor="description">Description</label>
-          <input
-            type="text"
+          <textarea
             id="description"
-            placeholder="Task description"
+            placeholder="task description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className="task-textarea"
           />
         </div>
         <div className="form-field">
-          <label htmlFor="description">Project Id</label>
-          <input
-            type="number"
-            id="projectId"
-            placeholder="Project Id"
+          <select
+            id="project"
             value={project_id}
             onChange={(e) => setProjectId(e.target.value)}
-          />
+          >
+            <option value="">Select Project</option>
+            {uniqueProjectNames.map((projectName, index) => (
+              <option key={index} value={index}>
+                {projectName}
+              </option>
+            ))}
+          </select>
         </div>
+        <select
+          id="assignedTo"
+          placeholder="Assigned to"
+          value={assigned_to}
+          onChange={(e) => setAssignedTo(e.target.value)}
+        >
+          <option value="">Select Assigned To</option>
+          {availableUsers.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
         <div className="form-field">
-          <label htmlFor="assignedTo">Assigned To</label>
-          <input
-            type="text"
-            id="assignedTo"
-            placeholder="Assigned to"
-            value={assigned_to}
-            onChange={(e) => setAssignedTo(e.target.value)}
-          />
-        </div>
-        <div className="form-field">
-          <label htmlFor="dueDate">Due Date</label>
           <input
             type="date"
             id="dueDate"

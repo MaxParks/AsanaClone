@@ -8,7 +8,7 @@ import { ReactComponent as Checkmark } from '../../assets/icons/checkmark.svg'
 import { ReactComponent as NotificationBell } from '../../assets/icons/notification-bell.svg'
 import { ReactComponent as PlusButton } from '../../assets/icons/plus.svg'
 import './Sidebar.css'
-import Team from '../Teams'
+import TeamDropdown from '../Teams/TeamDropdown'
 import AddTeamModal from '../Teams/AddTeamModal'
 import OpenModalButton from '../OpenModalButton'
 
@@ -106,7 +106,7 @@ const toggleTeamDropdown = teamId => {
                 {/* Team dropdown */}
                 {selectedTeamId === team.id && (
                   <div className='team-dropdown'>
-                    <Team
+                    <TeamDropdown
                       teamId={team.id}
                       teamData={selectedTeamData}
                       closeTeamDropdown={closeTeamDropdown}

@@ -114,6 +114,7 @@ button {
 
 .Content {
     flex: 1;
+    background-color: #1E1F21;
     /* margin-left: 20px; */
 }
 
