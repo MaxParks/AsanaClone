@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addSingleTaskComment, fetchTaskById } from "../../store/tasks";
+import OpenModalButton from "../OpenModalButton";
 import DeleteCommentModal from "./DeleteTaskComment";
 
 import "../Tasks/TaskModal/TaskModal.css";
@@ -14,8 +15,6 @@ function TaskComments(props) {
 
   const [commentText, setCommentText] = useState("");
   const [hoveredCommentId, setHoveredCommentId] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State to show/hide the modal
-  const [commentToDelete, setCommentToDelete] = useState(null);
 
   const reversedComments = comments ? [...comments].reverse() : [];
 
@@ -83,25 +82,20 @@ function TaskComments(props) {
                 </div>
                 {comment.user.owner_id === comment.user.id &&
                 hoveredCommentId === comment.id ? (
-                  <button
+                  <OpenModalButton
+                    buttonText="X"
                     className="delete-comment-button"
-                    onClick={() => handleDeleteComment(comment.id)}
-                  >
-                    X
-                  </button>
+                    modalComponent={
+                      <DeleteCommentModal
+                        handleDeleteComment={handleDeleteComment}
+                      />
+                    }
+                  />
                 ) : null}
               </div>
             </div>
           </div>
         ))}
-
-      {showDeleteModal && (
-        <DeleteCommentModal
-          taskId={taskId}
-          commentId={commentToDelete} // Pass the comment ID to the modal component
-          onClose={() => setShowDeleteModal(false)} // Function to close the modal
-        />
-      )}
     </div>
   );
 }
