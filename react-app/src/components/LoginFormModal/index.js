@@ -63,11 +63,22 @@ function LoginFormModal () {
             Continue
           </button>
           <button
-            className='demo-btn'
-            onClick={() => alert('Feature coming soon')}
-          >
-            Demo User
-          </button>
+  className='demo-btn'
+  onClick={async (e) => {
+    e.preventDefault()
+    const demoUserEmail = "demo@aa.io"
+    const demoUserPassword = "password"
+    const data = await dispatch(login(demoUserEmail, demoUserPassword))
+    if (data) {
+      setErrors(data)
+    } else {
+      closeModal()
+      history.push('/user/dashboard')
+    }
+  }}
+>
+  Demo User
+</button>
         </div>
       </form>
     </div>

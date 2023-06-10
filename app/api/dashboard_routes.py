@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from app.models import db, User, Task, Team, Project
 from app.utils import normalize_objects
-from datetime import date
+from datetime import date, timedelta
 
 dashboard_routes = Blueprint('dashboard_routes', __name__)
 
@@ -12,12 +12,21 @@ def get_user_dashboard():
 
     user = current_user
 
+    today = date.today()
+    tomorrow = today + timedelta(days=1)
+
+    due_today_or_tomorrow = []
+    for task in user.assigned_tasks:
+        if task.due_date == today or task.due_date == tomorrow:
+            due_today_or_tomorrow.append(task)
+
+
     dashboard_data = {
         'id': user.id,
         'firstName': user.firstName,
         'lastName': user.lastName,
         'email': user.email,
-        'assigned_tasks': normalize_objects(sorted(user.assigned_tasks, key=lambda task: task.due_date or date.min)),
+        'assigned_tasks': normalize_objects(sorted(due_today_or_tomorrow, key=lambda task: task.due_date or date.min)),
         'projects': normalize_objects(user.owned_projects),
         'teams': normalize_objects(user.user_teams)
     }

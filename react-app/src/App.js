@@ -11,67 +11,72 @@ import Navigation from "./components/Navigation";
 import Dashboard from "./components/Dashboard";
 import UserTasks from "./components/Tasks/UserTasks";
 import Task from "./components/task";
+import TeamDropdown from "./components/Teams/TeamDropdown";
 import Team from "./components/Teams";
 import GetProject from "./components/Projects/GetProject";
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector((state) => state.session.user);
+
+  // save state of the teams and the data associated to them in team list
+  const [selectedTeamId, setSelectedTeamId] = useState(null);
+  const [selectedTeamData, setSelectedTeamData] = useState(null);
 
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
+  // pass team dropdown state to the Sidebar as prop to render it there
+  const openTeamDropdown = (teamId, teamData) => {
+    setSelectedTeamId(teamId);
+    setSelectedTeamData(teamData);
+  };
+
+  const closeTeamDropdown = () => {
+    setSelectedTeamId(null);
+    setSelectedTeamData(null);
+  };
+
   return (
     <>
       {isLoaded && (
         <div className="App">
-          {user && <Sidebar />}
+          {user && (
+            <Sidebar
+              closeTeamDropdown={closeTeamDropdown}
+              openTeamDropdown={openTeamDropdown}
+              selectedTeamId={selectedTeamId}
+              selectedTeamData={selectedTeamData}
+            />
+          )}
           <div className="Content">
-            {/* {user && <Navigation isLoaded={isLoaded} />} */}
             <Switch>
               <Route exact path="/">
                 {user ? <Redirect to="/user/dashboard/" /> : <LandingPage />}
               </Route>
-
               <Route path="/login">
                 <LoginFormPage />
               </Route>
-
               <Route path="/signup">
                 <SignupFormPage />
               </Route>
-
-              <Route path="/user/dashboard/">
+              <Route path="/projects/:id">
+                <GetProject />
+              </Route>
+              <Route exact path="/user/dashboard/">
                 {user ? <Dashboard /> : <Redirect to="/" />}
               </Route>
-
-              <Route path="/tasks/current/">
-                {user ? <UserTasks /> : <Redirect to="/" />}
-              </Route>
-
-              <Route path="/tasks/:id">
-                {user ? <Task /> : <Redirect to="/" />}
-              </Route>
-
-              <Route path="/projects/:id">
-                {user ? <GetProject /> : <Redirect to="/" />}
-              </Route>
-
-              <Route path="/teams/:id">
-                {user ? <Team /> : <Redirect to="/" />}
-              </Route>
-
-              <Route path="*">
-                <h1>404 Not Found</h1>
-              </Route>
+              {/* <Route exact path='/teams/:id'>
+                {user ? <Dashboard /> : <Redirect to='/' />}
+              </Route> */}
             </Switch>
           </div>
         </div>
       )}
     </>
   );
-}
+};
 
 export default App;

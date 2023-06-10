@@ -65,8 +65,8 @@
 .demo-btn {
     margin-top: 10px;
     padding: 5px 10px;
-    background-color: transparent;
-    color: darkgray;
+    background-color: green;
+    color: white;
     border: none;
     text-decoration: underline;
     cursor: pointer;

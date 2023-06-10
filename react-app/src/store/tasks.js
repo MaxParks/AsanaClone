@@ -7,7 +7,6 @@ const ADD_TASK = "tasks/addTask";
 const UPDATE_TASK = "tasks/updateTask";
 const REMOVE_TASK = "tasks/removeTask";
 const ADD_TASK_COMMENT = "tasks/addTaskComment";
-const UPDATE_TASK_COMMENT = "tasks/updateTaskComment";
 const REMOVE_TASK_COMMENT = "tasks/removeTaskComment";
 
 // Action creators
@@ -44,11 +43,6 @@ const addTaskComment = (taskId, comment) => ({
   },
 });
 
-const updateTaskComment = (comment) => ({
-  type: UPDATE_TASK_COMMENT,
-  payload: comment,
-});
-
 const removeTaskComment = (commentId) => ({
   type: REMOVE_TASK_COMMENT,
   payload: commentId,
@@ -71,23 +65,17 @@ export const fetchTasks = () => async (dispatch) => {
 };
 
 export const fetchTaskById = (id) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/tasks/${id}/`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch task");
-    }
-
+  const response = await fetch(`/api/tasks/${id}`);
+  if (response.ok) {
     const data = await response.json();
     dispatch(loadTask(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
+    return data;
   }
 };
 
 export const createTaskThunk = (taskData) => async (dispatch) => {
   const { name, description, assigned_to, due_date, project_id } = taskData;
-  console.log(taskData);
+
   const response = await fetch("/api/tasks/", {
     method: "POST",
     headers: {
@@ -156,44 +144,19 @@ export const deleteTask = (id) => async (dispatch) => {
 };
 
 export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/tasks/${taskId}/comments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ comment }),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to add task comment");
-    }
-
+  console.log("hiii");
+  const response = await fetch(`/api/tasks/${taskId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ comment }),
+  });
+  if (response.ok) {
     const data = await response.json();
     dispatch(addTaskComment(taskId, data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
-  }
-};
-
-export const updateSingleTaskComment = (id, comment) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/tasks/comments/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ comment }),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to update task comment");
-    }
-
-    const data = await response.json();
-    dispatch(updateTaskComment(data));
-  } catch (error) {
-    console.error(error);
-    // Handle error if needed
+    dispatch(fetchTaskById(taskId));
+    return data;
   }
 };
 
@@ -222,41 +185,27 @@ export default function tasksReducer(state = initialState, action) {
     case LOAD_TASKS:
       return action.payload;
     case LOAD_TASK:
-      return state.map((task) =>
-        task.id === action.payload.id ? action.payload : task
-      );
-    case ADD_TASK:
       return {
         ...state,
         [action.payload.id]: action.payload,
+      };
+    case ADD_TASK:
+      return {
+        ...state,
+        task: action.payload,
       };
     case UPDATE_TASK:
       return {
         ...state,
-        [action.payload.id]: action.payload,
+        task: action.payload,
       };
     case REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);
     case ADD_TASK_COMMENT:
-      return state.map((task) => {
-        if (task.id === action.payload.taskId) {
-          return {
-            ...task,
-            comments: [...task.comments, action.payload.comment],
-          };
-        }
-        return task;
-      });
-    case UPDATE_TASK_COMMENT:
-      return state.map((task) => {
-        const updatedComments = task.comments.map((comment) =>
-          comment.id === action.payload.id ? action.payload : comment
-        );
-        return {
-          ...task,
-          comments: updatedComments,
-        };
-      });
+      return {
+        ...state,
+        [action.payload.id]: action.paylod,
+      };
     case REMOVE_TASK_COMMENT:
       return state.map((task) => {
         const filteredComments = task.comments.filter(

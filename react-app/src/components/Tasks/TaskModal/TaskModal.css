@@ -1,0 +1,107 @@
+#modal-content>.task-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-charcoal);
+    width: 500px;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+}
+
+.task-content {
+    padding: 10px 20px;
+}
+
+.task-header {
+    border-bottom: .5px solid var(--color-medium-gray);
+}
+
+.task-label {
+    color: var(--color-medium-gray);
+    font-size: 12px;
+}
+
+.task-top-section {
+    display: flex;
+    flex-direction: row;
+    gap: 150px;
+    padding: 10px 0;
+}
+
+.task-description-section {
+    padding: 10px 0;
+}
+
+.add-comment-section {
+    display: flex;
+}
+
+.task-comments-section {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.add-task-comment-input {
+    background-color: transparent;
+    border-radius: 15px;
+    border: .5px solid var(--color-dark-gray);
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    box-shadow: none;
+    color: var(--color-medium-gray);
+}
+
+
+.task-assigned-to-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+}
+
+.delete-comment-button {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    width: 20px;
+    height: 20;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.task-assigned-to-icon:hover {
+    background-color: var(--color-dark-gray);
+}
+
+.user-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--color-charcoal);
+    border-radius: 50%;
+    background-color: #fc979a;
+    font-size: 8px;
+    font-weight: var(--font-medium);
+    color: black;
+}
+
+.task-comment-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-comment-name {
+    font-size: 12px;
+    color: var(--color-medium-gray);
+}
+
+.task-comment {
+    padding: 5px 0;
+}

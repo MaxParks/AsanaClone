@@ -20,8 +20,10 @@ class TaskComment(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'user_id': self.user_id,
-            'task_id': self.task_id,
             'comment': self.comment,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
+            'user': {
+                'first_name': self.user.firstName,
+                'last_name': self.user.lastName
+            }
         }
