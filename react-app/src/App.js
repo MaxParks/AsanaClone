@@ -64,6 +64,9 @@ const App = () => {
               <Route path='/signup'>
                 <SignupFormPage />
               </Route>
+              <Route path='/projects/:id'>
+                <GetProject />
+              </Route>
               <Route exact path='/user/dashboard/'>
                 {user ? <Dashboard /> : <Redirect to='/' />}
               </Route>
