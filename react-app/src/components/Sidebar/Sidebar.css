@@ -60,7 +60,6 @@
 .sidebar-content {
     display: flex;
     flex-direction: column;
-    /* Rest of the styles */
 }
 
 .team-name {
@@ -69,6 +68,10 @@
     position: relative;
     padding-left: 20px;
     cursor: pointer;
+}
+
+.team-name:hover {
+  color: var(--color-medium-gray);
 }
 
 .team-arrow {
@@ -82,11 +85,11 @@
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
     border-right: 5px solid var(--color-medium-gray);
-    transition: transform 0.3s;
+    transition: transform 0.3555s;
 }
 
 .team-arrow.rotated {
-    transform: translateY(-50%) rotate(315deg);
+    transform: translateY(-70%) rotate(315deg);
     border-right: 5px solid transparent;
     border-bottom: 5px solid var(--color-medium-gray);
     width: 6px;
