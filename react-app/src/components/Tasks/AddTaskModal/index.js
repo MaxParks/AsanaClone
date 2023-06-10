@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createTaskThunk } from "../../../store/tasks";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleTeamThunk } from "../../../store/teams";
+import { getProjectsThunk } from "../../../store/projects";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
 
@@ -10,31 +11,20 @@ import "./AddTaskModal.css";
 function AddTaskModal({ isLoaded }) {
   const dispatch = useDispatch();
   const dashboardData = useSelector((state) => state.dashboard);
+  const teamProjects = useSelector((state) => state.projects);
 
   const teams = Object.values(dashboardData.teams);
-  const projects = Object.values(dashboardData.projects);
+  const projects = Object.values(teamProjects)[0] || [];
 
-  console.log(dashboardData);
+  console.log(projects);
 
   const teamArray = Object.values(dashboardData.teams); // Convert the object to an array
-
-  const projectNames = teamArray.reduce((names, team) => {
-    const teamProjects = team.projects.map((project, index) => {
-      if (index === 0) {
-        const firstProjectName = projects[project.id]?.name; // Use optional chaining to handle undefined values
-        return firstProjectName;
-      }
-      const projectName = projects[project.id]?.name; // Use optional chaining to handle undefined values
-      return projectName;
-    });
-    return [...names, ...teamProjects];
-  }, []);
-
-  const uniqueProjectNames = [...new Set(projectNames)];
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [due_date, setDueDate] = useState("");
+  const [teamId, setTeamId] = useState("");
+  const [teamName, setTeamName] = useState("");
   const [project_id, setProjectId] = useState("");
   const [availableUsers, setAvailableUsers] = useState([]);
   const [assigned_to, setAssignedTo] = useState("");
@@ -93,6 +83,10 @@ function AddTaskModal({ isLoaded }) {
     closeModal();
   };
 
+  useEffect(() => {
+    fetchAssignedToUsers(project_id);
+  }, [project_id]);
+
   return (
     <div className="add-task-modal-container">
       <h2>Add New Task</h2>
@@ -121,18 +115,38 @@ function AddTaskModal({ isLoaded }) {
         </div>
         <div className="form-field">
           <select
-            id="project"
-            value={project_id}
-            onChange={(e) => setProjectId(e.target.value)}
+            id="team"
+            value={teamId}
+            onChange={(e) => {
+              const selectedTeam = teams.find(
+                (team) => team.id === e.target.value
+              );
+              setTeamId(e.target.value);
+              setTeamName(selectedTeam?.name || "");
+              dispatch(getProjectsThunk(e.target.value));
+            }}
           >
-            <option value="">Select Project</option>
-            {uniqueProjectNames.map((projectName, index) => (
-              <option key={index} value={index}>
-                {projectName}
+            <option value="">Select Team</option>
+            {teams.map((team) => (
+              <option key={team.id} value={team.id}>
+                {team.name}
               </option>
             ))}
           </select>
         </div>
+        <select
+          id="project"
+          value={project_id}
+          onChange={(e) => setProjectId(e.target.value)}
+        >
+          <option value="">Select Project</option>
+          {projects.map((project) => (
+            <option key={project.id} value={project.id}>
+              {project.name}
+            </option>
+          ))}
+        </select>
+
         <select
           id="assignedTo"
           placeholder="Assigned to"

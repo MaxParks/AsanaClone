@@ -90,9 +90,11 @@ def retrieve_projects(team_id):
     if not team:
         return {"message": "Team not found", "statusCode": 404}, 404
 
+    print("-----------------------------------------------", team.owner_id)
+
     user_team = UserTeam.query.filter_by(user_id=current_user.id, team_id=team_id).first()
 
-    if not user_team:
+    if not user_team and (team.owner_id != current_user.id):
         return {"message": "Unauthorized", "statusCode": 403}, 403
 
     projects = Project.query.filter_by(team_id=team_id).all()
