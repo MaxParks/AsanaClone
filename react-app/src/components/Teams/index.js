@@ -4,10 +4,9 @@ import { useHistory } from 'react-router-dom'
 import { getSingleTeamThunk } from '../../store/teams'
 import './Team.css'
 
-const Team = ({ teamId, closeTeamDropdown }) => {
+const Team = ({ teamId }) => {
   const dispatch = useDispatch()
   const teamData = useSelector(state => state.teams.selectedTeam)
-  console.group('TEAM DATA --->', teamData)
   const history = useHistory()
 
   useEffect(() => {
@@ -18,47 +17,71 @@ const Team = ({ teamId, closeTeamDropdown }) => {
     return <div>Loading...</div>
   }
 
-  // function to get initials of each member to render in member icon
+  const handleAddMemberClick = () => {
+    alert('Feature coming soon')
+  }
+
+  const handleProjectClick = projectId => {
+    history.push(`/projects/${projectId}`)
+  }
+
   const getInitials = (firstName, lastName) => {
     const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
     const capitalizedLastLetter = lastName.charAt(0).toUpperCase()
     return `${capitalizedFirstLetter}${capitalizedLastLetter}`
   }
 
-  const handleProjectClick = projectId => {
-    history.push(`/projects/${projectId}`) // Redirect to the project page
-  }
-
   return (
-    <div className='team-container'>
-      <div className='member-list'>
-        {teamData.members.map(member => (
-          <div key={member.id} className='member-initials'>
-            {getInitials(member.firstName, member.lastName)}
-            <div className='member-tooltip'>{member.email}</div>
-          </div>
-        ))}
+    <div className='team-page'>
+      <div className='members-section'>
+        <h2 className='section-heading'>
+          Members
+          <hr className='section-line' />
+        </h2>
+        <div className='member-list-page'>
+          {teamData.members.map(member => (
+            <>
+            <div key={member.id} className='member-initials-page'>
+              <span className='member-icon-page'>
+                {getInitials(member.firstName, member.lastName)}
+              </span>
+              <div className='member-tooltip'>{member.email}</div>
+            </div>
+              <span className='member-name-page'>{member.firstName}</span>
+            </>
+          ))}
+          <button className='add-member-button' onClick={handleAddMemberClick}>
+            +
+          </button>
+        </div>
       </div>
-      <ul className='project-list'>
-        {teamData.projects.length === 0 ? (
-          <li className='project-item'>
-            <span className='no-projects-message'>No projects yet</span>
-          </li>
-        ) : (
-          teamData.projects.map(project => (
-            <li
-              key={project.id}
-              className='project-item'
-              onClick={() => handleProjectClick(project.id)}
-            >
-              <span className='project-icon'>&#9670;</span>
-              <span className='project-name'>{project.name}</span>
+
+      <div className='projects-section'>
+        <h2 className='section-heading'>
+          Projects
+          <hr className='section-line' />
+        </h2>
+        <ul className='project-list-page'>
+          {teamData.projects.length === 0 ? (
+            <li className='project-item-page'>
+              <span className='no-projects-message'>No projects yet</span>
             </li>
-          ))
-        )}
-      </ul>
-      {/* <button onClick={closeTeamDropdown}>Close</button> */}
+          ) : (
+            teamData.projects.map(project => (
+              <li
+                key={project.id}
+                className='project-item'
+                onClick={() => handleProjectClick(project.id)}
+              >
+                <span className='project-icon-page'></span>
+                <span className='project-name-page'>{project.name}</span>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
     </div>
   )
 }
-export default Team
+
+export default Team;

@@ -1,136 +1,152 @@
-.team-container {
+.team-page {
+    background-color: #1e1f21;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    padding: 20px;
+    color: #fff;
 }
 
-.team-list {
-    padding: 10px;
-}
-
-.team-name {
+.section-heading {
     margin-bottom: 10px;
+    position: relative;
 }
 
-.member-list {
+.section-line {
+    border: none;
+    border-top: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    top: 80%;
+}
+
+.members-section,
+.projects-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.member-list-page {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 16px;
-    padding-top: 10px;
+    justify-content: center;
+    gap: 10px;
 }
 
-.member-initials {
+.member-item-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     position: relative;
+}
+
+.member-initials-page {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fc979a;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: #fc979a;
-    color: #1E1F21;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 24px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 50%;
-    font-size: 8px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s, background-color 0.3s, color 0.3s;
-    cursor: pointer;
+}
+
+.member-initials-page:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+    cursor:default;
+}
+
+.member-icon-page {
+    color: #1e1f21;
+}
+
+.member-name-page {
+    flex-grow: 1;
 }
 
 .member-tooltip {
+    display: none;
     position: absolute;
-    top: -30px;
+    background-color: #1e1f21;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #1E1F21;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease-in-out;
+    z-index: 1;
 }
 
-.member-initials:hover+.member-tooltip {
-    opacity: 1;
+.member-item-page:hover .member-tooltip {
+    display: block;
 }
 
-.member-initials:hover {
-    color: #ffffff;
-    transform: scale(1.1);
-}
-
-
-.project-list {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-
-.project-icon {
-    color: rgb(0, 255, 255);
-     transform: rotate(45deg);
-}
-
-.project-name {
-    margin-right: 100px;
-}
-
-
-.button {
-    margin-top: 16px;
-}
-
-/* CREATE X BUTTON */
-.open-modal-button-add-team {
+.add-member-button {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-medium-gray) ;
+    color: #1e1f21;
+    font-weight: bold;
+    font-size: 24px;
     border: none;
-    background-color: transparent;
-    color: white;
-    font-weight: var(--font-regular);
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
     border-radius: 50%;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-        background-color: transparent
-    }
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.open-modal-button-add-team::before,
-.open-modal-button-add-team::after {
+.add-member-button:hover {
+    color: var(--color-light-gray);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.projects-section .section-heading::after,
+.members-section .section-heading::after {
     content: '';
+    display: block;
+    width: 100%;
     position: absolute;
-    width: 14px;
-    height: 2px;
-    background-color: var(--color-medium-gray);
+    top: 50%;
 }
 
-.open-modal-button-add-team::before {
-    transform: rotate(90deg);
+.projects-section .section-heading::after {
+    left: 0;
 }
 
-.open-modal-button-add-team::after {
-    transform: rotate(0deg);
+.members-section .section-heading::after {
+    right: 0;
 }
 
-.open-modal-button-add-team:hover::before,
-.open-modal-button-add-team:hover::after {
-    background-color: var(--color-light-gray);
+.project-list-page {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.project-item-page {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.project-icon-page {
+    width: 20px;
+    height: 20px;
+    background-color: #66a3ff;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.project-name-page {
+    flex-grow: 1;
 }
