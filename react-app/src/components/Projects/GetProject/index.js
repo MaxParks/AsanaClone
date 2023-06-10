@@ -8,7 +8,7 @@ import OpenModalButton from "../../OpenModalButton";
 import ProfileButton from "../../Navigation/ProfileButton";
 import { useParams } from "react-router-dom";
 import "./Project.css";
-import AddTaskModal from "../../Teams/Tasks/AddTaskModal";
+import AddTaskModal from "../../Tasks/AddTaskModal";
 
 function formatDate(dateString) {
   const dateParts = dateString.split("-");
@@ -21,6 +21,7 @@ function Project({ isLoaded }) {
 
   const teamData = useSelector((state) => state.teams);
   const projectData = useSelector((state) => state.projects);
+  console.log("<<<<<<<<<<<<<<",projectData)
   const sessionUser = useSelector((state) => state.session.user);
 
 

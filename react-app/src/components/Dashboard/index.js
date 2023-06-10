@@ -8,8 +8,8 @@ import { toggleTaskCompletion, formatDueDate } from "../../utils";
 import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
-import AddTaskModal from "../Teams/Tasks/AddTaskModal";
-import TaskModal from "../Teams/Tasks/TaskModal";
+import AddTaskModal from "../Tasks/AddTaskModal";
+import TaskModal from "../Tasks/TaskModal";
 
 import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
 import "./Dashboard.css";
