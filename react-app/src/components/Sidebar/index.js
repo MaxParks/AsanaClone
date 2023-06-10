@@ -31,30 +31,26 @@ const Sidebar = ({
     history.push('/user/dashboard')
   }
 
-  const toggleTeamDropdown = teamId => {
-    const index = openDropdowns.indexOf(teamId)
-    if (index !== -1) {
-      // Remove the teamId from openDropdowns if it's already open
-      setOpenDropdowns(openDropdowns.filter(id => id !== teamId))
-      history.push('/') // Update URL to remove team id
-      openTeamDropdown(null, null)
-    } else {
-      // Close the currently open dropdown if any
-      const currentlyOpenDropdown = openDropdowns[0]
-      if (currentlyOpenDropdown) {
-        setOpenDropdowns(
-          openDropdowns.filter(id => id !== currentlyOpenDropdown)
-        )
-        closeTeamDropdown()
-      }
-
-      // Add the teamId to openDropdowns if it's closed
-      setOpenDropdowns([teamId])
-      // history.push(`/teams/${teamId}`) // Update URL with the selected team id
-      const teamData = dashboardData.teams[teamId]
-      openTeamDropdown(teamId, teamData)
-    }
+  const handleTeamNameClick = teamId => {
+    history.push(`/teams/${teamId}`)
   }
+
+const toggleTeamDropdown = teamId => {
+  if (openDropdowns.includes(teamId)) {
+    setOpenDropdowns(openDropdowns.filter(id => id !== teamId));
+    openTeamDropdown(null, null);
+  } else {
+    const currentlyOpenDropdown = openDropdowns[0];
+    if (currentlyOpenDropdown) {
+      setOpenDropdowns(openDropdowns.filter(id => id !== currentlyOpenDropdown));
+      closeTeamDropdown();
+    }
+
+    setOpenDropdowns([teamId]);
+    const teamData = dashboardData.teams[teamId];
+    openTeamDropdown(teamId, teamData);
+  }
+};
 
   return (
     <div className='sidebar-content'>
@@ -62,10 +58,8 @@ const Sidebar = ({
         <h1 className='sidebar-header'>ZenFlow</h1>
       </div>
       <div className='sidebar-navigation-container'>
-        {/* Navigation items */}
         <div className='sidebar-navigation-container'>
           <ul className='sidebar-navigation'>
-
             <div className='sidebar-tab' onClick={handleHomeClick}>
               <HomeIcon />
               <li className='second-tab-item'>Home</li>
@@ -85,8 +79,6 @@ const Sidebar = ({
         <div className='sidebar-tab'>
           <p>Teams</p>
           <div className='second-tab-item centered'>
-            {/* Add Team button */}
-            {/* <PlusButton /> */}
             <OpenModalButton
               modalComponent={<AddTeamModal />}
               className='add-team'
@@ -101,18 +93,22 @@ const Sidebar = ({
                   className={`team-name${
                     selectedTeamId === team.id ? ' active' : ''
                   }`}
-                  onClick={() => toggleTeamDropdown(team.id)}
+                  onClick={() => handleTeamNameClick(team.id)}
                 >
-                  <span
+                  <div
                     className={`team-arrow${
                       openDropdowns.includes(team.id) ? ' rotated' : ''
                     }`}
-                  ></span>
+                    onClick={() => toggleTeamDropdown(team.id)}
+                  ></div>
                   {team.name}
                 </div>
-                {/* Team dropdown */}
                 {selectedTeamId === team.id && (
-                  <div className='team-dropdown'>
+                  <div
+                    className={`team-dropdown${
+                      openDropdowns.includes(team.id) ? ' open' : ''
+                    }`}
+                  >
                     <TeamDropdown
                       teamId={team.id}
                       teamData={selectedTeamData}

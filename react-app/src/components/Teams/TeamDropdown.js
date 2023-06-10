@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getSingleTeamThunk } from '../../store/teams'
 import './TeamDropdown.css'
+import loadingGif from '../../assets/images/Eclipse-1s-200px.gif'
+
 
 const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
   const dispatch = useDispatch()
   const teamData = useSelector(state => state.teams.selectedTeam)
-  console.group('TEAM DATA --->', teamData)
   const history = useHistory()
 
   useEffect(() => {
@@ -15,10 +16,13 @@ const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
   }, [dispatch, teamId])
 
   if (!teamData) {
-    return <div>Loading...</div>
+    return (
+      <div className="loading-container">
+        <img src={loadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
   }
 
-  // function to get initials of each member to render in member icon
   const getInitials = (firstName, lastName) => {
     const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
     const capitalizedLastLetter = lastName.charAt(0).toUpperCase()
@@ -26,14 +30,18 @@ const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
   }
 
   const handleProjectClick = projectId => {
-    history.push(`/projects/${projectId}`) // Redirect to the project page
+    history.push(`/projects/${projectId}`)
   }
 
   return (
     <div className='team-container'>
       <div className='member-list'>
-        {teamData.members.map(member => (
-          <div key={member.id} className='member-initials'>
+        {teamData.members.map((member, index) => (
+          <div
+            key={member.id}
+            className={`member-initials${teamData ? ' show' : ''}`}
+            style={{ transitionDelay: `${index * 0.3}s` }}
+          >
             {getInitials(member.firstName, member.lastName)}
             <div className='member-tooltip'>{member.email}</div>
           </div>
@@ -57,8 +65,8 @@ const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
           ))
         )}
       </ul>
-      {/* <button onClick={closeTeamDropdown}>Close</button> */}
     </div>
   )
 }
+
 export default TeamDropdown
