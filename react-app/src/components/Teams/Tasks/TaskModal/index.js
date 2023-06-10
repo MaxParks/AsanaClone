@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTaskById, addSingleTaskComment } from "../../../store/tasks";
-import { formatDueDate } from "../../../utils";
-import TaskComments from "../../TaskComments/TaskComments";
+import { fetchTaskById, addSingleTaskComment } from "../../../../store/tasks";
+import { formatDueDate } from "../../../../utils";
+import TaskComments from "../../../TaskComments/TaskComments";
 import "./TaskModal.css";
 
 function TaskModal({ task, onClose }) {

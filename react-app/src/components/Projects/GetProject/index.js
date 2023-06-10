@@ -8,7 +8,7 @@ import OpenModalButton from "../../OpenModalButton";
 import ProfileButton from "../../Navigation/ProfileButton";
 import { useParams } from "react-router-dom";
 import "./Project.css";
-import AddTaskModal from "../../Tasks/AddTaskModal";
+import AddTaskModal from "../../Teams/Tasks/AddTaskModal";
 
 function Project({ isLoaded }) {
   const dispatch = useDispatch();

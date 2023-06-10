@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { createTaskThunk } from "../../../store/tasks";
+import { createTaskThunk } from "../../../../store/tasks";
 import { useDispatch, useSelector } from "react-redux";
-import { getSingleTeamThunk } from "../../../store/teams";
-import { useModal } from "../../../context/Modal";
+import { getSingleTeamThunk } from "../../../../store/teams";
+import { useModal } from "../../../../context/Modal";
 import { useHistory } from "react-router-dom";
 
 import "./AddTaskModal.css";
