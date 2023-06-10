@@ -10,47 +10,48 @@ import "./AddTaskModal.css";
 
 function AddTaskModal({ isLoaded }) {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const dashboardData = useSelector((state) => state.dashboard);
-  const teamProjects = useSelector((state) => state.projects);
-
+  const projects = useSelector((state) => state.projects);
   const teams = Object.values(dashboardData.teams);
-  const projects = Object.values(teamProjects)[0] || [];
-
-  console.log(projects);
-
-  const teamArray = Object.values(dashboardData.teams); // Convert the object to an array
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [due_date, setDueDate] = useState("");
   const [teamId, setTeamId] = useState("");
-  const [teamName, setTeamName] = useState("");
+  const [teamMembers, setTeamMembers] = useState([]);
   const [project_id, setProjectId] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
   const [assigned_to, setAssignedTo] = useState("");
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
-  const history = useHistory();
 
-  const fetchAssignedToUsers = async (projectId) => {
-    if (projectId) {
-      const selectedProject = dashboardData.projects[projectId];
-      if (selectedProject) {
-        const teamId = selectedProject.team_id;
-        console.log(teamId);
-        const teamData = await dispatch(getSingleTeamThunk(teamId));
-        if (teamData) {
-          const assignedToUsers = teamData.members.map((member) => ({
-            id: member.id,
-            name: member.username,
-          }));
-          setAvailableUsers(assignedToUsers);
-        } else {
-          setAvailableUsers([]); // Reset the available users when no project is selected
-        }
+  const { closeModal } = useModal();
+
+  const handleTeamChange = async (teamId) => {
+    setTeamId(teamId);
+    let selectedTeam = null;
+    for (let i = 0; i < teams.length; i++) {
+      if (teams[i].id === parseInt(teamId, 10)) {
+        selectedTeam = teams[i];
+        break;
       }
+    }
+    if (selectedTeam) {
+      setFilteredProjects(selectedTeam.projects);
+      // Retrieve team members for the selected team
+      dispatch(getSingleTeamThunk(teamId));
+      const teamMembers = selectedTeam.members.map((member, index) => ({
+        id: member.id,
+        name: `${member.firstName} ${member.lastName}`,
+      }));
+
+      console.log(teamMembers);
+      setAvailableUsers(teamMembers);
     } else {
-      setAvailableUsers([]); // Reset the available users when no project is selected
+      setFilteredProjects([]);
+      setAvailableUsers([]);
     }
   };
 
@@ -83,10 +84,6 @@ function AddTaskModal({ isLoaded }) {
     closeModal();
   };
 
-  useEffect(() => {
-    fetchAssignedToUsers(project_id);
-  }, [project_id]);
-
   return (
     <div className="add-task-modal-container">
       <h2>Add New Task</h2>
@@ -117,14 +114,7 @@ function AddTaskModal({ isLoaded }) {
           <select
             id="team"
             value={teamId}
-            onChange={(e) => {
-              const selectedTeam = teams.find(
-                (team) => team.id === e.target.value
-              );
-              setTeamId(e.target.value);
-              setTeamName(selectedTeam?.name || "");
-              dispatch(getProjectsThunk(e.target.value));
-            }}
+            onChange={(e) => handleTeamChange(e.target.value)}
           >
             <option value="">Select Team</option>
             {teams.map((team) => (
@@ -140,7 +130,7 @@ function AddTaskModal({ isLoaded }) {
           onChange={(e) => setProjectId(e.target.value)}
         >
           <option value="">Select Project</option>
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <option key={project.id} value={project.id}>
               {project.name}
             </option>
@@ -160,6 +150,7 @@ function AddTaskModal({ isLoaded }) {
             </option>
           ))}
         </select>
+
         <div className="form-field">
           <input
             type="date"
