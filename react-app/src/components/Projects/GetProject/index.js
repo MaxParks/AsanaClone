@@ -19,6 +19,7 @@ function Project({ isLoaded }) {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const users = useSelector((state) => state.session);
   const teamData = useSelector((state) => state.teams);
   const projectData = useSelector((state) => state.projects);
   console.log("<<<<<<<<<<<<<<",projectData)
@@ -65,7 +66,7 @@ function Project({ isLoaded }) {
           {projectData.tasks &&
             projectData.tasks.map((task) => (
               <li key={task.id} className="task-item1">
-                {task.name} ------ Assigned to: {task.assigned_to} ------ Due Date: {formatDate(task.due_date)}
+                {task.name} ------ Assigned to: {users[task.assigned_to]?.firstName || 'Unassigned'} ------ Due Date: {formatDate(task.due_date)}
               </li>
             ))}
         </ul>
