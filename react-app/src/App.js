@@ -9,7 +9,7 @@ import LoginFormPage from './components/LoginFormPage'
 import Sidebar from './components/Sidebar'
 import Navigation from './components/Navigation'
 import Dashboard from './components/Dashboard'
-import UserTasks from './components/Tasks/UserTasks'
+import UserTasks from './components/Teams/Tasks/UserTasks'
 import Task from './components/task'
 import TeamDropdown from './components/Teams/TeamDropdown'
 import Team from './components/Teams'
@@ -65,12 +65,15 @@ const App = () => {
               <Route path='/signup'>
                 <SignupFormPage />
               </Route>
+              <Route path='/projects/:id'>
+                <GetProject />
+              </Route>
               <Route exact path='/user/dashboard/'>
                 {user ? <Dashboard /> : <Redirect to='/' />}
               </Route>
-              <Route exact path='/teams/:id'>
-                {user ? <Team /> : <Redirect to='/' />}
-              </Route>
+              {/* <Route exact path='/teams/:id'>
+                {user ? <Dashboard /> : <Redirect to='/' />}
+              </Route> */}
             </Switch>
           </div>
         </div>
