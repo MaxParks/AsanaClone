@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { authenticate } from "./store/session";
 
-import LandingPage from "./components/LandingPage";
-import SignupFormPage from "./components/SignupFormPage";
-import LoginFormPage from "./components/LoginFormPage";
-import Sidebar from "./components/Sidebar";
-import Navigation from "./components/Navigation";
-import Dashboard from "./components/Dashboard";
-import UserTasks from "./components/Tasks/UserTasks";
-import Task from "./components/task";
-import TeamDropdown from "./components/Teams/TeamDropdown";
-import Team from "./components/Teams";
-import GetProject from "./components/Projects/GetProject";
+import LandingPage from './components/LandingPage'
+import SignupFormPage from './components/SignupFormPage'
+import LoginFormPage from './components/LoginFormPage'
+import Sidebar from './components/Sidebar'
+import Navigation from './components/Navigation'
+import Dashboard from './components/Dashboard'
+import UserTasks from './components/Tasks/UserTasks'
+// import Task from './components/task'
+import TeamDropdown from './components/Teams/TeamDropdown'
+import Team from './components/Teams'
+import GetProject from './components/Projects/GetProject'
 
 const App = () => {
   const dispatch = useDispatch();

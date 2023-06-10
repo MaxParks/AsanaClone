@@ -1,14 +1,4 @@
-.page-container1 {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* changed to flex-start to align items to the left */
-    padding: 20px;
-    background-color: var(--color-charcoal);
-    color: white;
-    height: 100vh;
-    width: 100vw;
-    position: relative; /* added for absolute positioning of the profile button */
-  }
+
 
   .header-container1 {
     display: flex;
@@ -19,6 +9,7 @@
   }
 
   .header-title1 {
+    color: white;
     font-size: 2.5em;
     font-weight: bold;
   }
@@ -30,21 +21,28 @@
   }
 
   .due-date1 {
-    margin-left: 20px;
+    color: white;
+    margin-right: 300px;
     font-size: 1.2em;
     text-decoration: underline; /* Add underline */
   }
 
   .project-description1 {
+    color: white;
     margin-top: 20px;
-    font-size: 1.2em;
+    font-size: 1.4em;
     text-decoration: underline; /* Add underline */
   }
 
+  .project-description2{
+    color: white;
+    margin-top: 5px;
+    font-size: 1em;
+  }
+
   .tasks-list1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+    color: white;
     margin-top: 20px;
     border-top: 1px solid white; /* Add line above tasks */
     border-bottom: 1px solid white; /* Add line below tasks */
@@ -52,12 +50,11 @@
   }
 
   .task-item1 {
+    color: white;
     font-size: 1em;
     padding: 10px 0;
   }
 
   .open-modal-button1 {
-    display: flex;
-    justify-content: center;
     margin-top: 20px;
   }
