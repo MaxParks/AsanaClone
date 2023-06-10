@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addSingleTaskComment } from "../../store/tasks";
+import { addSingleTaskComment, fetchTaskById } from "../../store/tasks";
 
 import "../Tasks/TaskModal/TaskModal.css";
 
@@ -11,7 +11,10 @@ function TaskComments(props) {
 
   const comments = taskData[taskId]?.comments;
 
+  const [commentText, setCommentText] = useState("");
   const [hoveredCommentId, setHoveredCommentId] = useState(null);
+
+  const reversedComments = comments ? [...comments].reverse() : [];
 
   const handleMouseEnter = (commentId) => {
     setHoveredCommentId(commentId);
@@ -21,14 +24,36 @@ function TaskComments(props) {
     setHoveredCommentId(null);
   };
 
+  const handleCommentTextChange = (e) => {
+    setCommentText(e.target.value);
+  };
+
+  const handleAddComment = () => {
+    if (commentText) {
+      dispatch(addSingleTaskComment(taskId, commentText))
+        .then(() => {
+          setCommentText(""); // Clear the comment text after adding
+          dispatch(fetchTaskById(taskId)); // Fetch the updated task
+        })
+        .catch((error) => {
+          console.log("Error adding comment:", error);
+        });
+    }
+  };
+
   return (
     <div>
       <div className="add-comment-section">
-        <input type="text" placeholder="Add a comment..." />
-        <button>Add Comment</button>
+        <input
+          type="text"
+          placeholder="Add a comment..."
+          value={commentText}
+          onChange={handleCommentTextChange}
+        />
+        <button onClick={handleAddComment}>Add Comment</button>
       </div>
-      {comments &&
-        comments.map((comment) => (
+      {reversedComments &&
+        reversedComments.map((comment) => (
           <div
             key={comment.id}
             className="task-comment-wrapper"

@@ -11,6 +11,27 @@ function AddTaskModal({ isLoaded }) {
   const dispatch = useDispatch();
   const dashboardData = useSelector((state) => state.dashboard);
 
+  const teams = Object.values(dashboardData.teams);
+  const projects = Object.values(dashboardData.projects);
+
+  console.log(dashboardData);
+
+  const teamArray = Object.values(dashboardData.teams); // Convert the object to an array
+
+  const projectNames = teamArray.reduce((names, team) => {
+    const teamProjects = team.projects.map((project, index) => {
+      if (index === 0) {
+        const firstProjectName = projects[project.id]?.name; // Use optional chaining to handle undefined values
+        return firstProjectName;
+      }
+      const projectName = projects[project.id]?.name; // Use optional chaining to handle undefined values
+      return projectName;
+    });
+    return [...names, ...teamProjects];
+  }, []);
+
+  const uniqueProjectNames = [...new Set(projectNames)];
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [due_date, setDueDate] = useState("");
@@ -100,18 +121,14 @@ function AddTaskModal({ isLoaded }) {
         </div>
         <div className="form-field">
           <select
-            id="projectId"
+            id="project"
             value={project_id}
-            onChange={(e) => {
-              setProjectId(e.target.value);
-              setAssignedTo(""); // Reset the assigned_to value when the project changes
-              fetchAssignedToUsers(e.target.value); // Call the function to fetch the users
-            }}
+            onChange={(e) => setProjectId(e.target.value)}
           >
             <option value="">Select Project</option>
-            {Object.values(dashboardData.projects).map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name}
+            {uniqueProjectNames.map((projectName, index) => (
+              <option key={index} value={index}>
+                {projectName}
               </option>
             ))}
           </select>

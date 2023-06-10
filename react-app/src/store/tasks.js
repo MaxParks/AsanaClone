@@ -144,6 +144,7 @@ export const deleteTask = (id) => async (dispatch) => {
 };
 
 export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
+  console.log("hiii");
   const response = await fetch(`/api/tasks/${taskId}`, {
     method: "POST",
     headers: {

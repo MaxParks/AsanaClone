@@ -28,5 +28,8 @@ class Team(db.Model):
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
             'members': [member.id for member in self.members],
-            'projects': [project.id for project in self.projects]
+            'projects': [{
+                'id': project.id,
+                'name': project.name
+            } for project in self.projects]
         }
