@@ -84,6 +84,10 @@ def create_team():
     db.session.add(new_team)
     db.session.flush()
 
+    # Add owner as a member of the team
+    owner_user_team = UserTeam(user_id=current_user.id, team_id=new_team.id)
+    db.session.add(owner_user_team)
+
     # Add members to the team
     for email in members_emails:
         user = find_user_by_email(email)
