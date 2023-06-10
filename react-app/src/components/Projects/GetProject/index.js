@@ -8,7 +8,7 @@ import OpenModalButton from "../../OpenModalButton";
 import ProfileButton from "../../Navigation/ProfileButton";
 import { useParams } from "react-router-dom";
 import "./Project.css";
-import AddTaskModal from "../../Teams/Tasks/AddTaskModal";
+import AddTaskModal from "../../Tasks/AddTaskModal";
 
 function Project({ isLoaded }) {
   const dispatch = useDispatch();
@@ -18,15 +18,14 @@ function Project({ isLoaded }) {
   const projectData = useSelector((state) => state.projects);
   const sessionUser = useSelector((state) => state.session.user);
 
-
-const userIsOwner = sessionUser.id === projectData.owner_id || sessionUser.id === teamData.owner_id;
-
+  const userIsOwner =
+    sessionUser.id === projectData.owner_id ||
+    sessionUser.id === teamData.owner_id;
 
   useEffect(() => {
     // Fetch project data when component mounts
     dispatch(getProjectThunk(id));
   }, [dispatch, id]);
-
 
   return (
     <div className="page-container1">
@@ -37,9 +36,9 @@ const userIsOwner = sessionUser.id === projectData.owner_id || sessionUser.id ==
       </div>
       <p className="project-description1">Project Description:</p>
       <br></br>
-       <p>{projectData.description}</p>
-       <br></br>
-       {userIsOwner && (
+      <p>{projectData.description}</p>
+      <br></br>
+      {userIsOwner && (
         <div className="open-modal-button1">
           <OpenModalButton
             buttonText="Add Task"
@@ -54,7 +53,8 @@ const userIsOwner = sessionUser.id === projectData.owner_id || sessionUser.id ==
           {projectData.tasks &&
             projectData.tasks.map((task) => (
               <li key={task.id} className="task-item1">
-                {task.name} - Assigned to: {task.assigned_to} - Due Date: {task.due_date}
+                {task.name} - Assigned to: {task.assigned_to} - Due Date:{" "}
+                {task.due_date}
               </li>
             ))}
         </ul>
