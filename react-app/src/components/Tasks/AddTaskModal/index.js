@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 import "./AddTaskModal.css";
 
-function AddTaskModal({ isLoaded }) {
+function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -22,9 +22,9 @@ function AddTaskModal({ isLoaded }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [due_date, setDueDate] = useState("");
-  const [teamId, setTeamId] = useState("");
+  const [teamId, setTeamId] = useState(currentTeamId); // Default to currentTeamId
   const [teamMembers, setTeamMembers] = useState([]);
-  const [project_id, setProjectId] = useState("");
+  const [project_id, setProjectId] = useState(currentProjectId); // Default to currentProjectId
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
   const [assigned_to, setAssignedTo] = useState("");
@@ -75,7 +75,7 @@ function AddTaskModal({ isLoaded }) {
 
   useEffect(() => {
     handleTeamChange(teamId);
-  }, [teamId]);
+  }, [teamId, currentTeamId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
