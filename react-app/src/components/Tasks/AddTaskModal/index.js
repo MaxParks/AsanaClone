@@ -3,6 +3,7 @@ import { createTaskThunk } from "../../../store/tasks";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleTeamThunk } from "../../../store/teams";
 import { getProjectsThunk } from "../../../store/projects";
+import { getDashboardThunk } from "../../../store/dashboard";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
 
@@ -14,6 +15,8 @@ function AddTaskModal({ isLoaded }) {
 
   const dashboardData = useSelector((state) => state.dashboard);
   const projects = useSelector((state) => state.projects);
+  const teamsData = useSelector((state) => state.teams.selectedTeam);
+
   const teams = Object.values(dashboardData.teams);
 
   const [name, setName] = useState("");
@@ -30,30 +33,49 @@ function AddTaskModal({ isLoaded }) {
   const { closeModal } = useModal();
 
   const handleTeamChange = async (teamId) => {
-    setTeamId(teamId);
-    let selectedTeam = null;
-    for (let i = 0; i < teams.length; i++) {
-      if (teams[i].id === parseInt(teamId, 10)) {
-        selectedTeam = teams[i];
-        break;
+    try {
+      setTeamId(teamId);
+      let selectedTeam = null;
+      for (let i = 0; i < teams.length; i++) {
+        if (teams[i].id === parseInt(teamId, 10)) {
+          selectedTeam = teams[i];
+          break;
+        }
       }
-    }
-    if (selectedTeam) {
-      setFilteredProjects(selectedTeam.projects);
-      // Retrieve team members for the selected team
-      dispatch(getSingleTeamThunk(teamId));
-      const teamMembers = selectedTeam.members.map((member, index) => ({
-        id: member.id,
-        name: `${member.firstName} ${member.lastName}`,
-      }));
 
-      console.log(teamMembers);
-      setAvailableUsers(teamMembers);
-    } else {
-      setFilteredProjects([]);
-      setAvailableUsers([]);
+      if (selectedTeam) {
+        setFilteredProjects(selectedTeam.projects);
+        // Retrieve team members for the selected team
+        await dispatch(getSingleTeamThunk(teamId));
+      } else {
+        setFilteredProjects([]);
+        setAvailableUsers([]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (teamsData && teamsData.members && teamsData.members.length > 0) {
+      const memberData = teamsData.members.map(function (member) {
+        return {
+          id: member.id,
+          name: member.firstName + " " + member.lastName,
+        };
+      });
+
+      console.log(memberData);
+
+      setAvailableUsers(memberData);
+    } else {
+      setAvailableUsers([]);
+    }
+  }, [teamsData]);
+
+  useEffect(() => {
+    handleTeamChange(teamId);
+  }, [teamId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +103,8 @@ function AddTaskModal({ isLoaded }) {
     };
 
     dispatch(createTaskThunk(newTask));
+
+    dispatch(getDashboardThunk());
     closeModal();
   };
 
