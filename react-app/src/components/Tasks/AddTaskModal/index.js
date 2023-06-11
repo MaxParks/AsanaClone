@@ -181,6 +181,7 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
             id="dueDate"
             value={due_date}
             onChange={(e) => setDueDate(e.target.value)}
+            required
           />
         </div>
         <div className="button-container">
