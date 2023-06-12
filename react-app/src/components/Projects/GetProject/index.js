@@ -10,6 +10,11 @@ import { useParams } from "react-router-dom";
 import "./Project.css";
 import AddTaskModal from "../../Tasks/AddTaskModal";
 
+function formatDate(dateString) {
+  const dateParts = dateString.split("-");
+  return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
+}
+
 function Project({ isLoaded }) {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -25,25 +30,32 @@ function Project({ isLoaded }) {
   useEffect(() => {
     // Fetch project data when component mounts
     dispatch(getProjectThunk(id));
-  }, [dispatch, id]);
+  }, [dispatch, id])
+  ;
 
   return (
     <div className="page-container1">
       <div className="header-container1">
         <h1 className="header-title1">{projectData.name}</h1>
         <ProfileButton user={sessionUser} />
-        <p className="due-date1">Due Date: {projectData.due_date}</p>
+        <p className="due-date1">Due Date:
+        <br></br> {projectData.due_date}</p>
       </div>
       <p className="project-description1">Project Description:</p>
       <br></br>
-      <p>{projectData.description}</p>
-      <br></br>
-      {userIsOwner && (
-        <div className="open-modal-button1">
+      <p className="project-description2">{projectData.description}</p>
+       <br></br>
+       {userIsOwner && (
+        <div className="open-modal-button2">
           <OpenModalButton
-            buttonText="Add Task"
-            modalComponent={<AddTaskModal />}
-            key={`task-${id}`}
+            buttonText="Update"
+            modalComponent={<UpdateProjectModal id={id} />}
+            key={`update-${id}`}
+          />
+          <OpenModalButton
+            buttonText="Delete"
+            modalComponent={<ProjectDeleteModal id={id} />}
+            key={`delete-${id}`}
           />
         </div>
       )}
@@ -53,8 +65,7 @@ function Project({ isLoaded }) {
           {projectData.tasks &&
             projectData.tasks.map((task) => (
               <li key={task.id} className="task-item1">
-                {task.name} - Assigned to: {task.assigned_to} - Due Date:{" "}
-                {task.due_date}
+                {task.name} ------ Assigned to: {task.assigned_to} ------ Due Date: {formatDate(task.due_date)}
               </li>
             ))}
         </ul>
@@ -62,14 +73,9 @@ function Project({ isLoaded }) {
       {userIsOwner && (
         <div className="open-modal-button1">
           <OpenModalButton
-            buttonText="Delete"
-            modalComponent={<ProjectDeleteModal id={id} />}
-            key={`delete-${id}`}
-          />
-          <OpenModalButton
-            buttonText="Update"
-            modalComponent={<UpdateProjectModal id={id} />}
-            key={`update-${id}`}
+            buttonText="Add Task"
+            modalComponent={<AddTaskModal currentProjectId={id} currentTeamId={projectData.team_id} />}
+            key={`task-${id}`}
           />
         </div>
       )}

@@ -34,7 +34,6 @@
 }
 
 .split-container {
-  flex: 1;
   background-color: var(--color-dark-gray);
   border-radius: 10px;
   border: .5px solid var(--color-light-gray);
@@ -44,6 +43,20 @@
   min-width: 200px;
   padding: 20px;
   height: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.split-container.task-container {
+  max-height: 400px;
+  flex-grow: 0;
+  overflow-y: auto;
+}
+
+.split-container.project-container {
+  max-height: 600px;
+  flex-grow: 0;
+  overflow-y: auto;
 }
 
 @media (max-width: 1100px) {
@@ -58,8 +71,7 @@
 
 }
 
-.task-list,
-.project-list {
+.task-list {
   margin-top: 5px;
   width: 100%;
 }
@@ -104,8 +116,7 @@
   width: 80px;
 }
 
-.task-link,
-.project-item {
+.task-link {
   color: white;
   display: flex;
   align-items: center;
@@ -166,4 +177,73 @@
 
 .add-item {
   width: 100%;
+}
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 20px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 500px) {
+  .project-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: cadetblue;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.plus-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+
+.create-project-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-medium-gray);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+}
+
+.open-modal-button-create-project {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-medium-gray);
+  background-color: transparent;
+  color: var(--color-medium-gray);
+  border-radius: 5px;
+  height: 44px;
+  width: 44px;
+}
+
+.open-modal-button-create-project-text {
+  border: none;
+  background-color: transparent;
+  color: var(--color-medium-gray);
+  font-weight: var(--font-medium);
+  font-size: 18px;
+
 }

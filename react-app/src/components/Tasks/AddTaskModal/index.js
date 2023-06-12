@@ -3,56 +3,79 @@ import { createTaskThunk } from "../../../store/tasks";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleTeamThunk } from "../../../store/teams";
 import { getProjectsThunk } from "../../../store/projects";
+import { getDashboardThunk } from "../../../store/dashboard";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
 
 import "./AddTaskModal.css";
 
-function AddTaskModal({ isLoaded }) {
+function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const dashboardData = useSelector((state) => state.dashboard);
-  const teamProjects = useSelector((state) => state.projects);
+  const projects = useSelector((state) => state.projects);
+  const teamsData = useSelector((state) => state.teams.selectedTeam);
 
   const teams = Object.values(dashboardData.teams);
-  const projects = Object.values(teamProjects)[0] || [];
-
-  console.log(projects);
-
-  const teamArray = Object.values(dashboardData.teams); // Convert the object to an array
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [due_date, setDueDate] = useState("");
-  const [teamId, setTeamId] = useState("");
-  const [teamName, setTeamName] = useState("");
-  const [project_id, setProjectId] = useState("");
+  const [teamId, setTeamId] = useState(currentTeamId); // Default to currentTeamId
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [project_id, setProjectId] = useState(currentProjectId); // Default to currentProjectId
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
   const [assigned_to, setAssignedTo] = useState("");
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
-  const history = useHistory();
 
-  const fetchAssignedToUsers = async (projectId) => {
-    if (projectId) {
-      const selectedProject = dashboardData.projects[projectId];
-      if (selectedProject) {
-        const teamId = selectedProject.team_id;
-        console.log(teamId);
-        const teamData = await dispatch(getSingleTeamThunk(teamId));
-        if (teamData) {
-          const assignedToUsers = teamData.members.map((member) => ({
-            id: member.id,
-            name: member.username,
-          }));
-          setAvailableUsers(assignedToUsers);
-        } else {
-          setAvailableUsers([]); // Reset the available users when no project is selected
+  const { closeModal } = useModal();
+
+  const handleTeamChange = async (teamId) => {
+    try {
+      setTeamId(teamId);
+      let selectedTeam = null;
+      for (let i = 0; i < teams.length; i++) {
+        if (teams[i].id === parseInt(teamId, 10)) {
+          selectedTeam = teams[i];
+          break;
         }
       }
-    } else {
-      setAvailableUsers([]); // Reset the available users when no project is selected
+
+      if (selectedTeam) {
+        setFilteredProjects(selectedTeam.projects);
+        // Retrieve team members for the selected team
+        await dispatch(getSingleTeamThunk(teamId));
+      } else {
+        setFilteredProjects([]);
+        setAvailableUsers([]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (teamsData && teamsData.members && teamsData.members.length > 0) {
+      const memberData = teamsData.members.map(function (member) {
+        return {
+          id: member.id,
+          name: member.firstName + " " + member.lastName,
+        };
+      });
+
+      console.log(memberData);
+
+      setAvailableUsers(memberData);
+    } else {
+      setAvailableUsers([]);
+    }
+  }, [teamsData]);
+
+  useEffect(() => {
+    handleTeamChange(teamId);
+  }, [teamId, currentTeamId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,12 +103,10 @@ function AddTaskModal({ isLoaded }) {
     };
 
     dispatch(createTaskThunk(newTask));
+
+    dispatch(getDashboardThunk());
     closeModal();
   };
-
-  useEffect(() => {
-    fetchAssignedToUsers(project_id);
-  }, [project_id]);
 
   return (
     <div className="add-task-modal-container">
@@ -117,14 +138,7 @@ function AddTaskModal({ isLoaded }) {
           <select
             id="team"
             value={teamId}
-            onChange={(e) => {
-              const selectedTeam = teams.find(
-                (team) => team.id === e.target.value
-              );
-              setTeamId(e.target.value);
-              setTeamName(selectedTeam?.name || "");
-              dispatch(getProjectsThunk(e.target.value));
-            }}
+            onChange={(e) => handleTeamChange(e.target.value)}
           >
             <option value="">Select Team</option>
             {teams.map((team) => (
@@ -140,7 +154,7 @@ function AddTaskModal({ isLoaded }) {
           onChange={(e) => setProjectId(e.target.value)}
         >
           <option value="">Select Project</option>
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <option key={project.id} value={project.id}>
               {project.name}
             </option>
@@ -160,12 +174,14 @@ function AddTaskModal({ isLoaded }) {
             </option>
           ))}
         </select>
+
         <div className="form-field">
           <input
             type="date"
             id="dueDate"
             value={due_date}
             onChange={(e) => setDueDate(e.target.value)}
+            required
           />
         </div>
         <div className="button-container">

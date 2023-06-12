@@ -10,19 +10,42 @@ function CreateProjectModal(isLoaded) {
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [team_id, setTeamId] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const history = useHistory();
 
+  const dashboardData = useSelector((state) => state.dashboard);
+  const teams = Object.values(dashboardData.teams);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const errors = {};
+    if (!name) {
+      errors.name = "Name is a required field.";
+    }
+    if (!team_id) {
+      errors.team_id = "Team is a required field.";
+    }
+    if (!description) {
+      errors.description = "Description is a required field.";
+    }
+    if (!dueDate) {
+      errors.dueDate = "Due Date is a required field.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+
+    setErrors({});
 
     const data = await dispatch(
       createProjectThunk(name, description, dueDate, team_id)
     );
     if (Array.isArray(data)) {
-      setErrors(data);
-      console.log("VALIDATION ERRORS --->", errors);
+      setErrors({ general: data });
     } else if (data && data.id) {
       closeModal();
       history.push(`/projects/${data.id}`);
@@ -32,16 +55,17 @@ function CreateProjectModal(isLoaded) {
   };
 
   return (
-    <div className="create-project-modal-container">
+    <div className="add-task-modal-container">
       <h2>Create New Project</h2>
       <form onSubmit={handleSubmit}>
         <ul className="error-list">
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
+          {errors.name && <li>{errors.name}</li>}
+          {errors.team_id && <li>{errors.team_id}</li>}
+          {errors.description && <li>{errors.description}</li>}
+          {errors.dueDate && <li>{errors.dueDate}</li>}
+          {errors.general && errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <div className="form-field">
-          <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
@@ -51,17 +75,20 @@ function CreateProjectModal(isLoaded) {
           />
         </div>
         <div className="form-field">
-          <label htmlFor="team_id">Team</label>
-          <input
-            type="number"
+          <select
             id="team_id"
-            placeholder="Team"
             value={team_id}
             onChange={(e) => setTeamId(e.target.value)}
-          />
+          >
+            <option value="">Select Team</option>
+            {teams.map((team) => (
+              <option key={team.id} value={team.id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-field">
-          <label htmlFor="description">Description</label>
           <input
             type="text"
             id="description"
@@ -71,7 +98,6 @@ function CreateProjectModal(isLoaded) {
           />
         </div>
         <div className="form-field">
-          <label htmlFor="dueDate">Due Date</label>
           <input
             type="date"
             id="dueDate"

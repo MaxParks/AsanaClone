@@ -9,9 +9,12 @@ import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import CreateProjectModal from "../Projects/AddProjectModal";
 import AddTaskModal from "../Tasks/AddTaskModal";
-import TaskModal from "../Tasks/AddTaskModal";
+import TaskModal from "../Tasks/TaskModal";
 
 import { ReactComponent as Checkmark } from "../../assets/icons/checkmark.svg";
+import { ReactComponent as ProjectIcon } from "../../assets/icons/project-icon.svg";
+import { ReactComponent as Plus } from "../../assets/icons/plus.svg";
+
 import "./Dashboard.css";
 
 function Dashboard() {
@@ -117,26 +120,34 @@ function Dashboard() {
 
         <div className="split-container">
           <div className="section-title-container">
-            <h2 className="section-title">Projects</h2>
+            <h2 className="section-title">Projects:</h2>
+          </div>
+          <div className="project-list">
             <div className="create-project-button">
               <OpenModalButton
-                buttonText="Add New Project"
+                buttonText="+"
                 modalComponent={<CreateProjectModal />}
-                className="button-CreateProjectModal"
+                className="create-project"
+              />
+              <OpenModalButton
+                buttonText="Create a Project"
+                modalComponent={<CreateProjectModal />}
+                className="create-project-text"
               />
             </div>
-            <div className="project-list">
-              {dashboardData.projects &&
-                Object.values(dashboardData.projects).map((project) => (
-                  <Link
-                    to={`/projects/${project.id}`}
-                    key={project.id}
-                    className="project-item"
-                  >
-                    {project.name}
-                  </Link>
-                ))}
-            </div>
+            {dashboardData.projects &&
+              Object.values(dashboardData.projects).map((project) => (
+                <Link
+                  to={`/projects/${project.id}`}
+                  key={project.id}
+                  className="project-item"
+                >
+                  <div className="project-icon-wrapper">
+                    <ProjectIcon className="project-svg-icon" />
+                  </div>
+                  {project.name}
+                </Link>
+              ))}
           </div>
         </div>
       </div>

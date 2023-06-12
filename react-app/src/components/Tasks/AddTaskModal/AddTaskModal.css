@@ -26,7 +26,7 @@
     font-weight: var(--font-medium);
     background-color: transparent;
     width: 100%;
-    color: gray;
+    color: white;
 }
 
 
@@ -37,7 +37,7 @@
     border-radius: 20px;
     outline: none;
     background-color: transparent;
-    color: gray;
+    color: white;
 }
 
 .form-field input::placeholder {

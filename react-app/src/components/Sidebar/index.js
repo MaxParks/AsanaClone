@@ -27,28 +27,34 @@ const Sidebar = ({
     dispatch(getDashboardThunk())
   }, [dispatch])
 
-const toggleTeamDropdown = teamId => {
-  const index = openDropdowns.indexOf(teamId)
-  if (index !== -1) {
-    // Remove the teamId from openDropdowns if it's already open
-    setOpenDropdowns(openDropdowns.filter(id => id !== teamId))
-    history.push('/') // Update URL to remove team id
-    openTeamDropdown(null, null)
-  } else {
-    // Close the currently open dropdown if any
-    const currentlyOpenDropdown = openDropdowns[0]
-    if (currentlyOpenDropdown) {
-      setOpenDropdowns(openDropdowns.filter(id => id !== currentlyOpenDropdown))
-      closeTeamDropdown()
-    }
-
-    // Add the teamId to openDropdowns if it's closed
-    setOpenDropdowns([teamId])
-    // history.push(`/teams/${teamId}`) // Update URL with the selected team id
-    const teamData = dashboardData.teams[teamId]
-    openTeamDropdown(teamId, teamData)
+  const handleHomeClick = () => {
+    history.push('/user/dashboard')
   }
-}
+
+  const toggleTeamDropdown = teamId => {
+    const index = openDropdowns.indexOf(teamId)
+    if (index !== -1) {
+      // Remove the teamId from openDropdowns if it's already open
+      setOpenDropdowns(openDropdowns.filter(id => id !== teamId))
+      history.push('/') // Update URL to remove team id
+      openTeamDropdown(null, null)
+    } else {
+      // Close the currently open dropdown if any
+      const currentlyOpenDropdown = openDropdowns[0]
+      if (currentlyOpenDropdown) {
+        setOpenDropdowns(
+          openDropdowns.filter(id => id !== currentlyOpenDropdown)
+        )
+        closeTeamDropdown()
+      }
+
+      // Add the teamId to openDropdowns if it's closed
+      setOpenDropdowns([teamId])
+      // history.push(`/teams/${teamId}`) // Update URL with the selected team id
+      const teamData = dashboardData.teams[teamId]
+      openTeamDropdown(teamId, teamData)
+    }
+  }
 
   return (
     <div className='sidebar-content'>
@@ -59,7 +65,8 @@ const toggleTeamDropdown = teamId => {
         {/* Navigation items */}
         <div className='sidebar-navigation-container'>
           <ul className='sidebar-navigation'>
-            <div className='sidebar-tab'>
+
+            <div className='sidebar-tab' onClick={handleHomeClick}>
               <HomeIcon />
               <li className='second-tab-item'>Home</li>
             </div>
