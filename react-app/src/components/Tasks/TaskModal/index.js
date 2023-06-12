@@ -1,18 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskById, addSingleTaskComment } from "../../../store/tasks";
+import { getProjectThunk } from "../../../store/projects";
 import { formatDueDate } from "../../../utils";
 import TaskComments from "../../TaskComments/TaskComments";
+import OpenModalButton from "../../OpenModalButton";
+import EditTaskModal from "../EditTaskModal";
+import { ReactComponent as Toolbar } from "../../../assets/icons/toolbar.svg";
+
 import "./TaskModal.css";
 
 function TaskModal({ task, onClose }) {
   const dispatch = useDispatch();
   const dashboardData = useSelector((state) => state.dashboard);
   const taskData = useSelector((state) => state.tasks);
+  const projectData = useSelector((state) => state.projects);
+
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const project = taskData[task.id]?.project;
+  const projectId = taskData[task.id]?.project_id;
+
+  const taskInfo = taskData[task.id];
+  console.log(taskInfo);
 
   useEffect(() => {
     dispatch(fetchTaskById(task.id));
+    dispatch(getProjectThunk(projectId));
   }, [dispatch]);
+
+  const handleToolbarClick = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
+  const handleEditClick = () => {
+    // Handle edit task logic here
+  };
+
+  const handleDeleteClick = () => {
+    // Handle delete task logic here
+  };
 
   const assignedToUser = taskData[task.id]?.assigned_to;
   const assignedToFirstName = assignedToUser ? assignedToUser.first_name : "";
@@ -22,12 +49,29 @@ function TaskModal({ task, onClose }) {
     0
   )}`;
 
-  const project = taskData[task.id]?.project;
   return (
     <div className="task-modal-content">
       <div className="task-content">
         <div className="task-header">
           <h3>{task.name}</h3>
+          {(dashboardData.id === taskData[task.id]?.owner_id ||
+            dashboardData.id === projectData.owner_id) && (
+            <div className="toolbar-container">
+              <Toolbar className="toolbar-svg" onClick={handleToolbarClick} />
+              {dropdownVisible && (
+                <div className="dropdown">
+                  <OpenModalButton
+                    buttonText="Click here to add a new task..."
+                    modalComponent={
+                      <EditTaskModal task={task} projectId={projectId} />
+                    }
+                    className="add-task text-name"
+                  />
+                  <button onClick={handleDeleteClick}>Delete</button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="task-top-section">
           <div>
