@@ -102,6 +102,9 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
   const { name, description, assigned_to, due_date, completed, project_id } =
     taskData;
 
+  console.log(due_date);
+  console.log(due_date.split("/").reverse().join("-"));
+
   const response = await fetch(`/api/tasks/${id}`, {
     method: "PUT",
     headers: {
@@ -112,7 +115,7 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
       name,
       description,
       assigned_to,
-      due_date,
+      due_date: due_date ? due_date.split("/").reverse().join("-") : null,
       completed,
       project_id,
     }),
@@ -199,8 +202,12 @@ export default function tasksReducer(state = initialState, action) {
     case UPDATE_TASK:
       return {
         ...state,
-        task: action.payload,
+        [action.payload.id]: {
+          ...state[action.payload.id],
+          ...action.payload,
+        },
       };
+
     case REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload);
     case ADD_TASK_COMMENT:
