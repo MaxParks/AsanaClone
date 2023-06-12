@@ -6,6 +6,7 @@ import { formatDueDate } from "../../../utils";
 import TaskComments from "../../TaskComments/TaskComments";
 import OpenModalButton from "../../OpenModalButton";
 import EditTaskModal from "../EditTaskModal";
+import TaskDeleteModal from "../DeleteTaskModal";
 import { ReactComponent as Toolbar } from "../../../assets/icons/toolbar.svg";
 
 import "./TaskModal.css";
@@ -58,7 +59,13 @@ function TaskModal({ task, onClose }) {
                     }
                     className="add-task text-name"
                   />
-                  <button>Delete</button>
+                   <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={
+                      <TaskDeleteModal id={task.id} />
+                    }
+                    className="add-task text-name"
+                  />
                 </div>
               )}
             </div>
