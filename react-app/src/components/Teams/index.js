@@ -101,25 +101,36 @@ const Team = () => {
           <hr className='section-line' />
         </h2>
         <div className='member-list-page'>
-          {teamData.members.map(member => (
+          {sessionUser && sessionUser.id === teamData.owner_id && (
+            <div className='add-member-button'>
+              <OpenModalButton
+                modalComponent={<AddTeamMemberModal teamData={teamData} />}
+                className='add-team'
+              />
+              <div className='add-member-text'>
+                <span>Add</span>
+                <span>Member</span>
+              </div>
+            </div>
+          )}
+
+          {teamData.members.map((member, index) => (
             <React.Fragment key={member.id}>
-              <div className='member-initials-page'>
-                <span className='member-icon-page'>
+              <div className='member-item-page'>
+                {/* Member icon and tooltip */}
+                <div className='member-initials-page'>
                   {getInitials(member.firstName, member.lastName)}
-                </span>
+                </div>
                 <div className='member-tooltip'>{member.email}</div>
               </div>
-              <span className='member-name-page'>{member.firstName}</span>
+              <span className='member-name-page'>
+                {member.firstName.toLowerCase()}
+              </span>
             </React.Fragment>
           ))}
-          <div className='add-member-button'>
-            <OpenModalButton
-              modalComponent={<AddTeamMemberModal teamId = { teamId } />}
-              className='add-team'
-            />
-          </div>
         </div>
       </div>
+
       <div className='projects-section'>
         <h2 className='section-heading'>
           Projects
