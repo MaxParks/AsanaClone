@@ -41,7 +41,7 @@
   display: block;
   width: 100%;
   padding: 8px 0;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   background-color: transparent;
   color: white;
   border: 1px solid var(--color-light-gray);
