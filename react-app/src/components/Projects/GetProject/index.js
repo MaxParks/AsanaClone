@@ -15,7 +15,7 @@ import { ReactComponent as Checkmark } from "../../../assets/icons/checkmark.svg
 
 import { useParams } from "react-router-dom";
 
-import { formatDueDate, toggleTaskCompletion } from "../../../utils";
+import { formatDueDate } from "../../../utils";
 import "./Project.css";
 import "../../../index.css";
 
@@ -49,6 +49,33 @@ function Project({ isLoaded }) {
     setDropdownVisible(!dropdownVisible);
     setModalButtonsVisible(true); // Hide modal buttons when dropdown is toggled
   }
+
+  const toggleTaskCompletion = async (
+    taskId,
+    projectData,
+    dispatch,
+    updateSingleTask
+  ) => {
+    const task = Object.values(projectData.tasks).find(
+      (task) => task.id === taskId
+    );
+    console.log(task);
+
+    if (task) {
+      const updatedTask = {
+        name: task.name,
+        description: task.description,
+        assigned_to: task.assigned_to,
+        due_date: task.due_date,
+        completed: task.completed ? false : true,
+        project_id: projectData.id,
+      };
+
+      console.log(updatedTask);
+
+      dispatch(updateSingleTask(taskId, updatedTask));
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -139,7 +166,7 @@ function Project({ isLoaded }) {
                   onClick={() =>
                     toggleTaskCompletion(
                       task.id,
-                      projectData.tasks,
+                      projectData,
                       dispatch,
                       updateSingleTask
                     )
