@@ -130,7 +130,6 @@ function Project({ isLoaded }) {
             className="task"
           />
         </div>
-        <h2>Tasks:</h2>
         <ul>
           {projectData.tasks &&
             projectData.tasks.map((task) => (
