@@ -59,11 +59,18 @@ def retrieve_task(id):
         task_dict['assigned_to'] = None
 
     # Fetch the project data
-    project = Project.query.get(task.project_id)
+    project = Project.query.filter_by(id=task.project_id).first()
     if project:
-        task_dict['project'] = project.name
+        project_dict = {
+            'id': project.id,
+            'name': project.name,
+            'owner_id': project.owner_id
+            # Add other project attributes you want to include
+        }
+        task_dict['project'] = project_dict
     else:
         task_dict['project'] = None
+
 
     return jsonify(task_dict), 200
 

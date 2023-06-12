@@ -28,9 +28,13 @@ function EditTaskModal({ task, projectId }) {
   const { closeModal } = useModal();
 
   useEffect(() => {
-    fetchTaskById(task.id);
-    getProjectThunk(projectId);
-  }, []);
+    const fetchData = async () => {
+      await dispatch(fetchTaskById(task.id));
+      await dispatch(getProjectThunk(projectId));
+    };
+
+    fetchData();
+  }, [dispatch, task.id, projectId]);
 
   const teamMembersArray = Object.keys(projectData.team_members).map((key) => {
     const member = projectData.team_members[key];
@@ -42,7 +46,9 @@ function EditTaskModal({ task, projectId }) {
 
   const [name, setName] = useState(taskData[task.id].name);
   const [description, setDescription] = useState(taskData[task.id].description);
-  const [due_date, setDueDate] = useState(taskData[task.id].due_date);
+  const [due_date, setDueDate] = useState(
+    new Date(taskData[task.id].due_date).toLocaleDateString("en-CA")
+  );
   const [teamMembers, setTeamMembers] = useState(teamMembersArray);
   const [project_id, setProjectId] = useState(projectData.id);
   const [completed, setCompleted] = useState(taskData[task.id].completed);
@@ -52,30 +58,6 @@ function EditTaskModal({ task, projectId }) {
       taskData[task.id].assigned_to.last_name
   );
   const [errors, setErrors] = useState([]);
-
-  //   const handleTeamChange = async (teamId) => {
-  //     try {
-  //       setTeamId(teamId);
-  //       let selectedTeam = null;
-  //       for (let i = 0; i < teams.length; i++) {
-  //         if (teams[i].id === parseInt(teamId, 10)) {
-  //           selectedTeam = teams[i];
-  //           break;
-  //         }
-  //       }
-
-  //       if (selectedTeam) {
-  //         setFilteredProjects(selectedTeam.projects);
-  //         // Retrieve team members for the selected team
-  //         await dispatch(getSingleTeamThunk(teamId));
-  //       } else {
-  //         setFilteredProjects([]);
-  //         setAvailableUsers([]);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,19 +76,35 @@ function EditTaskModal({ task, projectId }) {
 
     setErrors({});
 
+    const formattedDueDate = due_date
+      ? new Date(due_date).toLocaleDateString("en-US", {
+          month: "2-digit",
+          day: "2-digit",
+          year: "numeric",
+        })
+      : null;
+
+    console.log(formattedDueDate);
+
     const newTask = {
       name,
       description,
       assigned_to,
-      due_date,
+      due_date: formattedDueDate,
       completed,
       project_id,
     };
 
-    dispatch(updateSingleTask(task.id, newTask));
+    console.log(newTask);
 
-    dispatch(getDashboardThunk());
-    closeModal();
+    try {
+      await dispatch(updateSingleTask(task.id, newTask));
+      await dispatch(getDashboardThunk());
+      closeModal();
+    } catch (error) {
+      // Handle error if needed
+      console.error(error);
+    }
   };
 
   return (

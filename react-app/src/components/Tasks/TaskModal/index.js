@@ -18,27 +18,18 @@ function TaskModal({ task, onClose }) {
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
-  const project = taskData[task.id]?.project;
-  const projectId = taskData[task.id]?.project_id;
-
-  const taskInfo = taskData[task.id];
-  console.log(taskInfo);
-
   useEffect(() => {
     dispatch(fetchTaskById(task.id));
-    dispatch(getProjectThunk(projectId));
-  }, [dispatch]);
+
+    if (taskData[task.id]?.project_id) {
+      dispatch(getProjectThunk(taskData[task.id]?.project_id));
+    }
+  }, [dispatch, task.id, taskData[task.id]?.project_id]);
+
+  const projectId = taskData[task.id]?.project_id;
 
   const handleToolbarClick = () => {
     setDropdownVisible(!dropdownVisible);
-  };
-
-  const handleEditClick = () => {
-    // Handle edit task logic here
-  };
-
-  const handleDeleteClick = () => {
-    // Handle delete task logic here
   };
 
   const assignedToUser = taskData[task.id]?.assigned_to;
@@ -61,13 +52,13 @@ function TaskModal({ task, onClose }) {
               {dropdownVisible && (
                 <div className="dropdown">
                   <OpenModalButton
-                    buttonText="Click here to add a new task..."
+                    buttonText="Edit"
                     modalComponent={
                       <EditTaskModal task={task} projectId={projectId} />
                     }
                     className="add-task text-name"
                   />
-                  <button onClick={handleDeleteClick}>Delete</button>
+                  <button>Delete</button>
                 </div>
               )}
             </div>
