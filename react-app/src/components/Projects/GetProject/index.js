@@ -21,7 +21,6 @@ function Project({ isLoaded }) {
 
   const teamData = useSelector((state) => state.teams);
   const projectData = useSelector((state) => state.projects);
-  console.log("<<<<<<<<<<<<<<",projectData)
   const sessionUser = useSelector((state) => state.session.user);
 
   const userIsOwner =
@@ -31,7 +30,8 @@ function Project({ isLoaded }) {
   useEffect(() => {
     // Fetch project data when component mounts
     dispatch(getProjectThunk(id));
-  }, [dispatch, id]);
+  }, [dispatch, id])
+  ;
 
   return (
     <div className="page-container1">
@@ -74,7 +74,7 @@ function Project({ isLoaded }) {
         <div className="open-modal-button1">
           <OpenModalButton
             buttonText="Add Task"
-            modalComponent={<AddTaskModal />}
+            modalComponent={<AddTaskModal currentProjectId={id} currentTeamId={projectData.team_id} />}
             key={`task-${id}`}
           />
         </div>

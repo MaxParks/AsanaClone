@@ -39,41 +39,41 @@ def get_team_members_dict(project):
 
 
 # -------------- GET PROJECT --------------------
-# @project_routes.route('/<int:id>', methods=['GET'])
-# @login_required
-# def retrieve_project(id):
+@project_routes.route('/<int:id>', methods=['GET'])
+@login_required
+def retrieve_project(id):
 
-#     project = Project.query.get(id)
-#     print("----------------------", project)
+    project = Project.query.get(id)
+    print("----------------------", project)
 
-#     if not project:
-#         return {"message": "Project not found", "statusCode": 404}, 404
+    if not project:
+        return {"message": "Project not found", "statusCode": 404}, 404
 
-#     team_members_dict = get_team_members_dict(project)
+    team_members_dict = get_team_members_dict(project)
 
-#     # if current_user.id != project.owner_id:
-#     #     if current_user.id not in team_members_dict:
-#     #                 return {"message": "Unauthorized", "statusCode": 403}, 403
+    # if current_user.id != project.owner_id:
+    #     if current_user.id not in team_members_dict:
+    #                 return {"message": "Unauthorized", "statusCode": 403}, 403
 
-#     project_dict = project.to_dict()
-#     project_dict['tasks'] = []
+    project_dict = project.to_dict()
+    project_dict['tasks'] = []
 
-#     sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
+    sorted_tasks = sorted(project.tasks, key=lambda task: task.due_date, reverse=False)
 
-#     for task in sorted_tasks:
-#         task_dict = {
-#             'id': task.id,
-#             'name': task.name,
-#             'description': task.description,
-#             'due_date': task.due_date.isoformat(),
-#             'completed': task.completed,
-#             'assigned_to': task.assigned_to,
-#         }
-#         project_dict['tasks'].append(task_dict)
+    for task in sorted_tasks:
+        task_dict = {
+            'id': task.id,
+            'name': task.name,
+            'description': task.description,
+            'due_date': task.due_date.isoformat(),
+            'completed': task.completed,
+            'assigned_to': task.assigned_to,
+        }
+        project_dict['tasks'].append(task_dict)
 
-#         project_dict['team_members'] = team_members_dict
+        project_dict['team_members'] = team_members_dict
 
-#     return jsonify(project_dict)
+    return jsonify(project_dict)
 
 
 

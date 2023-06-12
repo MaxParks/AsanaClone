@@ -17,5 +17,6 @@ class UserTeam(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'team_id': self.team_id
+            'team_id': self.team_id,
+            'first_name': self.user.firstName
         }

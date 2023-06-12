@@ -3,7 +3,7 @@ import { updateProjectThunk, getProjectThunk } from "../../../store/projects";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { useHistory, useParams } from "react-router-dom";
-import './UpdateProjectModal.css'
+// import './UpdateProjectModal.css'
 
 function UpdateProjectModal({ id }) {
   const dispatch = useDispatch();
@@ -15,17 +15,25 @@ function UpdateProjectModal({ id }) {
   const { closeModal } = useModal();
   const history = useHistory();
 
-  const project = useSelector(state => state.projects[id]);
-  console.log("Project from redux: ", project);
+  const project = useSelector(state => state.projects);
+  const dashboardData = useSelector((state) => state.dashboard);
+  const teams = Object.values(dashboardData.teams);
+
+  function formatDate(dateString) {
+    const dateParts = dateString.split("-");
+    return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
+  }
+
 
   useEffect(() => {
     if (project) {
       setName(project.name);
       setDescription(project.description);
-      setDueDate(project.due_date);
+      // setDueDate(project.due_date);
       setTeamId(project.team_id);
     }
   }, [project]);
+
 
   useEffect(() => {
     if(!project){
@@ -33,8 +41,31 @@ function UpdateProjectModal({ id }) {
     }
   }, [dispatch, id, project]);
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const errors = {};
+    if (!name) {
+      errors.name = "Name is a required field.";
+    }
+    if (!team_id) {
+      errors.team_id = "Team is a required field.";
+    }
+    if (!description) {
+      errors.description = "Description is a required field.";
+    }
+    if (!dueDate) {
+      errors.dueDate = "Due Date is a required field.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+
+    setErrors({});
 
     const updatedProject = {
       name,
@@ -46,8 +77,7 @@ function UpdateProjectModal({ id }) {
     const data = await dispatch(updateProjectThunk(id, updatedProject));
 
     if (Array.isArray(data)) {
-      setErrors(data);
-      console.log("VALIDATION ERRORS --->", errors);
+      setErrors({ general: data });
     } else if (data && data.id) {
       dispatch(getProjectThunk(id));
       closeModal();
@@ -57,17 +87,19 @@ function UpdateProjectModal({ id }) {
     }
   };
 
+
   return (
-    <div className="update-project-modal-container">
+    <div className="add-task-modal-container">
       <h2>Update Project</h2>
       <form onSubmit={handleSubmit}>
         <ul className="error-list">
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
+          {errors.name && <li>{errors.name}</li>}
+          {errors.team_id && <li>{errors.team_id}</li>}
+          {errors.description && <li>{errors.description}</li>}
+          {errors.dueDate && <li>{errors.dueDate}</li>}
+          {errors.general && errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <div className="form-field">
-          <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
@@ -77,17 +109,20 @@ function UpdateProjectModal({ id }) {
           />
         </div>
         <div className="form-field">
-          <label htmlFor="team_id">Team</label>
-          <input
-            type="number"
+          <select
             id="team_id"
-            placeholder="Team"
             value={team_id}
             onChange={(e) => setTeamId(e.target.value)}
-          />
+          >
+            <option value="">Select Team</option>
+            {teams.map((team) => (
+              <option key={team.id} value={team.id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-field">
-          <label htmlFor="description">Description</label>
           <input
             type="text"
             id="description"
@@ -97,7 +132,6 @@ function UpdateProjectModal({ id }) {
           />
         </div>
         <div className="form-field">
-          <label htmlFor="dueDate">Due Date</label>
           <input
             type="date"
             id="dueDate"
@@ -116,6 +150,7 @@ function UpdateProjectModal({ id }) {
       </form>
     </div>
   );
+
 }
 
 export default UpdateProjectModal;

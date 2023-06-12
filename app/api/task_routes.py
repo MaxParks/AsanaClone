@@ -88,10 +88,18 @@ def create_task():
         project_id = form.data['project_id']
 
         project = Project.query.get(project_id)
-        print("----------------------------", project)
+        print("----------------------------project", project)
+        print("----------------------------project.team.members)", project.team.members)
+        print("----------------------------current-user", current_user)
+
+        user_team_ids = [(user_team.user_id, user_team.team_id) for user_team in project.team.members]
+        print("----------------------------user_teams", user_team_ids)
+
+
+
         if not project:
             return jsonify({'message': 'Invalid project_id', 'statusCode': 400}), 400
-        if current_user not in project.team.members and current_user.id != project.owner_id:
+        if (current_user.id, project.team_id) not in user_team_ids and current_user.id != project.owner_id:
             return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
 
