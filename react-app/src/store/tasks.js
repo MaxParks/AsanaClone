@@ -208,8 +208,12 @@ export default function tasksReducer(state = initialState, action) {
         },
       };
 
-    case REMOVE_TASK:
-      return state.filter((task) => task.id !== action.payload);
+      case REMOVE_TASK: {
+        const newState = { ...state };
+        delete newState[action.payload];
+        return newState;
+      }
+
     case ADD_TASK_COMMENT:
       return {
         ...state,
