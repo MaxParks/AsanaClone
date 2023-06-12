@@ -140,6 +140,7 @@ export const deleteTask = (id) => async (dispatch) => {
     }
 
     dispatch(removeTask(id));
+    dispatch(getDashboardThunk());
   } catch (error) {
     console.error(error);
     // Handle error if needed
