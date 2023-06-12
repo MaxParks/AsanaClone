@@ -62,6 +62,7 @@
     flex-direction: column;
 }
 
+
 .team-name {
     display: flex;
     align-items: center;
@@ -73,6 +74,8 @@
 .team-name:hover {
   color: var(--color-medium-gray);
 }
+
+
 
 .team-arrow {
     position: absolute;

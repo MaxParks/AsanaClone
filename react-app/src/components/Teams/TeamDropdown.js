@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getSingleTeamThunk } from '../../store/teams'
+
 import './TeamDropdown.css'
 import loadingGif from '../../assets/images/Eclipse-1s-200px.gif'
 
-
-const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
+const TeamDropdown = ({ teamId, closeTeamDropdown, selectedTeamData }) => {
   const dispatch = useDispatch()
   const teamData = useSelector(state => state.teams.selectedTeam)
   const history = useHistory()
@@ -17,10 +17,10 @@ const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
 
   if (!teamData) {
     return (
-      <div className="loading-container">
-        <img src={loadingGif} alt="Loading..." className="loading-gif" />
+      <div className='loading-container'>
+        <img src={loadingGif} alt='Loading...' className='loading-gif' />
       </div>
-    );
+    )
   }
 
   const getInitials = (firstName, lastName) => {
@@ -69,4 +69,4 @@ const TeamDropdown = ({ teamId, closeTeamDropdown }) => {
   )
 }
 
-export default TeamDropdown
+export default TeamDropdown;

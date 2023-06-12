@@ -1,20 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { getSingleTeamThunk } from '../../store/teams'
-import './Team.css'
+import { useHistory, useParams } from 'react-router-dom'
+import { getSingleTeamThunk, updateTeamThunk } from '../../store/teams'
+import ProfileButton from '../Navigation/ProfileButton'
 
-const Team = ({ teamId }) => {
+import './Team.css'
+import loadingGif from '../../assets/images/Eclipse-1s-200px.gif'
+
+const Team = () => {
+  const { teamId } = useParams() || {}
   const dispatch = useDispatch()
   const teamData = useSelector(state => state.teams.selectedTeam)
+  const sessionUser = useSelector(state => state.session.user)
   const history = useHistory()
 
+  const [editMode, setEditMode] = useState(false)
+  const [updatedName, setUpdatedName] = useState('')
+
   useEffect(() => {
-    dispatch(getSingleTeamThunk(teamId))
+    if (teamId) {
+      dispatch(getSingleTeamThunk(teamId))
+    }
   }, [dispatch, teamId])
 
+  useEffect(() => {
+    if (teamData && !editMode) {
+      setUpdatedName(teamData.name)
+    }
+  }, [teamData, editMode])
+
+  const handleUpdateName = () => {
+    dispatch(updateTeamThunk(teamData.id, { name: updatedName }))
+    setEditMode(false)
+  }
+
   if (!teamData) {
-    return <div>Loading...</div>
+    return (
+      <div className='loading-container'>
+        <img src={loadingGif} alt='Loading...' className='loading-gif' />
+      </div>
+    )
   }
 
   const handleAddMemberClick = () => {
@@ -33,6 +58,20 @@ const Team = ({ teamId }) => {
 
   return (
     <div className='team-page'>
+      <div className='header-container1'>
+        <h1 className='header-title1'>
+          {editMode ? (
+            <input
+              type='text'
+              value={updatedName}
+              onChange={e => setUpdatedName(e.target.value)}
+            />
+          ) : (
+            teamData.name
+          )}
+        </h1>
+        <ProfileButton user={sessionUser} />
+      </div>
       <div className='members-section'>
         <h2 className='section-heading'>
           Members
@@ -40,15 +79,15 @@ const Team = ({ teamId }) => {
         </h2>
         <div className='member-list-page'>
           {teamData.members.map(member => (
-            <>
-            <div key={member.id} className='member-initials-page'>
-              <span className='member-icon-page'>
-                {getInitials(member.firstName, member.lastName)}
-              </span>
-              <div className='member-tooltip'>{member.email}</div>
-            </div>
+            <React.Fragment key={member.id}>
+              <div className='member-initials-page'>
+                <span className='member-icon-page'>
+                  {getInitials(member.firstName, member.lastName)}
+                </span>
+                <div className='member-tooltip'>{member.email}</div>
+              </div>
               <span className='member-name-page'>{member.firstName}</span>
-            </>
+            </React.Fragment>
           ))}
           <button className='add-member-button' onClick={handleAddMemberClick}>
             +
@@ -80,8 +119,18 @@ const Team = ({ teamId }) => {
           )}
         </ul>
       </div>
+      {editMode ? (
+        <div>
+          <button onClick={handleUpdateName}>Save</button>
+          <button onClick={() => setEditMode(false)}>Cancel</button>
+        </div>
+      ) : (
+        <button className='edit-name-button' onClick={() => setEditMode(true)}>
+          Edit Name
+        </button>
+      )}
     </div>
   )
 }
 
-export default Team;
+export default Team

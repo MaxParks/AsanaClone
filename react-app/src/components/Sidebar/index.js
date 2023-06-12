@@ -11,6 +11,7 @@ import './Sidebar.css'
 import TeamDropdown from '../Teams/TeamDropdown'
 import AddTeamModal from '../Teams/AddTeamModal'
 import OpenModalButton from '../OpenModalButton'
+import { getSingleTeamThunk } from '../../store/teams'
 
 const Sidebar = ({
   openTeamDropdown,
@@ -32,25 +33,28 @@ const Sidebar = ({
   }
 
   const handleTeamNameClick = teamId => {
+    dispatch(getSingleTeamThunk(teamId))
     history.push(`/teams/${teamId}`)
   }
 
-const toggleTeamDropdown = teamId => {
-  if (openDropdowns.includes(teamId)) {
-    setOpenDropdowns(openDropdowns.filter(id => id !== teamId));
-    openTeamDropdown(null, null);
-  } else {
-    const currentlyOpenDropdown = openDropdowns[0];
-    if (currentlyOpenDropdown) {
-      setOpenDropdowns(openDropdowns.filter(id => id !== currentlyOpenDropdown));
-      closeTeamDropdown();
-    }
+  const toggleTeamDropdown = teamId => {
+    if (openDropdowns.includes(teamId)) {
+      setOpenDropdowns(openDropdowns.filter(id => id !== teamId))
+      openTeamDropdown(null, null)
+    } else {
+      const currentlyOpenDropdown = openDropdowns[0]
+      if (currentlyOpenDropdown) {
+        setOpenDropdowns(
+          openDropdowns.filter(id => id !== currentlyOpenDropdown)
+        )
+        closeTeamDropdown()
+      }
 
-    setOpenDropdowns([teamId]);
-    const teamData = dashboardData.teams[teamId];
-    openTeamDropdown(teamId, teamData);
+      setOpenDropdowns([teamId])
+      const teamData = dashboardData.teams[teamId]
+      openTeamDropdown(teamId, teamData)
+    }
   }
-};
 
   return (
     <div className='sidebar-content'>
@@ -58,22 +62,20 @@ const toggleTeamDropdown = teamId => {
         <h1 className='sidebar-header'>ZenFlow</h1>
       </div>
       <div className='sidebar-navigation-container'>
-        <div className='sidebar-navigation-container'>
-          <ul className='sidebar-navigation'>
-            <div className='sidebar-tab' onClick={handleHomeClick}>
-              <HomeIcon />
-              <li className='second-tab-item'>Home</li>
-            </div>
-            <div className='sidebar-tab'>
-              <Checkmark />
-              <li className='second-tab-item'>My Tasks</li>
-            </div>
-            <div className='sidebar-tab'>
-              <NotificationBell />
-              <li className='second-tab-item'>Inbox</li>
-            </div>
-          </ul>
-        </div>
+        <ul className='sidebar-navigation'>
+          <div className='sidebar-tab' onClick={handleHomeClick}>
+            <HomeIcon />
+            <li className='second-tab-item'>Home</li>
+          </div>
+          <div className='sidebar-tab'>
+            <Checkmark />
+            <li className='second-tab-item'>My Tasks</li>
+          </div>
+          <div className='sidebar-tab'>
+            <NotificationBell />
+            <li className='second-tab-item'>Inbox</li>
+          </div>
+        </ul>
       </div>
       <div className='sidebar-teams'>
         <div className='sidebar-tab'>
@@ -111,8 +113,8 @@ const toggleTeamDropdown = teamId => {
                   >
                     <TeamDropdown
                       teamId={team.id}
-                      teamData={selectedTeamData}
                       closeTeamDropdown={closeTeamDropdown}
+                      selectedTeamData={selectedTeamData}
                     />
                   </div>
                 )}
@@ -123,5 +125,6 @@ const toggleTeamDropdown = teamId => {
     </div>
   )
 }
+
 
 export default Sidebar

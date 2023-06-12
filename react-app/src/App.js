@@ -68,7 +68,7 @@ const App = () => {
               <Route exact path="/user/dashboard/">
                 {user ? <Dashboard /> : <Redirect to="/" />}
               </Route>
-              <Route exact path='/teams/:id'>
+              <Route exact path='/teams/:teamId'>
                 {user ? <Team /> : <Redirect to='/' />}
               </Route>
             </Switch>
