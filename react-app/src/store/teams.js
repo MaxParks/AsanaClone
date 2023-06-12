@@ -122,25 +122,25 @@ export const deleteTeamThunk = (teamId) => async (dispatch) => {
 const initialState = {};
 
 // Reducer
-export default function teamsReducer (state = initialState, action) {
+export default function teamsReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_TEAMS:
       return {
         ...state,
-        ...action.payload
-      }
+        ...action.payload,
+      };
     case ADD_TEAM:
       return {
         ...state,
         teams: {
           ...state.teams,
-          [action.payload.id]: action.payload
-        }
-      }
+          [action.payload.id]: action.payload,
+        },
+      };
     case UPDATE_TEAM: {
-      const updatedTeamData = action.data
-      const teams = state.teams || {} // Check if teams property exists in state
-      const updatedTeam = teams[updatedTeamData.id] || {} // Check if team exists in teams
+      const updatedTeamData = action.data;
+      const teams = state.teams || {}; // Check if teams property exists in state
+      const updatedTeam = teams[updatedTeamData.id] || {}; // Check if team exists in teams
 
       return {
         ...state,
@@ -148,23 +148,23 @@ export default function teamsReducer (state = initialState, action) {
           ...teams,
           [updatedTeamData.id]: {
             ...updatedTeam,
-            ...updatedTeamData
-          }
-        }
-      }
+            ...updatedTeamData,
+          },
+        },
+      };
     }
     case REMOVE_TEAM:
-      const { [action.payload]: deletedTeam, ...updatedTeams } = state.teams
+      const { [action.payload]: deletedTeam, ...updatedTeams } = state.teams;
       return {
         ...state,
-        teams: updatedTeams
-      }
+        teams: updatedTeams,
+      };
     case LOAD_SINGLE_TEAM:
       return {
         ...state,
-        selectedTeam: action.payload
-      }
+        selectedTeam: action.payload,
+      };
     default:
-      return state
+      return state;
   }
 }

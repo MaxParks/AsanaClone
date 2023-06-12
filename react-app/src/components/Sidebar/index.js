@@ -37,24 +37,22 @@ const Sidebar = ({
     history.push(`/teams/${teamId}`)
   }
 
-  const toggleTeamDropdown = teamId => {
-    if (openDropdowns.includes(teamId)) {
-      setOpenDropdowns(openDropdowns.filter(id => id !== teamId))
-      openTeamDropdown(null, null)
-    } else {
-      const currentlyOpenDropdown = openDropdowns[0]
-      if (currentlyOpenDropdown) {
-        setOpenDropdowns(
-          openDropdowns.filter(id => id !== currentlyOpenDropdown)
-        )
-        closeTeamDropdown()
-      }
-
-      setOpenDropdowns([teamId])
-      const teamData = dashboardData.teams[teamId]
-      openTeamDropdown(teamId, teamData)
+const toggleTeamDropdown = teamId => {
+  if (openDropdowns.includes(teamId)) {
+    setOpenDropdowns(openDropdowns.filter(id => id !== teamId))
+    openTeamDropdown(null, null)
+  } else {
+    const currentlyOpenDropdown = openDropdowns[0]
+    if (currentlyOpenDropdown) {
+      setOpenDropdowns(openDropdowns.filter(id => id !== currentlyOpenDropdown))
+      closeTeamDropdown()
     }
+
+    setOpenDropdowns([teamId])
+    const teamData = dashboardData.teams[teamId]
+    openTeamDropdown(teamId, teamData)
   }
+}
 
   return (
     <div className='sidebar-content'>
@@ -114,7 +112,7 @@ const Sidebar = ({
                     <TeamDropdown
                       teamId={team.id}
                       closeTeamDropdown={closeTeamDropdown}
-                      selectedTeamData={selectedTeamData}
+                      selectedTeamData={dashboardData.teams[team.id]} // Pass the latest team data
                     />
                   </div>
                 )}
@@ -125,6 +123,5 @@ const Sidebar = ({
     </div>
   )
 }
-
 
 export default Sidebar

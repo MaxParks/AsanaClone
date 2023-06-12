@@ -17,17 +17,19 @@ const Team = () => {
   const [editMode, setEditMode] = useState(false)
   const [updatedName, setUpdatedName] = useState('')
 
+  // get single team
   useEffect(() => {
     if (teamId) {
       dispatch(getSingleTeamThunk(teamId))
     }
   }, [dispatch, teamId])
 
+  // edit team name
   useEffect(() => {
-    if (teamData && !editMode) {
+    if (teamData) {
       setUpdatedName(teamData.name)
     }
-  }, [teamData, editMode])
+  }, [teamData])
 
   const handleUpdateName = () => {
     dispatch(updateTeamThunk(teamData.id, { name: updatedName }))
