@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { getSingleTeamThunk, updateTeamThunk } from '../../store/teams'
+import {
+  getSingleTeamThunk,
+  updateTeamThunk,
+  createTeamMemberThunk
+} from '../../store/teams'
+import { useModal } from '../../context/Modal'
+import OpenModalButton from '../OpenModalButton'
+import AddTeamMemberModal from './AddTeamMemberModal'
 import ProfileButton from '../Navigation/ProfileButton'
 
 import './Team.css'
@@ -9,13 +16,15 @@ import loadingGif from '../../assets/images/Eclipse-1s-200px.gif'
 
 const Team = () => {
   const { teamId } = useParams() || {}
-  const dispatch = useDispatch()
   const teamData = useSelector(state => state.teams.selectedTeam)
   const sessionUser = useSelector(state => state.session.user)
+  const dispatch = useDispatch()
   const history = useHistory()
+  const { closeModal, showModal } = useModal()
 
   const [editMode, setEditMode] = useState(false)
   const [updatedName, setUpdatedName] = useState('')
+  const [newMemberEmail, setNewMemberEmail] = useState('')
 
   // get single team
   useEffect(() => {
@@ -36,16 +45,20 @@ const Team = () => {
     setEditMode(false)
   }
 
-  if (!teamData) {
-    return (
-      <div className='loading-container'>
-        <img src={loadingGif} alt='Loading...' className='loading-gif' />
-      </div>
-    )
-  }
-
-  const handleAddMemberClick = () => {
-    alert('Feature coming soon')
+  const handleNewMemberSubmit = async e => {
+    e.preventDefault()
+    if (newMemberEmail) {
+      const response = await dispatch(
+        createTeamMemberThunk(teamData.id, newMemberEmail)
+      )
+      if (response && response.error) {
+        // Handle error if needed
+        console.log(response.error)
+      } else {
+        setNewMemberEmail('')
+        closeModal()
+      }
+    }
   }
 
   const handleProjectClick = projectId => {
@@ -56,6 +69,14 @@ const Team = () => {
     const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
     const capitalizedLastLetter = lastName.charAt(0).toUpperCase()
     return `${capitalizedFirstLetter}${capitalizedLastLetter}`
+  }
+
+  if (!teamData) {
+    return (
+      <div className='loading-container'>
+        <img src={loadingGif} alt='Loading...' className='loading-gif' />
+      </div>
+    )
   }
 
   return (
@@ -91,12 +112,14 @@ const Team = () => {
               <span className='member-name-page'>{member.firstName}</span>
             </React.Fragment>
           ))}
-          <button className='add-member-button' onClick={handleAddMemberClick}>
-            +
-          </button>
+          <div className='add-member-button'>
+            <OpenModalButton
+              modalComponent={<AddTeamMemberModal teamId = { teamId } />}
+              className='add-team'
+            />
+          </div>
         </div>
       </div>
-
       <div className='projects-section'>
         <h2 className='section-heading'>
           Projects
