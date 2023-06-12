@@ -17,7 +17,7 @@ def get_user_dashboard():
 
     due_today_or_tomorrow = []
     for task in user.assigned_tasks:
-        if task.due_date == today or task.due_date == tomorrow:
+        if task.due_date == today or task.due_date == tomorrow or task.due_date is None:
             due_today_or_tomorrow.append(task)
 
 

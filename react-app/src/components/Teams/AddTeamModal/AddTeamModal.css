@@ -1,0 +1,45 @@
+#modal-content>.create-team-modal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-charcoal);
+    width: 500px;
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--color-medium-gray);
+}
+
+.form-field-create-team {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.task-textarea {
+    border: 1px dashed gray;
+    border-radius: 20px;
+    padding: 8px;
+    resize: vertical;
+    height: 120px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: var(--font-medium);
+    background-color: transparent;
+    width: 100%;
+    color: white;
+}
+
+
+.form-field-create-team input {
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed gray;
+    border-radius: 20px;
+    outline: none;
+    background-color: transparent;
+    color: black;
+}
+
+.form-field-create-team input::placeholder {
+    color: gray;
+}
