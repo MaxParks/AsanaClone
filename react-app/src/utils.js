@@ -1,12 +1,10 @@
 export const toggleTaskCompletion = async (
   taskId,
-  dashboardData,
+  data,
   dispatch,
   updateSingleTask
 ) => {
-  const task = Object.values(dashboardData.assigned_tasks).find(
-    (task) => task.id === taskId
-  );
+  const task = Object.values(data).find((task) => task.id === taskId);
 
   if (task) {
     const updatedTask = {

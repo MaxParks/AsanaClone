@@ -61,24 +61,29 @@
   font-size: 1em;
 }
 
-.tasks-list1 {
-
-  color: white;
-  margin-top: 20px;
-  border-top: 1px solid white;
-  /* Add line above tasks */
-  border-bottom: 1px solid white;
-  /* Add line below tasks */
-  padding: 10px 0;
-  /* Add some padding to give space to the lines */
+.project-page-add-task {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+  width: fit-content;
+  gap: 5px;
+  border: 1px solid var(--color-medium-gray);
+  border-radius: 5px;
 }
 
-.task-item1 {
-  color: white;
-  font-size: 1em;
-  padding: 10px 0;
+.project-page-plus-svg path {
+  fill: var(--color-medium-gray);
+  height: 20px;
+  width: 20px;
 }
 
-.open-modal-button1 {
-  margin-top: 20px;
+.open-modal-button-task {
+  background-color: transparent;
+  color: var(--color-medium-gray);
+  /* border: 1px solid var(--color-medium-gray); */
+  border-radius: 5px;
+  border: none;
+  padding: 0;
+  font-size: 18px;
+
 }

@@ -2,20 +2,27 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getProjectThunk } from "../../../store/projects";
+import { updateSingleTask } from "../../../store/tasks";
+import OpenModalButton from "../../OpenModalButton";
 import ProjectDeleteModal from "../DeleteProjectModal";
 import UpdateProjectModal from "../UpdateProjectModal";
-import OpenModalButton from "../../OpenModalButton";
+import TaskModal from "../../Tasks/TaskModal";
+import AddTaskModal from "../../Tasks/AddTaskModal";
 import ProfileButton from "../../Navigation/ProfileButton";
 import { ReactComponent as Dropdown } from "../../../assets/icons/dropdown.svg";
+import { ReactComponent as Plus } from "../../../assets/icons/plus.svg";
+import { ReactComponent as Checkmark } from "../../../assets/icons/checkmark.svg";
+
 import { useParams } from "react-router-dom";
+
+import { formatDueDate, toggleTaskCompletion } from "../../../utils";
 import "./Project.css";
 import "../../../index.css";
-import AddTaskModal from "../../Tasks/AddTaskModal";
 
-function formatDate(dateString) {
-  const dateParts = dateString.split("-");
-  return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
-}
+// function formatDate(dateString) {
+//   const dateParts = dateString.split("-");
+//   return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
+// }
 
 function Project({ isLoaded }) {
   const dispatch = useDispatch();
@@ -27,6 +34,7 @@ function Project({ isLoaded }) {
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [modalButtonsVisible, setModalButtonsVisible] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const userIsOwner =
     sessionUser.id === projectData.owner_id ||
@@ -58,6 +66,10 @@ function Project({ isLoaded }) {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [dropdownVisible]);
+
+  const closeTaskModal = () => {
+    setSelectedTask(null);
+  };
 
   return (
     <div className="project-page-container">
@@ -109,32 +121,49 @@ function Project({ isLoaded }) {
 
       <br></br>
 
-      <div className="tasks-list1">
+      <div className="project-page-task-section">
+        <div className="project-page-add-task">
+          <Plus className="project-page-plus-svg" />
+          <OpenModalButton
+            buttonText="Add Task"
+            modalComponent={<AddTaskModal />}
+            className="task"
+          />
+        </div>
         <h2>Tasks:</h2>
         <ul>
           {projectData.tasks &&
             projectData.tasks.map((task) => (
-              <li key={task.id} className="task-item1">
-                {task.name} ------ Assigned to: {task.assigned_to} ------ Due
-                Date: {formatDate(task.due_date)}
-              </li>
+              <div key={task.id} className="task-item">
+                <div
+                  className={`checkmark ${task.completed ? "green" : ""}`}
+                  onClick={() =>
+                    toggleTaskCompletion(
+                      task.id,
+                      projectData.tasks,
+                      dispatch,
+                      updateSingleTask
+                    )
+                  }
+                >
+                  <Checkmark />
+                </div>
+                <div className="task-link">
+                  <OpenModalButton
+                    buttonText={task.name}
+                    modalComponent={
+                      <TaskModal task={task} closeModal={closeTaskModal} />
+                    }
+                    className="task-name"
+                  />
+                  <span className="task-due-date">
+                    {formatDueDate(task.due_date)}
+                  </span>
+                </div>
+              </div>
             ))}
         </ul>
       </div>
-      {userIsOwner && (
-        <div className="open-modal-button1">
-          <OpenModalButton
-            buttonText="Add Task"
-            modalComponent={
-              <AddTaskModal
-                currentProjectId={id}
-                currentTeamId={projectData.team_id}
-              />
-            }
-            key={`task-${id}`}
-          />
-        </div>
-      )}
     </div>
   );
 }
