@@ -93,7 +93,6 @@ export const createTaskThunk = (taskData) => async (dispatch) => {
     const data = await response.json();
     dispatch(addTask(data));
     dispatch(getDashboardThunk());
-
     return data;
   }
 };
@@ -101,9 +100,6 @@ export const createTaskThunk = (taskData) => async (dispatch) => {
 export const updateSingleTask = (id, taskData) => async (dispatch) => {
   const { name, description, assigned_to, due_date, completed, project_id } =
     taskData;
-
-  console.log(due_date);
-  console.log(due_date.split("/").reverse().join("-"));
 
   const response = await fetch(`/api/tasks/${id}`, {
     method: "PUT",
@@ -125,8 +121,9 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
     const data = await response.json();
     console.log(data);
     dispatch(updateTask(id, data));
-    dispatch(getDashboardThunk());
     return data;
+  } else {
+    // Handle errors
   }
 };
 
