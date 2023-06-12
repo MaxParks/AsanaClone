@@ -151,7 +151,7 @@ def update_task(id):
         task.name = form.name.data
         task.description = form.description.data
         task.assigned_to = form.assigned_to.data
-        task.due_date = datetime.strptime(form.due_date.data, '%m/%d/%Y').date() if form.due_date.data else None
+        task.due_date = datetime.strptime(form.due_date.data, '%Y-%m-%d').date() if form.due_date.data else None
         task.completed = request.json["completed"]
         task.project_id = form.project_id.data
         task.updated_at = datetime.utcnow()
