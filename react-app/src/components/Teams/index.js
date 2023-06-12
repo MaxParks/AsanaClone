@@ -9,7 +9,9 @@ import {
 import { useModal } from '../../context/Modal'
 import OpenModalButton from '../OpenModalButton'
 import AddTeamMemberModal from './AddTeamMemberModal'
+import DeleteTeamModal from './DeleteTeamModal'
 import ProfileButton from '../Navigation/ProfileButton'
+import { ReactComponent as ProjectIcon } from '../../assets/icons/project-icon.svg'
 
 import './Team.css'
 import loadingGif from '../../assets/images/Eclipse-1s-200px.gif'
@@ -40,31 +42,18 @@ const Team = () => {
     }
   }, [teamData])
 
+  // edit team name
   const handleUpdateName = () => {
     dispatch(updateTeamThunk(teamData.id, { name: updatedName }))
     setEditMode(false)
   }
 
-  const handleNewMemberSubmit = async e => {
-    e.preventDefault()
-    if (newMemberEmail) {
-      const response = await dispatch(
-        createTeamMemberThunk(teamData.id, newMemberEmail)
-      )
-      if (response && response.error) {
-        // Handle error if needed
-        console.log(response.error)
-      } else {
-        setNewMemberEmail('')
-        closeModal()
-      }
-    }
-  }
-
+  // redirect user to project page from team page
   const handleProjectClick = projectId => {
     history.push(`/projects/${projectId}`)
   }
 
+  // get member initials to render in member icon
   const getInitials = (firstName, lastName) => {
     const capitalizedFirstLetter = firstName.charAt(0).toUpperCase()
     const capitalizedLastLetter = lastName.charAt(0).toUpperCase()
@@ -93,6 +82,15 @@ const Team = () => {
             teamData.name
           )}
         </h1>
+        {sessionUser && sessionUser.id === teamData.owner_id && (
+          <OpenModalButton
+            modalComponent={<DeleteTeamModal teamData={teamData} />}
+            className='delete-team-button'
+          >
+            Delete
+          </OpenModalButton>
+        )}
+
         <ProfileButton user={sessionUser} />
       </div>
       <div className='members-section'>
@@ -148,7 +146,9 @@ const Team = () => {
                 className='project-item'
                 onClick={() => handleProjectClick(project.id)}
               >
-                <span className='project-icon-page'></span>
+                <div className='project-icon-wrapper'>
+                  <ProjectIcon className='project-svg-icon' />
+                </div>
                 <span className='project-name-page'>{project.name}</span>
               </li>
             ))

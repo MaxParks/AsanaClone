@@ -146,7 +146,9 @@ export const createTeamMemberThunk = (teamId, email) => async dispatch => {
 }
 
 // Initial state
-const initialState = {}
+const initialState = {
+  teams: {}
+}
 
 // Reducer
 export default function teamsReducer (state = initialState, action) {
@@ -181,7 +183,15 @@ export default function teamsReducer (state = initialState, action) {
       }
     }
     case REMOVE_TEAM:
-      const { [action.payload]: deletedTeam, ...updatedTeams } = state.teams
+      const updatedTeams = Object.entries(state.teams).reduce(
+        (acc, [key, team]) => {
+          if (key !== action.payload) {
+            acc[key] = team
+          }
+          return acc
+        },
+        {}
+      )
       return {
         ...state,
         teams: updatedTeams

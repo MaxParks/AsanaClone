@@ -1,38 +1,23 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { createTeamThunk } from '../../../store/teams'
 import { useModal } from '../../../context/Modal'
 import { useHistory } from 'react-router-dom'
 
 import './AddTeamModal.css'
 
-function AddTeamModal ({ teamData }) {
+function AddTeamModal () {
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [members, setMembers] = useState('')
   const [errors, setErrors] = useState([])
   const history = useHistory()
   const { closeModal } = useModal()
-  const sessionUser = useSelector(state => state.session.user)
 
   const handleSubmit = async e => {
     e.preventDefault()
 
     const memberEmails = members.split(',').map(email => email.trim())
-
-    const teamMembers = teamData.members.map(member => member.email)
-    const currentUserEmail = sessionUser.email
-
-    const duplicateMembers = memberEmails.filter(
-      email => teamMembers.includes(email) || email === currentUserEmail
-    )
-
-    if (duplicateMembers.length > 0) {
-      setErrors([
-        'Some members are already on the team or the owner cannot be added'
-      ])
-      return
-    }
 
     const data = await dispatch(createTeamThunk(name, memberEmails))
 
