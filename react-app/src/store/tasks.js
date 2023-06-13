@@ -12,7 +12,10 @@ const REMOVE_TASK_COMMENT = "tasks/removeTaskComment";
 // Action creators
 const loadTasks = (tasks) => ({
   type: LOAD_TASKS,
-  payload: tasks,
+  payload: tasks.reduce((indexedTasks, task) => {
+    indexedTasks[task.id] = task;
+    return indexedTasks;
+  }, {}),
 });
 
 const loadTask = (taskId) => ({
@@ -68,7 +71,7 @@ export const fetchTaskById = (id) => async (dispatch) => {
   const response = await fetch(`/api/tasks/${id}`);
   if (response.ok) {
     const data = await response.json();
-    console.log('TASK STORE DATA -->', data)
+    console.log("TASK STORE DATA -->", data);
     dispatch(loadTask(data));
     return data;
   }
@@ -122,7 +125,7 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
     const data = await response.json();
     console.log(data);
     dispatch(updateTask(id, data));
-    dispatch(getDashboardThunk())
+    // dispatch(getDashboardThunk())
     return data;
   } else {
     // Handle errors
@@ -147,7 +150,7 @@ export const deleteTask = (id) => async (dispatch) => {
 };
 
 export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
-  console.log("hiii");
+  console.log(comment);
   const response = await fetch(`/api/tasks/${taskId}`, {
     method: "POST",
     headers: {
@@ -158,7 +161,7 @@ export const addSingleTaskComment = (taskId, comment) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(addTaskComment(taskId, data));
-    dispatch(fetchTaskById(taskId));
+
     return data;
   }
 };
@@ -182,13 +185,18 @@ export const deleteTaskComment = (taskId, id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = {};
+const initialState = {
+  byId: {},
+};
 
 // Reducer
 export default function tasksReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_TASKS:
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
     case LOAD_TASK:
       return {
         ...state,
@@ -208,11 +216,11 @@ export default function tasksReducer(state = initialState, action) {
         },
       };
 
-      case REMOVE_TASK: {
-        const newState = { ...state };
-        delete newState[action.payload];
-        return newState;
-      }
+    case REMOVE_TASK: {
+      const newState = { ...state };
+      delete newState[action.payload];
+      return newState;
+    }
 
     case ADD_TASK_COMMENT:
       return {

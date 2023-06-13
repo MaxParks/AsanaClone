@@ -25,16 +25,32 @@ class Task(db.Model):
     comments = db.relationship('TaskComment', back_populates='task', cascade='all, delete')
 
     def to_dict(self):
+
         return {
             'id': self.id,
             'owner_id': self.owner_id,
             'name': self.name,
             'description': self.description,
-            'assigned_to': self.assigned_to,
+            'assigned_to': {
+                'id': self.assigned_to,
+                'first_name': self.assignee.firstName if self.assignee else None,
+                'last_name': self.assignee.lastName if self.assignee else None
+            },
             'due_date': self.due_date.strftime('%m/%d/%Y') if self.due_date else None,
             'completed': self.completed,
             'project_id': self.project_id,
             'created_at': self.created_at.strftime('%m/%d/%Y'),
             'updated_at': self.updated_at.strftime('%m/%d/%Y'),
-            'comments': [comment.id for comment in self.comments]
+            'comments': [
+            {
+                'id': comment.id,
+                'comment': comment.comment,
+                'created_at': comment.created_at.strftime('%m/%d/%Y'),
+                'user': {
+                    'first_name': comment.user.firstName,
+                    'last_name': comment.user.lastName
+                }
+            }
+            for comment in self.comments
+        ]
         }

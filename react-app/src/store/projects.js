@@ -14,9 +14,12 @@ const loadProject = (data) => ({
   payload: data,
 });
 
-const loadProjects = (data) => ({
+const loadProjects = (projects) => ({
   type: LOAD_PROJECTS,
-  payload: data,
+  payload: projects.reduce((indexedProjects, project) => {
+    indexedProjects[project.id] = project;
+    return indexedProjects;
+  }, {}),
 });
 
 const createProject = (data) => ({
@@ -113,7 +116,9 @@ export const deleteProject = (id) => async (dispatch) => {
 };
 
 // Initial state
-const initialState = {};
+const initialState = {
+  byId: {},
+};
 
 // Reducer
 export default function projectsReducer(state = initialState, action) {
@@ -121,7 +126,7 @@ export default function projectsReducer(state = initialState, action) {
     case LOAD_PROJECTS:
       return {
         ...state,
-        projects: action.payload,
+        ...action.payload,
       };
     case LOAD_PROJECT:
       return {

@@ -140,8 +140,8 @@ def update_task(id):
     project = Project.query.filter_by(id=project_id).options(joinedload('owner')).first()
     owner_id = project.owner_id
 
-    if current_user.id != task.owner_id and current_user.id != project.owner_id:
-        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+    # if current_user.id != task.owner_id and current_user.id != project.owner_id:
+    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
 
     form = TaskForm()

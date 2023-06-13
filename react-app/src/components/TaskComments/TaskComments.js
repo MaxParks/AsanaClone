@@ -9,11 +9,13 @@ import {
 import "../Tasks/TaskModal/TaskModal.css";
 
 function TaskComments(props) {
-  const { taskId } = props;
-  const dispatch = useDispatch();
-  const taskData = useSelector((state) => state.tasks);
+  const { task } = props;
 
-  const comments = taskData[taskId]?.comments;
+  const tasks = useSelector((state) => state.tasks);
+
+  const dispatch = useDispatch();
+
+  const comments = task.comments;
 
   const [commentText, setCommentText] = useState("");
   const [hoveredCommentId, setHoveredCommentId] = useState(null);
@@ -39,7 +41,6 @@ function TaskComments(props) {
   }, []);
 
   const handleMouseEnter = (commentId) => {
-    console.log(commentId);
     setHoveredCommentId(commentId);
   };
 
@@ -54,10 +55,9 @@ function TaskComments(props) {
 
   const handleAddComment = () => {
     if (commentText) {
-      dispatch(addSingleTaskComment(taskId, commentText))
+      dispatch(addSingleTaskComment(task.id, commentText))
         .then(() => {
           setCommentText("");
-          dispatch(fetchTaskById(taskId));
         })
         .catch((error) => {
           console.log("Error adding comment:", error);
@@ -66,9 +66,9 @@ function TaskComments(props) {
   };
 
   const handleDeleteComment = (commentId) => {
-    dispatch(deleteTaskComment(taskId, commentId))
+    dispatch(deleteTaskComment(task.id, commentId))
       .then(() => {
-        dispatch(fetchTaskById(taskId));
+        dispatch(fetchTaskById(task.id));
         setDeleteDropdownId(null);
       })
       .catch((error) => {

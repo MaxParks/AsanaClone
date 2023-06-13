@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDashboardThunk } from "../../store/dashboard";
-import { fetchTaskById } from "../../store/tasks";
+import { fetchTasks } from "../../store/tasks";
 import { updateSingleTask } from "../../store/tasks";
+import { getTeamsThunk } from "../../store/teams";
+import { getProjectsThunk } from "../../store/projects";
 import { toggleTaskCompletion, formatDueDate } from "../../utils";
 import ProfileButton from "../Navigation/ProfileButton";
 import OpenModalButton from "../OpenModalButton";
@@ -21,11 +23,21 @@ function Dashboard() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const dashboardData = useSelector((state) => state.dashboard);
+  const teams = useSelector((state) => state.teams);
+  const tasks = useSelector((state) => state.tasks);
   const [selectedTask, setSelectedTask] = useState(null); // Add a state to track the selected task
+  const [commentChange, setCommentChange] = useState(false);
 
   useEffect(() => {
     dispatch(getDashboardThunk());
+    dispatch(fetchTasks());
+    dispatch(getTeamsThunk());
+    dispatch(getProjectsThunk());
   }, [dispatch]);
+
+  const handleCommentChange = () => {
+    setCommentChange(!commentChange);
+  };
 
   const currentDate = new Date();
   const currentHour = currentDate.getHours();
@@ -40,7 +52,6 @@ function Dashboard() {
   const closeTaskModal = () => {
     setSelectedTask(null);
   };
-
 
   return (
     <div
@@ -86,15 +97,15 @@ function Dashboard() {
             </div>
           </div>
           <div className="task-list">
-            {dashboardData.assigned_tasks &&
-              Object.values(dashboardData.assigned_tasks).map((task) => (
+            {tasks &&
+              Object.values(tasks).map((task) => (
                 <div key={task.id} className="task-item">
                   <div
                     className={`checkmark ${task.completed ? "green" : ""}`}
                     onClick={() =>
                       toggleTaskCompletion(
                         task.id,
-                        dashboardData.assigned_tasks,
+                        tasks,
                         dispatch,
                         updateSingleTask
                       )
@@ -106,7 +117,11 @@ function Dashboard() {
                     <OpenModalButton
                       buttonText={task.name}
                       modalComponent={
-                        <TaskModal task={task} closeModal={closeTaskModal} />
+                        <TaskModal
+                          task={task}
+                          onCommentChange={handleCommentChange}
+                          closeModal={closeTaskModal}
+                        />
                       }
                       className="task-name"
                     />
