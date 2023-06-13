@@ -61,6 +61,10 @@
   font-size: 1em;
 }
 
+.project-page-task-list {
+  margin-top: 20px;
+}
+
 .project-page-add-task {
   display: flex;
   align-items: center;

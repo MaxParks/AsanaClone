@@ -142,7 +142,9 @@ function Project({ isLoaded }) {
         <br></br>
         <div>
           <p className="project-page-section-title">Due Date:</p>
-          <p className="project-page-section-text">{projectData.due_date}</p>
+          <p className="project-page-section-text">
+            {formatDueDate(projectData.due_date)}
+          </p>
         </div>
       </div>
 
@@ -157,7 +159,7 @@ function Project({ isLoaded }) {
             className="task"
           />
         </div>
-        <ul>
+        <ul className="project-page-task-list">
           {projectData.tasks &&
             projectData.tasks.map((task) => (
               <div key={task.id} className="task-item">
