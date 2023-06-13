@@ -24,11 +24,11 @@ function AddTeamMemberModal ({ teamId }) {
     }
 
     const data = await dispatch(createTeamMemberThunk(teamId, email))
-    window.location.reload()
 
     if (data && data.id) {
       closeModal()
       history.push(`/teams/${teamId}`)
+      window.location.reload()
     } else if (data && data.message) {
       setError(data.message)
     } else {

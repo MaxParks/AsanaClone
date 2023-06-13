@@ -49,7 +49,6 @@ const Team = () => {
   const handleUpdateName = () => {
     dispatch(updateTeamThunk(teamData.id, { name: updatedName }))
     setEditMode(false)
-    window.location.reload()
   }
 
   // redirect user to project page from team page
@@ -98,15 +97,9 @@ const Team = () => {
     <div className='team-page'>
       <div className='team-header-container'>
         <div className='title-dropdown-container'>
-          {editMode ? (
-            <input
-              type='text'
-              value={updatedName}
-              onChange={e => setUpdatedName(e.target.value)}
-            />
-          ) : (
+
             <h1 className='header-title1'>{teamData.name}</h1>
-          )}
+
           {sessionUser && sessionUser.id === teamData.owner_id && (
             <Dropdown className='dropdown-toggle' onClick={toggleDropdown} />
           )}
@@ -117,7 +110,7 @@ const Team = () => {
                 sessionUser.id === teamData.owner_id && (
                   <ul className='dropdown-content'>
                     <li>
-                      {editMode ? (
+                      {/* {editMode ? (
                         <div>
                           <button onClick={handleUpdateName}>Save</button>
                           <button onClick={() => setEditMode(false)}>
@@ -131,7 +124,7 @@ const Team = () => {
                         >
                           Edit Name
                         </button>
-                      )}
+                      )} */}
                     </li>
                     <li>
                       <OpenModalButton
