@@ -9,10 +9,10 @@ def seed_user_teams():
     marnie = User.query.filter_by(email='marnie@aa.io').first()
     bob = User.query.filter_by(email='bob@aa.io').first()
     alice = User.query.filter_by(email='alice@aa.io').first()
-    user5 = User.query.filter_by(email='user5@aa.io').first()
-    user6 = User.query.filter_by(email='user6@aa.io').first()
-    user7 = User.query.filter_by(email='user7@aa.io').first()
-    user8 = User.query.filter_by(email='user8@aa.io').first()
+    user5 = User.query.filter_by(email='joe@aa.io').first()
+    user6 = User.query.filter_by(email='steve@aa.io').first()
+    user7 = User.query.filter_by(email='sheila@aa.io').first()
+    user8 = User.query.filter_by(email='lacy@aa.io').first()
 
     demo_team = Team.query.filter_by(name='Demo Team').first()
 
