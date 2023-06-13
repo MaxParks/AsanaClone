@@ -20,11 +20,11 @@ function AddTeamModal () {
     const memberEmails = members.split(',').map(email => email.trim())
 
     const data = await dispatch(createTeamThunk(name, memberEmails))
+    window.location.reload();
 
     if (data && data.id) {
       closeModal()
       history.push('/teams')
-      window.location.reload();
     } else if (data) {
       setErrors(data)
     } else {
