@@ -68,6 +68,7 @@ export const fetchTaskById = (id) => async (dispatch) => {
   const response = await fetch(`/api/tasks/${id}`);
   if (response.ok) {
     const data = await response.json();
+    console.log('TASK STORE DATA -->', data)
     dispatch(loadTask(data));
     return data;
   }
