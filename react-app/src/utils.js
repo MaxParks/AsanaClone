@@ -7,8 +7,6 @@ export const toggleTaskCompletion = async (
   updateSingleTask
 ) => {
   const task = Object.values(data).find((task) => task.id === taskId);
-  console.log(task);
-  console.log(taskId);
 
   if (task) {
     const updatedTask = {
@@ -19,8 +17,6 @@ export const toggleTaskCompletion = async (
       completed: task.completed ? false : true,
       project_id: task.project_id,
     };
-
-    console.log(updatedTask);
 
     dispatch(updateSingleTask(taskId, updatedTask));
   }

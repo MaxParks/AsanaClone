@@ -39,7 +39,6 @@ function TaskComments(props) {
   }, []);
 
   const handleMouseEnter = (commentId) => {
-    console.log(commentId);
     setHoveredCommentId(commentId);
   };
 

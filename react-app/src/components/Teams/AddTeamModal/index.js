@@ -14,33 +14,31 @@ function AddTeamModal() {
   const history = useHistory();
   const { closeModal } = useModal();
 
-  const sessionUser = useSelector(state => state.session.user)
-  console.log('session user', sessionUser)
+  const sessionUser = useSelector((state) => state.session.user);
 
- const handleSubmit = async e => {
-  e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const memberEmails = members.split(',').map(email => email.trim())
+    const memberEmails = members.split(",").map((email) => email.trim());
 
-  // Check if current user's email exists in memberEmails array
-  if (memberEmails.includes(sessionUser.email)) {
-    setErrors(['You cannot add yourself as a member of the team.'])
-    return
-  }
+    // Check if current user's email exists in memberEmails array
+    if (memberEmails.includes(sessionUser.email)) {
+      setErrors(["You cannot add yourself as a member of the team."]);
+      return;
+    }
 
-  const data = await dispatch(createTeamThunk(name, memberEmails))
-  window.location.reload()
+    const data = await dispatch(createTeamThunk(name, memberEmails));
+    window.location.reload();
 
-  if (data && data.id) {
-    closeModal()
-    history.push('/teams')
-  } else if (data) {
-    setErrors(data)
-  } else {
-    closeModal()
-  }
-}
-
+    if (data && data.id) {
+      closeModal();
+      history.push("/teams");
+    } else if (data) {
+      setErrors(data);
+    } else {
+      closeModal();
+    }
+  };
 
   return (
     <div className="create-team-modal-container">
