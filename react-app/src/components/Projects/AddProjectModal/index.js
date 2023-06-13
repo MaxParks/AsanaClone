@@ -110,7 +110,7 @@ function CreateProjectModal(isLoaded) {
             onChange={(e) => setDueDate(e.target.value)}
           />
         </div>
-        <div className="create-project-button-container">
+        <div className="button-container">
           <button type="submit" className="create-button">
             Create
           </button>

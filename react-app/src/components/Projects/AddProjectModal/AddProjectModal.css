@@ -35,9 +35,37 @@
     color: var(--color-medium-gray);
 }
 
-.create-project-button-container {
+.button-container {
     display: flex;
-    gap: 20px
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.create-button,
+.cancel-button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+.create-button {
+    background-color: darkgreen;
+}
+
+.cancel-button {
+    background-color: var(--color-medium-gray);
+}
+
+.create-button:hover,
+.cancel-button:hover {
+    opacity: 0.8;
 }
 
 .create-project-modal-container .form-field input::placeholder {
