@@ -121,6 +121,7 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
     const data = await response.json();
     console.log(data);
     dispatch(updateTask(id, data));
+    dispatch(getDashboardThunk())
     return data;
   } else {
     // Handle errors
@@ -137,6 +138,7 @@ export const deleteTask = (id) => async (dispatch) => {
     }
 
     dispatch(removeTask(id));
+    dispatch(getDashboardThunk());
   } catch (error) {
     console.error(error);
     // Handle error if needed
