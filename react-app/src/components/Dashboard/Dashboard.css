@@ -132,24 +132,6 @@
   color: var(--color-medium-gray);
 }
 
-
-.checkmark {
-  margin-right: 5px;
-
-}
-
-.green path {
-  fill: green;
-}
-
-.checkmark:hover {
-  cursor: pointer;
-}
-
-.checkmark:hover path {
-  fill: green;
-}
-
 .add-task-container {
   display: flex;
   align-items: center;

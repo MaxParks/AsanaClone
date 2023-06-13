@@ -137,3 +137,21 @@ button {
 .dropdown-content li:not(:last-child) {
     border-bottom: 1px solid var(--color-light-gray);
 }
+
+/* Task completion */
+.checkmark {
+    margin-right: 5px;
+
+}
+
+.green path {
+    fill: green;
+}
+
+.checkmark:hover {
+    cursor: pointer;
+}
+
+.checkmark:hover path {
+    fill: green;
+}
