@@ -13,7 +13,6 @@ function AddTeamMemberModal({ teamId }) {
 
   const teamMembers = useSelector((state) => state.teams.selectedTeam.members);
   const teamName = useSelector((state) => state.teams.selectedTeam.name);
-  console.log("TEAM NAME", teamName);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

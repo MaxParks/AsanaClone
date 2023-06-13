@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTeamThunk } from "../../../store/teams";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
@@ -14,23 +14,33 @@ function AddTeamModal() {
   const history = useHistory();
   const { closeModal } = useModal();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const sessionUser = useSelector(state => state.session.user)
+  console.log('session user', sessionUser)
 
-    const memberEmails = members.split(",").map((email) => email.trim());
+ const handleSubmit = async e => {
+  e.preventDefault()
 
-    const data = await dispatch(createTeamThunk(name, memberEmails));
-    window.location.reload();
+  const memberEmails = members.split(',').map(email => email.trim())
 
-    if (data && data.id) {
-      closeModal();
-      history.push("/teams");
-    } else if (data) {
-      setErrors(data);
-    } else {
-      closeModal();
-    }
-  };
+  // Check if current user's email exists in memberEmails array
+  if (memberEmails.includes(sessionUser.email)) {
+    setErrors(['You cannot add yourself as a member of the team.'])
+    return
+  }
+
+  const data = await dispatch(createTeamThunk(name, memberEmails))
+  window.location.reload()
+
+  if (data && data.id) {
+    closeModal()
+    history.push('/teams')
+  } else if (data) {
+    setErrors(data)
+  } else {
+    closeModal()
+  }
+}
+
 
   return (
     <div className="create-team-modal-container">
