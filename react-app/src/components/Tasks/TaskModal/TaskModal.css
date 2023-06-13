@@ -168,7 +168,7 @@
     padding: 5px 0;
 }
 
-.dropdown-container {
+.task-dropdown-container {
     display: flex;
     flex-direction: column;
 }
