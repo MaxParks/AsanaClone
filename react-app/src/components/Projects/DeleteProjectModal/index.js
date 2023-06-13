@@ -22,10 +22,14 @@ function ProjectDeleteModal({ id }) {
         Are you sure you want to delete this Project?
       </p>
       <div className="button-container">
-        <button className="delete-button" onClick={handleDelete}>
+        <button
+          className="cancel-button"
+          style={{ backgroundColor: "darkred" }}
+          onClick={handleDelete}
+        >
           Yes (Delete Project)
         </button>
-        <button className="modal-button2" onClick={closeModal}>
+        <button className="cancel-button" onClick={closeModal}>
           No (Keep Project)
         </button>
       </div>

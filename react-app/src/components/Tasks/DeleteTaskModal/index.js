@@ -22,10 +22,14 @@ function TaskDeleteModal({ id }) {
         Are you sure you want to delete this Task?
       </p>
       <div className="button-container">
-        <button className="delete-button" onClick={handleDelete}>
+        <button
+          className="cancel-button"
+          style={{ backgroundColor: "darkred" }}
+          onClick={handleDelete}
+        >
           Yes (Delete Task)
         </button>
-        <button className="modal-button2" onClick={closeModal}>
+        <button className="cancel-button" onClick={closeModal}>
           No (Keep Task)
         </button>
       </div>
