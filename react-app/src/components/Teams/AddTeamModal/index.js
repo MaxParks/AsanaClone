@@ -21,6 +21,16 @@ function AddTeamModal() {
 
     const memberEmails = members.split(",").map((email) => email.trim());
 
+    if (name.trim() === "") {
+      setErrors(["Please provide a team name."]);
+      return;
+    }
+
+    if (members.trim() === "") {
+      setErrors(["Please invite at least one user to create a team."]);
+      return;
+    }
+
     // Check if current user's email exists in memberEmails array
     if (memberEmails.includes(sessionUser.email)) {
       setErrors(["You cannot add yourself as a member of the team."]);
