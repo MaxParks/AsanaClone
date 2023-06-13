@@ -27,8 +27,8 @@ def retrieve_task(id):
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
 
-    if current_user.id != task.owner_id and current_user.id not in [user.id for user in task.project.team.members]:
-        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+    # if current_user.id != task.owner_id and current_user.id not in [user.id for user in task.project.team.members]:
+    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
     task_dict = task.to_dict()
     task_dict['comments'] = []
@@ -59,11 +59,18 @@ def retrieve_task(id):
         task_dict['assigned_to'] = None
 
     # Fetch the project data
-    project = Project.query.get(task.project_id)
+    project = Project.query.filter_by(id=task.project_id).first()
     if project:
-        task_dict['project'] = project.name
+        project_dict = {
+            'id': project.id,
+            'name': project.name,
+            'owner_id': project.owner_id
+            # Add other project attributes you want to include
+        }
+        task_dict['project'] = project_dict
     else:
         task_dict['project'] = None
+
 
     return jsonify(task_dict), 200
 
@@ -144,7 +151,7 @@ def update_task(id):
         task.name = form.name.data
         task.description = form.description.data
         task.assigned_to = form.assigned_to.data
-        task.due_date = datetime.strptime(form.due_date.data, '%m/%d/%Y').date() if form.due_date.data else None
+        task.due_date = datetime.strptime(form.due_date.data, '%Y-%m-%d').date() if form.due_date.data else None
         task.completed = request.json["completed"]
         task.project_id = form.project_id.data
         task.updated_at = datetime.utcnow()

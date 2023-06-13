@@ -41,6 +41,7 @@ function Dashboard() {
     setSelectedTask(null);
   };
 
+
   return (
     <div
       className="page-container"
@@ -93,7 +94,7 @@ function Dashboard() {
                     onClick={() =>
                       toggleTaskCompletion(
                         task.id,
-                        dashboardData,
+                        dashboardData.assigned_tasks,
                         dispatch,
                         updateSingleTask
                       )

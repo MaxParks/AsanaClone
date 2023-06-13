@@ -4,6 +4,8 @@ import { createTeamThunk } from '../../../store/teams'
 import { useModal } from '../../../context/Modal'
 import { useHistory } from 'react-router-dom'
 
+import './AddTeamModal.css'
+
 function AddTeamModal () {
   const dispatch = useDispatch()
   const [name, setName] = useState('')
@@ -11,7 +13,6 @@ function AddTeamModal () {
   const [errors, setErrors] = useState([])
   const history = useHistory()
   const { closeModal } = useModal()
-
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -39,7 +40,7 @@ function AddTeamModal () {
             <li key={idx}>{error}</li>
           ))}
         </ul>
-        <div className='form-field'>
+        <div className='form-field-create-team'>
           <label htmlFor='name'>Team Name</label>
           <input
             type='text'
@@ -49,7 +50,7 @@ function AddTeamModal () {
             onChange={e => setName(e.target.value)}
           />
         </div>
-        <div className='form-field'>
+        <div className='form-field-create-team'>
           <label htmlFor='members'>
             Members (comma-separated email addresses)
           </label>
@@ -61,7 +62,11 @@ function AddTeamModal () {
           ></textarea>
         </div>
         <div className='button-container'>
-          <button type='submit' className='create-button'>
+          <button
+            type='submit'
+            className='create-button'
+            disabled={errors.length > 0}
+          >
             Create Team
           </button>
           <button type='button' className='cancel-button' onClick={closeModal}>

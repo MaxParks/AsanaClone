@@ -103,8 +103,6 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
     };
 
     dispatch(createTaskThunk(newTask));
-
-    dispatch(getDashboardThunk());
     closeModal();
   };
 

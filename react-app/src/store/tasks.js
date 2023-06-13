@@ -68,6 +68,7 @@ export const fetchTaskById = (id) => async (dispatch) => {
   const response = await fetch(`/api/tasks/${id}`);
   if (response.ok) {
     const data = await response.json();
+    console.log('TASK STORE DATA -->', data)
     dispatch(loadTask(data));
     return data;
   }
@@ -93,7 +94,6 @@ export const createTaskThunk = (taskData) => async (dispatch) => {
     const data = await response.json();
     dispatch(addTask(data));
     dispatch(getDashboardThunk());
-
     return data;
   }
 };
@@ -112,7 +112,7 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
       name,
       description,
       assigned_to,
-      due_date,
+      due_date: due_date ? due_date.split("/").reverse().join("-") : null,
       completed,
       project_id,
     }),
@@ -122,8 +122,10 @@ export const updateSingleTask = (id, taskData) => async (dispatch) => {
     const data = await response.json();
     console.log(data);
     dispatch(updateTask(id, data));
-    dispatch(getDashboardThunk());
+    dispatch(getDashboardThunk())
     return data;
+  } else {
+    // Handle errors
   }
 };
 
@@ -137,6 +139,7 @@ export const deleteTask = (id) => async (dispatch) => {
     }
 
     dispatch(removeTask(id));
+    dispatch(getDashboardThunk());
   } catch (error) {
     console.error(error);
     // Handle error if needed
@@ -199,10 +202,18 @@ export default function tasksReducer(state = initialState, action) {
     case UPDATE_TASK:
       return {
         ...state,
-        task: action.payload,
+        [action.payload.id]: {
+          ...state[action.payload.id],
+          ...action.payload,
+        },
       };
-    case REMOVE_TASK:
-      return state.filter((task) => task.id !== action.payload);
+
+      case REMOVE_TASK: {
+        const newState = { ...state };
+        delete newState[action.payload];
+        return newState;
+      }
+
     case ADD_TASK_COMMENT:
       return {
         ...state,
