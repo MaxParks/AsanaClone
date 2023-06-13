@@ -2,13 +2,16 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteTeamThunk } from '../../../store/teams'
 import { useModal } from '../../../context/Modal'
+import { useHistory } from "react-router-dom";
 
 function DeleteTeamModal ({ teamData }) {
   const dispatch = useDispatch()
   const { closeModal } = useModal()
+  const history = useHistory();
 
   const handleDelete = async () => {
     await dispatch(deleteTeamThunk(teamData.id))
+    history.push(`/user/dashboard`);
     closeModal()
   }
 

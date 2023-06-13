@@ -28,11 +28,11 @@
     margin-bottom: 15px;
 }
 
-.form-field label {
+.form-field-label {
     margin-bottom: 5px;
 }
 
-.form-field input {
+.form-field-input {
     padding: 8px;
     border: 1px solid lightgray;
     border-radius: 4px;

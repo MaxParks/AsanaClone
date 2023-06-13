@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useModal } from '../../../context/Modal'
 import { createTeamMemberThunk } from '../../../store/teams'
@@ -11,14 +11,24 @@ function AddTeamMemberModal ({ teamId }) {
   const history = useHistory()
   const { closeModal } = useModal()
 
+  const teamMembers = useSelector(state => state.teams.selectedTeam.members)
+  const teamName = useSelector(state => state.teams.selectedTeam.name)
+  console.log('TEAM NAME', teamName)
+
   const handleSubmit = async e => {
     e.preventDefault()
+
+    if (teamMembers.some(member => member.email === email)) {
+      setError(`User already a part of team ${teamName}`)
+      return
+    }
 
     const data = await dispatch(createTeamMemberThunk(teamId, email))
 
     if (data && data.id) {
       closeModal()
       history.push(`/teams/${teamId}`)
+      window.location.reload()
     } else if (data && data.message) {
       setError(data.message)
     } else {

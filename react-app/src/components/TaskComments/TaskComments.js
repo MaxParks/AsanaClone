@@ -94,7 +94,9 @@ function TaskComments(props) {
           onChange={handleCommentTextChange}
           className="add-task-comment-input"
         />
-        <button onClick={handleAddComment}>Add Comment</button>
+        <button onClick={handleAddComment} className="submit-comment-button">
+          Send
+        </button>
       </div>
       {reversedComments &&
         reversedComments.map((comment) => (

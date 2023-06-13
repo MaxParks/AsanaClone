@@ -8,10 +8,10 @@ def seed_teams():
     marnie = User.query.filter_by(email='marnie@aa.io').first()
     bob = User.query.filter_by(email='bob@aa.io').first()
     alice = User.query.filter_by(email='alice@aa.io').first()
-    user5 = User.query.filter_by(email='user5@aa.io').first()
-    user6 = User.query.filter_by(email='user6@aa.io').first()
-    user7 = User.query.filter_by(email='user7@aa.io').first()
-    user8 = User.query.filter_by(email='user8@aa.io').first()
+    user5 = User.query.filter_by(email='joe@aa.io').first()
+    user6 = User.query.filter_by(email='steve@aa.io').first()
+    user7 = User.query.filter_by(email='sheila@aa.io').first()
+    user8 = User.query.filter_by(email='lacy@aa.io').first()
 
     demo_team = Team(
         owner_id=demo.id,
@@ -22,49 +22,49 @@ def seed_teams():
 
     team2 = Team(
         owner_id=marnie.id,
-        name='Team 2',
+        name='Pyoneers',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
 
     team3 = Team(
         owner_id=alice.id,
-        name='Team 3',
+        name='RuthlessCode',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
 
     team4 = Team(
         owner_id=bob.id,
-        name='Team 4',
+        name='Javas',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
 
     team5 = Team(
         owner_id=user5.id,
-        name='Team 5',
+        name='Codesters',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
 
     team6 = Team(
         owner_id=user6.id,
-        name='Team 6',
+        name='Nurds',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
 
     team7 = Team(
         owner_id=user7.id,
-        name='Team 7',
+        name='BigBrain',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
 
     team8 = Team(
         owner_id=user8.id,
-        name='Team 8',
+        name='LuvCode',
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )

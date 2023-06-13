@@ -24,6 +24,7 @@ function AddTeamModal () {
     if (data && data.id) {
       closeModal()
       history.push('/teams')
+      window.location.reload();
     } else if (data) {
       setErrors(data)
     } else {

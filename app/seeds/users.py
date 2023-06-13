@@ -15,7 +15,7 @@ def seed_users():
 
     marnie = User(
         firstName='Marnie',
-        lastName='User',
+        lastName='Vulg',
         email='marnie@aa.io',
         password='password',
         created_at=datetime.utcnow()
@@ -23,7 +23,7 @@ def seed_users():
 
     alice = User(
         firstName='Alice',
-        lastName='User',
+        lastName='Cowle',
         email='alice@aa.io',
         password='password',
         created_at=datetime.utcnow()
@@ -31,40 +31,40 @@ def seed_users():
 
     bob = User(
         firstName='Bob',
-        lastName='User',
+        lastName='Smith',
         email='bob@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
 
-    user5 = User(
-        firstName='User5',
-        lastName='User',
-        email='user5@aa.io',
+    joe = User(
+        firstName='Joe',
+        lastName='Eichsten',
+        email='joe@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
 
-    user6 = User(
-        firstName='User6',
-        lastName='User',
-        email='user6@aa.io',
+    steve = User(
+        firstName='Steve',
+        lastName='Kooble',
+        email='steve@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
 
-    user7 = User(
-        firstName='User7',
-        lastName='User',
-        email='user7@aa.io',
+    sheila = User(
+        firstName='Sheila',
+        lastName='Jenkins',
+        email='sheila@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
 
-    user8 = User(
-        firstName='User8',
-        lastName='User',
-        email='user8@aa.io',
+    lacy = User(
+        firstName='Lacy',
+        lastName='Patterson',
+        email='lacy@aa.io',
         password='password',
         created_at=datetime.utcnow()
     )
@@ -73,10 +73,10 @@ def seed_users():
     db.session.add(marnie)
     db.session.add(alice)
     db.session.add(bob)
-    db.session.add(user5)
-    db.session.add(user6)
-    db.session.add(user7)
-    db.session.add(user8)
+    db.session.add(joe)
+    db.session.add(steve)
+    db.session.add(sheila)
+    db.session.add(lacy)
 
     db.session.commit()
 
