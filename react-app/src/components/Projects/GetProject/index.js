@@ -35,6 +35,7 @@ function Project({ isLoaded }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [modalButtonsVisible, setModalButtonsVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false) 
 
   const userIsOwner =
     sessionUser.id === projectData.owner_id ||
