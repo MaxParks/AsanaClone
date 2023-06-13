@@ -32,6 +32,10 @@ const Sidebar = ({
     history.push("/user/dashboard");
   };
 
+  const handleTasksOrInboxClick = () => {
+    window.alert("Coming Soon!");
+  };
+
   const handleTeamNameClick = (teamId) => {
     dispatch(getSingleTeamThunk(teamId));
     history.push(`/teams/${teamId}`);
@@ -69,11 +73,11 @@ const Sidebar = ({
             <HomeIcon />
             <li className="second-tab-item">Home</li>
           </div>
-          <div className="sidebar-tab">
+          <div className="sidebar-tab" onClick={handleTasksOrInboxClick}>
             <Checkmark />
             <li className="second-tab-item">My Tasks</li>
           </div>
-          <div className="sidebar-tab">
+          <div className="sidebar-tab" onClick={handleTasksOrInboxClick}>
             <NotificationBell />
             <li className="second-tab-item">Inbox</li>
           </div>

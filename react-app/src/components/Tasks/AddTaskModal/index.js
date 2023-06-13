@@ -65,8 +65,6 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
         };
       });
 
-      console.log(memberData);
-
       setAvailableUsers(memberData);
     } else {
       setAvailableUsers([]);

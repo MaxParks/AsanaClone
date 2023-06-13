@@ -50,12 +50,9 @@ function SignUpFormModal () {
     const data = await dispatch(signUp(firstName, lastName, email, password))
 
     if (data) {
-      console.log('DATA ---->', data)
-
       setErrors(data)
-      console.log('VALIDATION ERRORS --->', errors)
     } else if (data && data.id) {
-      setIsModalOpen(false) // Close the modal after successful signup
+      setIsModalOpen(false)
       history.push('/user/dashboard')
     } else {
       closeModal()

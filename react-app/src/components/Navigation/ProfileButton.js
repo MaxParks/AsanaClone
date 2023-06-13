@@ -8,7 +8,7 @@ import SignupFormModal from "../SignupFormModal";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -34,7 +34,7 @@ function ProfileButton({ user }) {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
-    history.push("/")
+    history.push("/");
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -43,8 +43,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={openMenu} className="profile-button">
-        <p>SC</p>
-        {/* Need to pull user initials from state */}
+        :
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (

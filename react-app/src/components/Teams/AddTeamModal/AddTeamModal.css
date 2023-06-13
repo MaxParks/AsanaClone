@@ -29,17 +29,6 @@
     color: white;
 }
 
-
-.form-field-create-team input {
-    width: 100%;
-    padding: 10px;
-    border: 1px dashed gray;
-    border-radius: 20px;
-    outline: none;
-    background-color: transparent;
-    color: black;
-}
-
-.form-field-create-team input::placeholder {
-    color: gray;
+.add-team-members-container {
+    margin-top: 10px;
 }
