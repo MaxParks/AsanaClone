@@ -15,7 +15,7 @@ function UpdateProjectModal({ id }) {
   const { closeModal } = useModal();
   const history = useHistory();
 
-  const project = useSelector(state => state.projects);
+  const project = useSelector((state) => state.projects);
   const dashboardData = useSelector((state) => state.dashboard);
   const teams = Object.values(dashboardData.teams);
 
@@ -23,7 +23,6 @@ function UpdateProjectModal({ id }) {
     const dateParts = dateString.split("-");
     return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
   }
-
 
   useEffect(() => {
     if (project) {
@@ -34,14 +33,11 @@ function UpdateProjectModal({ id }) {
     }
   }, [project]);
 
-
   useEffect(() => {
-    if(!project){
+    if (!project) {
       dispatch(getProjectThunk(id));
     }
   }, [dispatch, id, project]);
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,7 +83,6 @@ function UpdateProjectModal({ id }) {
     }
   };
 
-
   return (
     <div className="add-task-modal-container">
       <h2>Update Project</h2>
@@ -97,11 +92,13 @@ function UpdateProjectModal({ id }) {
           {errors.team_id && <li>{errors.team_id}</li>}
           {errors.description && <li>{errors.description}</li>}
           {errors.dueDate && <li>{errors.dueDate}</li>}
-          {errors.general && errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
+          {errors.general &&
+            errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <div className="form-field">
           <input
             type="text"
+            className="create-project-input"
             id="name"
             placeholder="Project name"
             value={name}
@@ -125,6 +122,7 @@ function UpdateProjectModal({ id }) {
         <div className="form-field">
           <input
             type="text"
+            className="create-project-input"
             id="description"
             placeholder="Project description"
             value={description}
@@ -134,13 +132,14 @@ function UpdateProjectModal({ id }) {
         <div className="form-field">
           <input
             type="date"
+            className="create-project-input"
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
         </div>
         <div className="button-container">
-          <button type="submit" className="update-button">
+          <button type="submit" className="create-button">
             Update
           </button>
           <button type="button" className="cancel-button" onClick={closeModal}>
@@ -150,7 +149,6 @@ function UpdateProjectModal({ id }) {
       </form>
     </div>
   );
-
 }
 
 export default UpdateProjectModal;
