@@ -46,6 +46,7 @@ const Team = () => {
   const handleUpdateName = () => {
     dispatch(updateTeamThunk(teamData.id, { name: updatedName }))
     setEditMode(false)
+    window.location.reload();
   }
 
   // redirect user to project page from team page
@@ -102,7 +103,7 @@ const Team = () => {
           {sessionUser && sessionUser.id === teamData.owner_id && (
             <div className='add-member-button'>
               <OpenModalButton
-                modalComponent={<AddTeamMemberModal teamData={teamData} />}
+                modalComponent={<AddTeamMemberModal teamId={teamId} />}
                 className='add-team'
               />
               <div className='add-member-text'>

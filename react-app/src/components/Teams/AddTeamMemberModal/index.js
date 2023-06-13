@@ -15,6 +15,7 @@ function AddTeamMemberModal ({ teamId }) {
     e.preventDefault()
 
     const data = await dispatch(createTeamMemberThunk(teamId, email))
+    window.location.reload();
 
     if (data && data.id) {
       closeModal()
