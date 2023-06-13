@@ -27,9 +27,6 @@ def retrieve_task(id):
     if not task:
         return jsonify({'message': 'Task not found', 'statusCode': 404}), 404
 
-    # if current_user.id != task.owner_id and current_user.id not in [user.id for user in task.project.team.members]:
-    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
-
     task_dict = task.to_dict()
     task_dict['comments'] = []
 
@@ -140,8 +137,8 @@ def update_task(id):
     project = Project.query.filter_by(id=project_id).options(joinedload('owner')).first()
     owner_id = project.owner_id
 
-    if current_user.id != task.owner_id and current_user.id != project.owner_id:
-        return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
+    # if current_user.id != task.owner_id and current_user.id != project.owner_id:
+    #     return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
 
     form = TaskForm()

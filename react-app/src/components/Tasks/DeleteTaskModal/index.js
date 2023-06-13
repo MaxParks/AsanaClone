@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { deleteTask } from "../../../store/tasks";
 import { useHistory } from "react-router-dom";
-// import './index.css'
 
 function TaskDeleteModal({ id }) {
   const { closeModal } = useModal();

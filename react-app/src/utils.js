@@ -8,6 +8,7 @@ export const toggleTaskCompletion = async (
 ) => {
   const task = Object.values(data).find((task) => task.id === taskId);
   console.log(task);
+  console.log(taskId);
 
   if (task) {
     const updatedTask = {
@@ -54,4 +55,3 @@ export function formatDueDate(dueDate) {
     });
   }
 }
-

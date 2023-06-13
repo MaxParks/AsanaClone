@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTaskById, addSingleTaskComment } from "../../../store/tasks";
+import { fetchTaskById } from "../../../store/tasks";
 import { getProjectThunk } from "../../../store/projects";
 import { formatDueDate } from "../../../utils";
 import TaskComments from "../../TaskComments/TaskComments";

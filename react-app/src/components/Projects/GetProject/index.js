@@ -19,12 +19,7 @@ import { formatDueDate } from "../../../utils";
 import "./Project.css";
 import "../../../index.css";
 
-// function formatDate(dateString) {
-//   const dateParts = dateString.split("-");
-//   return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
-// }
-
-function Project({ isLoaded }) {
+function Project() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -35,20 +30,18 @@ function Project({ isLoaded }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [modalButtonsVisible, setModalButtonsVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false) 
 
   const userIsOwner =
     sessionUser.id === projectData.owner_id ||
     sessionUser.id === teamData.owner_id;
 
   useEffect(() => {
-    // Fetch project data when component mounts
     dispatch(getProjectThunk(id));
   }, [dispatch, id]);
 
   function toggleDropdown() {
     setDropdownVisible(!dropdownVisible);
-    setModalButtonsVisible(true); // Hide modal buttons when dropdown is toggled
+    setModalButtonsVisible(true);
   }
 
   const toggleTaskCompletion = async (
@@ -60,7 +53,6 @@ function Project({ isLoaded }) {
     const task = Object.values(projectData.tasks).find(
       (task) => task.id === taskId
     );
-    console.log(task);
 
     if (task) {
       const updatedTask = {
@@ -71,8 +63,6 @@ function Project({ isLoaded }) {
         completed: task.completed ? false : true,
         project_id: projectData.id,
       };
-
-      console.log(updatedTask);
 
       dispatch(updateSingleTask(taskId, updatedTask));
     }

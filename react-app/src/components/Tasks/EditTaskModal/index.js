@@ -1,40 +1,22 @@
 import React, { useState, useEffect } from "react";
-import {
-  createTaskThunk,
-  fetchTaskById,
-  updateSingleTask,
-} from "../../../store/tasks";
+import { fetchTaskById, updateSingleTask } from "../../../store/tasks";
 import { getProjectThunk } from "../../../store/projects";
 import { useDispatch, useSelector } from "react-redux";
-import { getSingleTeamThunk } from "../../../store/teams";
-import { getProjectsThunk } from "../../../store/projects";
-import { updateTaskThunk } from "../../../store/dashboard";
 import { useModal } from "../../../context/Modal";
-import { useHistory } from "react-router-dom";
 
 import "../AddTaskModal/AddTaskModal.css";
 
 function EditTaskModal({ task, projectId }) {
-  const { id, assigned_to, completed } = task;
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const { assigned_to, completed } = task;
 
-  const dashboardData = useSelector((state) => state.dashboard);
-  const taskData = useSelector((state) => state.tasks);
-  const projectData = useSelector((state) => state.projects);
-  const teamsData = useSelector((state) => state.teams.selectedTeam);
-  const [project_id, setProjectId] = useState(projectData.id);
-  const [errors, setErrors] = useState([]);
+  const dispatch = useDispatch();
   const { closeModal } = useModal();
 
-  const teams = Object.values(dashboardData.teams);
+  const taskData = useSelector((state) => state.tasks);
+  const projectData = useSelector((state) => state.projects);
 
-  const [isCompleted, setIsCompleted] = useState(completed);
-
-  const initialAssignedTo = assigned_to
-    ? `${assigned_to.first_name} ${assigned_to.last_name}`
-    : "";
-  const [assignedTo, setAssignedTo] = useState(initialAssignedTo);
+  const [project_id, setProjectId] = useState(projectData.id);
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,20 +27,11 @@ function EditTaskModal({ task, projectId }) {
     fetchData();
   }, [dispatch, task.id, projectId]);
 
-  const teamMembersArray = Object.keys(projectData.team_members).map((key) => {
-    const member = projectData.team_members[key];
-    return {
-      id: key,
-      name: `${member.firstName} ${member.lastName}`,
-    };
-  });
-
   const [name, setName] = useState(taskData[task.id].name);
   const [description, setDescription] = useState(taskData[task.id].description);
   const [due_date, setDueDate] = useState(
     new Date(taskData[task.id].due_date).toLocaleDateString("en-CA")
   );
-  const [teamMembers, setTeamMembers] = useState(teamMembersArray);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,16 +50,8 @@ function EditTaskModal({ task, projectId }) {
 
     setErrors({});
 
-    // const formattedDueDate = due_date
-    //   ? new Date(due_date).toLocaleDateString('en-US', {
-    //       month: '2-digit',
-    //       day: '2-digit',
-    //       year: 'numeric'
-    //     })
-    //   : null
-
     const newTask = {
-      id: task.id, // Include the task ID in the updated task object
+      id: task.id,
       name,
       description,
       assigned_to,
@@ -97,10 +62,8 @@ function EditTaskModal({ task, projectId }) {
 
     try {
       await dispatch(updateSingleTask(task.id, newTask));
-      // await dispatch(getDashboardThunk())
       closeModal();
     } catch (error) {
-      // Handle error if needed
       console.error(error);
     }
   };
@@ -132,22 +95,6 @@ function EditTaskModal({ task, projectId }) {
             className="task-textarea"
           />
         </div>
-        <div className="form-field">
-          <select
-            id="assignedTo"
-            placeholder="Assigned to"
-            value={assigned_to}
-            onChange={(e) => setAssignedTo(e.target.value)}
-          >
-            <option value="">{assigned_to}</option>
-            {teamMembers.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <div className="form-field">
           <input
             type="date"
