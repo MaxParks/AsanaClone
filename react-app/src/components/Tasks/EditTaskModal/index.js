@@ -8,7 +8,7 @@ import { getProjectThunk } from '../../../store/projects'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleTeamThunk } from '../../../store/teams'
 import { getProjectsThunk } from '../../../store/projects'
-import { getDashboardThunk } from '../../../store/dashboard'
+import { updateTaskThunk } from '../../../store/dashboard'
 import { useModal } from '../../../context/Modal'
 import { useHistory } from 'react-router-dom'
 
@@ -97,7 +97,7 @@ function EditTaskModal ({ task, projectId }) {
 
     try {
       await dispatch(updateSingleTask(task.id, newTask))
-      await dispatch(getDashboardThunk())
+      // await dispatch(getDashboardThunk())
       closeModal()
     } catch (error) {
       // Handle error if needed

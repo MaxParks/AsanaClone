@@ -42,33 +42,47 @@ function TaskModal ({ task, onClose }) {
       ? `${assignedToFirstName.charAt(0)}${assignedToLastName.charAt(0)}`
       : ''
 
+  const isOwner = dashboardData.id === taskData[task.id]?.owner_id
+  const isProjectOwner = dashboardData.id === projectData.owner_id
+  console.log('TASK ID --->', task.id)
+  console.log('DASHBOARD DATA --->', dashboardData)
+  console.log('TASK DATA -->', taskData)
+  console.log('PROJECT DATA --->', projectData)
+  // console.log('IS OWNER -->', isOwner === isProjectOwner)
+  // console.log('PROJECT OWNER --->', isProjectOwner)
+
   return (
     <div className='task-modal-content'>
       <div className='task-content'>
         <div className='task-header'>
           <h3>{task.name}</h3>
-          {(dashboardData.id === taskData[task.id]?.owner_id ||
-            dashboardData.id === projectData.owner_id) && (
+          {isOwner || isProjectOwner ? (
             <div className='toolbar-container'>
-              <Toolbar className='toolbar-svg' onClick={handleToolbarClick} />
+              {isOwner && (
+                <Toolbar className='toolbar-svg' onClick={handleToolbarClick} />
+              )}
               {dropdownVisible && (
                 <div className='dropdown'>
-                  <OpenModalButton
-                    buttonText="Edit"
-                    modalComponent={<EditTaskModal task={task} projectId={projectId} />}
-                    className="add-task text-name edit-button"
-                  />
-
-                  <OpenModalButton
-                    buttonText="Delete"
-                    modalComponent={<TaskDeleteModal id={task.id} />}
-                    className="add-task text-name delete-button"
-                  />
-
+                  {isOwner && (
+                    <OpenModalButton
+                      buttonText='Edit'
+                      modalComponent={
+                        <EditTaskModal task={task} projectId={projectId} />
+                      }
+                      className='add-task text-name edit-button'
+                    />
+                  )}
+                  {isOwner && (
+                    <OpenModalButton
+                      buttonText='Delete'
+                      modalComponent={<TaskDeleteModal id={task.id} />}
+                      className='add-task text-name delete-button'
+                    />
+                  )}
                 </div>
               )}
             </div>
-          )}
+          ) : null}
         </div>
         <div className='task-top-section'>
           <div>

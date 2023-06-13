@@ -55,4 +55,3 @@ export function formatDueDate(dueDate) {
   }
 }
 
-console.log(formatDueDate('06/15/2023')) // Jun 15
