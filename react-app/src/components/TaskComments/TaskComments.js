@@ -39,6 +39,7 @@ function TaskComments(props) {
   }, []);
 
   const handleMouseEnter = (commentId) => {
+    console.log(commentId);
     setHoveredCommentId(commentId);
   };
 
@@ -120,7 +121,7 @@ function TaskComments(props) {
                   </div>
                 </div>
                 {comment.user.owner_id === comment.user.id && (
-                  <div className="dropdown-container" ref={dropdownRef}>
+                  <div className="task-dropdown-container" ref={dropdownRef}>
                     {(hoveredCommentId === comment.id ||
                       deleteDropdownId === comment.id) && (
                       <>
