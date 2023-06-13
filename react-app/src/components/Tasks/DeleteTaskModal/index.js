@@ -21,7 +21,7 @@ function TaskDeleteModal({ id }) {
     return (
         <div className="modal2">
           <h1 className="form-header">Confirm Delete</h1>
-          <label>Are you sure you want to delete this Project?</label>
+          <label>Are you sure you want to delete this Task?</label>
           <button className="delete2" onClick={handleDelete}>
             Yes (Delete Task)
           </button>

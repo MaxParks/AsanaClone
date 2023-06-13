@@ -54,18 +54,16 @@ function TaskModal({ task, onClose }) {
                 <div className="dropdown">
                   <OpenModalButton
                     buttonText="Edit"
-                    modalComponent={
-                      <EditTaskModal task={task} projectId={projectId} />
-                    }
-                    className="add-task text-name"
+                    modalComponent={<EditTaskModal task={task} projectId={projectId} />}
+                    className="add-task text-name edit-button"
                   />
-                   <OpenModalButton
+
+                  <OpenModalButton
                     buttonText="Delete"
-                    modalComponent={
-                      <TaskDeleteModal id={task.id} />
-                    }
-                    className="add-task text-name"
+                    modalComponent={<TaskDeleteModal id={task.id} />}
+                    className="add-task text-name delete-button"
                   />
+
                 </div>
               )}
             </div>
