@@ -9,22 +9,22 @@ import { useHistory } from "react-router-dom";
 
 import "./AddTaskModal.css";
 
-function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
+function AddTaskModal({ isLoaded }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const dashboardData = useSelector((state) => state.dashboard);
   const projects = useSelector((state) => state.projects);
-  const teamsData = useSelector((state) => state.teams.selectedTeam);
+  const teamsData = useSelector((state) => state.teams);
 
   const teams = Object.values(dashboardData.teams);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [due_date, setDueDate] = useState("");
-  const [teamId, setTeamId] = useState(currentTeamId); // Default to currentTeamId
+  const [teamId, setTeamId] = useState(""); // Default to currentTeamId
   const [teamMembers, setTeamMembers] = useState([]);
-  const [project_id, setProjectId] = useState(currentProjectId); // Default to currentProjectId
+  const [project_id, setProjectId] = useState(""); // Default to currentProjectId
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
   const [assigned_to, setAssignedTo] = useState("");
@@ -33,49 +33,26 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
   const { closeModal } = useModal();
 
   const handleTeamChange = async (teamId) => {
-    try {
-      setTeamId(teamId);
-      let selectedTeam = null;
-      for (let i = 0; i < teams.length; i++) {
-        if (teams[i].id === parseInt(teamId, 10)) {
-          selectedTeam = teams[i];
-          break;
-        }
-      }
-
-      if (selectedTeam) {
-        setFilteredProjects(selectedTeam.projects);
-        // Retrieve team members for the selected team
-        await dispatch(getSingleTeamThunk(teamId));
-      } else {
-        setFilteredProjects([]);
-        setAvailableUsers([]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    setTeamId(teamId);
+    console.log(teamsData[teamId]);
+    setFilteredProjects(teamsData[teamId].projects || []);
+    setTeamMembers(teamsData[teamId].members);
   };
 
   useEffect(() => {
-    if (teamsData && teamsData.members && teamsData.members.length > 0) {
-      const memberData = teamsData.members.map(function (member) {
+    if (teamMembers && teamMembers.length > 0) {
+      const memberData = teamMembers.map(function (member) {
         return {
           id: member.id,
-          name: member.firstName + " " + member.lastName,
+          firstName: member.name.split(" ")[0], // Extract the first name
         };
       });
-
-      console.log(memberData);
 
       setAvailableUsers(memberData);
     } else {
       setAvailableUsers([]);
     }
-  }, [teamsData]);
-
-  useEffect(() => {
-    handleTeamChange(teamId);
-  }, [teamId, currentTeamId]);
+  }, [teamId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -139,11 +116,15 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
             onChange={(e) => handleTeamChange(e.target.value)}
           >
             <option value="">Select Team</option>
-            {teams.map((team) => (
-              <option key={team.id} value={team.id}>
-                {team.name}
-              </option>
-            ))}
+            {Object.keys(teamsData).map((teamId) => {
+              const teamObject = teamsData[teamId];
+              return (
+                <option key={teamObject.id} value={teamObject.id}>
+                  {teamObject.name}
+                </option>
+              );
+            })}
+            ;
           </select>
         </div>
         <select
@@ -168,7 +149,7 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
           <option value="">Select Assigned To</option>
           {availableUsers.map((user) => (
             <option key={user.id} value={user.id}>
-              {user.name}
+              {user.firstName}
             </option>
           ))}
         </select>

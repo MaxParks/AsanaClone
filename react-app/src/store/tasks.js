@@ -195,55 +195,63 @@ export default function tasksReducer(state = initialState, action) {
     case LOAD_TASKS:
       return {
         ...state,
-        ...action.payload,
-      };
-    case LOAD_TASK:
-      return {
-        ...state,
-        [action.payload.id]: action.payload,
-      };
-    case ADD_TASK:
-      return {
-        ...state,
-        task: action.payload,
-      };
-    case UPDATE_TASK:
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...state[action.payload.id],
+        byId: {
+          ...state.byId,
           ...action.payload,
         },
       };
-
-    case REMOVE_TASK: {
-      const newState = { ...state };
-      delete newState[action.payload];
-      return newState;
-    }
-
-    case ADD_TASK_COMMENT:
+    case LOAD_TASK:
+    case ADD_TASK: {
+      const { id, ...task } = action.payload;
       return {
         ...state,
-        [action.payload.id]: action.paylod,
+        byId: {
+          ...state.byId,
+          [id]: task,
+        },
       };
-    case REMOVE_TASK_COMMENT:
-      return Object.keys(state).reduce((updatedState, taskId) => {
-        if (taskId === action.payload) {
-          const task = state[taskId];
-          const filteredComments = task.comments.filter(
-            (comment) => comment.id !== action.payload
-          );
-          updatedState[taskId] = {
-            ...task,
-            comments: filteredComments,
-          };
-        } else {
-          updatedState[taskId] = state[taskId];
-        }
-        return updatedState;
-      }, {});
-
+    }
+    case UPDATE_TASK:
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [action.payload.id]: action.payload,
+        },
+      };
+    case REMOVE_TASK: {
+      const newState = { ...state };
+      delete newState.byId[action.payload];
+      return newState;
+    }
+    case ADD_TASK_COMMENT: {
+      const { taskId, comment } = action.payload;
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [taskId]: {
+            ...state.byId[taskId],
+            comments: [...state.byId[taskId].comments, comment],
+          },
+        },
+      };
+    }
+    case REMOVE_TASK_COMMENT: {
+      const { taskId, commentId } = action.payload;
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [taskId]: {
+            ...state.byId[taskId],
+            comments: state.byId[taskId].comments.filter(
+              (comment) => comment.id !== commentId
+            ),
+          },
+        },
+      };
+    }
     default:
       return state;
   }

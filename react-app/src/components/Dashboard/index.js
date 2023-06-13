@@ -24,7 +24,7 @@ function Dashboard() {
   const sessionUser = useSelector((state) => state.session.user);
   const dashboardData = useSelector((state) => state.dashboard);
   const teams = useSelector((state) => state.teams);
-  const tasks = useSelector((state) => state.tasks);
+  const tasks = useSelector((state) => state.tasks.byId);
   const [selectedTask, setSelectedTask] = useState(null); // Add a state to track the selected task
   const [commentChange, setCommentChange] = useState(false);
 

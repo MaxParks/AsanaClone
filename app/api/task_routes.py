@@ -110,6 +110,12 @@ def create_task():
             return jsonify({'message': 'Unauthorized', 'statusCode': 403}), 403
 
 
+        assigned_to = form.data['assigned_to']
+        assigned_user = User.query.get(assigned_to)
+        if not assigned_user:
+            return jsonify({'message': 'Invalid assigned_to user', 'statusCode': 400}), 400
+
+
         due_date_str = form.data['due_date']
         due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date() if due_date_str else None
 
@@ -117,7 +123,7 @@ def create_task():
             owner_id = current_user.id,
             name = form.data['name'],
             description = form.data['description'],
-            assigned_to = form.data['assigned_to'],
+            assigned_to = assigned_to,
             due_date = due_date,
             project_id = form.data['project_id']
         )
