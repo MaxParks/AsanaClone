@@ -3,6 +3,7 @@ import { createProjectThunk } from "../../../store/projects";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from "react-router-dom";
+import "./AddProjectModal.css";
 
 function CreateProjectModal(isLoaded) {
   const dispatch = useDispatch();
@@ -63,11 +64,13 @@ function CreateProjectModal(isLoaded) {
           {errors.team_id && <li>{errors.team_id}</li>}
           {errors.description && <li>{errors.description}</li>}
           {errors.dueDate && <li>{errors.dueDate}</li>}
-          {errors.general && errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
+          {errors.general &&
+            errors.general.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <div className="form-field">
           <input
             type="text"
+            className="create-project-input"
             id="name"
             placeholder="Project name"
             value={name}
@@ -91,6 +94,7 @@ function CreateProjectModal(isLoaded) {
         <div className="form-field">
           <input
             type="text"
+            className="create-project-input"
             id="description"
             placeholder="Project description"
             value={description}
@@ -100,12 +104,13 @@ function CreateProjectModal(isLoaded) {
         <div className="form-field">
           <input
             type="date"
+            className="create-project-input"
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
         </div>
-        <div className="button-container">
+        <div className="create-project-button-container">
           <button type="submit" className="create-button">
             Create
           </button>

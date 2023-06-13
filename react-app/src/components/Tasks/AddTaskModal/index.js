@@ -117,6 +117,7 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
         <div className="form-field">
           <input
             type="text"
+            className="add-task-input"
             id="name"
             placeholder="task name"
             value={name}
@@ -146,36 +147,40 @@ function AddTaskModal({ isLoaded, currentProjectId = "", currentTeamId = "" }) {
             ))}
           </select>
         </div>
-        <select
-          id="project"
-          value={project_id}
-          onChange={(e) => setProjectId(e.target.value)}
-        >
-          <option value="">Select Project</option>
-          {filteredProjects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
-        </select>
-
-        <select
-          id="assignedTo"
-          placeholder="Assigned to"
-          value={assigned_to}
-          onChange={(e) => setAssignedTo(e.target.value)}
-        >
-          <option value="">Select Assigned To</option>
-          {availableUsers.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
+        <div className="form-field">
+          <select
+            id="project"
+            value={project_id}
+            onChange={(e) => setProjectId(e.target.value)}
+          >
+            <option value="">Select Project</option>
+            {filteredProjects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-field">
+          <select
+            id="assignedTo"
+            placeholder="Assigned to"
+            value={assigned_to}
+            onChange={(e) => setAssignedTo(e.target.value)}
+          >
+            <option value="">Select Assigned To</option>
+            {availableUsers.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div className="form-field">
           <input
             type="date"
+            className="add-task-input"
             id="dueDate"
             value={due_date}
             onChange={(e) => setDueDate(e.target.value)}

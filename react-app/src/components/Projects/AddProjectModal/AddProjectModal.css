@@ -1,4 +1,4 @@
-/* #create-project-modal-container {
+#create-project-modal-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -10,26 +10,7 @@
     color: var(--color-medium-gray);
 }
 
-.create-project-modal-container .form-field {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.create-project-modal-container .form-field textarea {
-    border: 1px dashed gray;
-    border-radius: 20px;
-    padding: 8px;
-    resize: vertical;
-    height: 120px;
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: var(--font-medium);
-    background-color: transparent;
-    width: 100%;
-    color: gray;
-}
-
-.create-project-modal-container .form-field input {
+.create-project-input {
     width: 100%;
     padding: 10px;
     border: 1px dashed gray;
@@ -39,6 +20,26 @@
     color: gray;
 }
 
+.form-field select {
+    width: fit-content;
+    padding: 10px;
+    border: 1px dashed gray;
+    border-radius: 20px;
+    outline: none;
+    background-color: transparent;
+    color: gray;
+}
+
+.form-field select option {
+    background-color: var(--color-charcoal);
+    color: var(--color-medium-gray);
+}
+
+.create-project-button-container {
+    display: flex;
+    gap: 20px
+}
+
 .create-project-modal-container .form-field input::placeholder {
     color: gray;
-} */
+}
